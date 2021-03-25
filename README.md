@@ -8,7 +8,7 @@ Discord Bot written in JavaScript using discord.js
 A simple, personalized Discord Bot utilizing Node.js and npm to handle dependencies. 
 
 Over 30+ Commands ranging from moderation, fun, and information.
-* 🚨 **Moderation**: `mute`, `unmute`, `modclear`, `clearb0t`, `shutdown`, `ban`, `kick`, and more
+* 🚨 **Moderation**: `ban`, `kick`, `mute`, `modclear`, `clearb0t`, `shutdown`, and more
 * 🎊 **Fun**: `dog`, `cat`, `ascii`, `8ball`, `fliptext`, `poll`, and more
 * 🔎 **Search**: `define`, `syn`, `translate`, `find [Google Image Search]`, and more
 * 📊 **Information**: `covid`, `weather`, `pollmc`, `uptime`, `remind`, `decide`, and more
