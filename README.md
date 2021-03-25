@@ -1,13 +1,13 @@
 # ben-b0t
 Discord Bot written in JavaScript using discord.js
 
+This project began Fall 2020 and was published to a public repo on 04/24/21
+
 [![Discord.js](https://img.shields.io/badge/Discord.js-V.12-7354F6?style=flat-square)](https://www.npmjs.com/package/discord.js)
 
 ---
 
 🤖 A simple, personalized Discord Bot utilizing Node.js and npm to handle dependencies. 
-
-This project began Fall 2020 and was published to a public repo on 04/24/21
 
 Overall a very fun and interactive project that allowed me to learn more about Data Structures and parsing input/output efficiently.
 
