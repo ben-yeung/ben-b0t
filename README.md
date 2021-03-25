@@ -1,5 +1,5 @@
 # ben-b0t
-Discord Bot written in JavaScript using [discord.js](https://discord.js.org/#/)
+Discord Bot written in JavaScript using discord.js
 
 [![Discord.js](https://img.shields.io/badge/Discord.js-V.12-7354F6?style=flat-square)](https://www.npmjs.com/package/discord.js)
 
