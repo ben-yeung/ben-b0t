@@ -14,6 +14,7 @@ bot.commands = new Discord.Collection();
 
 bot.reminders = new Map();
 bot.mute = new Map();
+bot.logs = new Map();
 
 
 const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
@@ -56,6 +57,31 @@ bot.on('message', async message => {
     } catch (e) {
         console.log(e);
     }
+
+})
+
+
+bot.on('messageUpdate', (oldMessage, newMessage) => {
+    if (newMessage.author.id == bot.user.id) return;
+
+    logChannel = bot.channels.cache.get("701976025357090816")
+    messageHistory = bot.logs.get(oldMessage.id);
+
+    let embed = new Discord.MessageEmbed()
+        .setDescription(`From <@${oldMessage.author.id}> \n [Source](${oldMessage.url})`)
+        .addField("Old Message:", oldMessage.content)
+        .addField("New Message:", newMessage.content)
+        .setColor("RED")
+        .setTimestamp()
+
+    if (!messageHistory) messageHistory = [];
+
+    embed.setTitle(`Logged Edit #${messageHistory.length + 1}`)
+    messageHistory.push(embed)
+    let url = oldMessage.url.replace("discordapp", "discord")
+    bot.logs.set(url, messageHistory)
+    //logChannel.send(embed)
+    console.log(bot.logs)
 
 })
 

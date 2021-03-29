@@ -3,7 +3,7 @@ const botconfig = require("../botconfig.json");
 const colours = require("../colours.json");
 
 module.exports = {
-    name: "kick",
+    name: "kickuser",
     description: "Kicks a given user. Moderator only",
     usage: "?kick [@user]",
     async execute(bot, message, args) {
