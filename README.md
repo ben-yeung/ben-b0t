@@ -26,9 +26,9 @@ Over 30+ Commands ranging from moderation, fun, and information.
 * [weather-js](https://www.npmjs.com/package/weather-js)
 * [novelcovid](https://www.npmjs.com/package/novelcovid)
 * [images-scraper](https://www.npmjs.com/package/images-scraper)
+* [thesaurus](https://www.npmjs.com/package/thesaurus)
 * [mathjs](https://www.npmjs.com/package/mathjs)
 * [ytsr](https://www.npmjs.com/package/ytsr)
-* [thesaurus](https://www.npmjs.com/package/thesaurus)
 * [ms](https://www.npmjs.com/package/ms)
 
 
