@@ -62,7 +62,7 @@ bot.on('message', async message => {
 
 
 bot.on('messageUpdate', (oldMessage, newMessage) => {
-    if (newMessage.author.id == bot.user.id) return;
+    if (oldMessage.author.bot || oldMessage.channel.type === 'dm') return;
 
     logChannel = bot.channels.cache.get("701976025357090816")
     messageHistory = bot.logs.get(oldMessage.id);
