@@ -11,7 +11,7 @@ module.exports = {
         if (!args[0]) return message.reply("Please specify a message URL to find the logs for.")
 
         embedList = bot.logs.get(args[0])
-        if (!embedList) return message.reply("Error finding logs for message URL given. Please try again.")
+        if (!embedList) return message.reply("Error finding logs for message ID given. Please try again.")
         let embed = embedList[0];
         let currInd = 0;
         let author = message.author

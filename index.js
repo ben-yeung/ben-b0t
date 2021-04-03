@@ -78,8 +78,8 @@ bot.on('messageUpdate', (oldMessage, newMessage) => {
 
     embed.setTitle(`Logged Edit #${messageHistory.length + 1}`)
     messageHistory.push(embed)
-    let url = oldMessage.url.replace("discordapp", "discord")
-    bot.logs.set(url, messageHistory)
+    let id = oldMessage.id
+    bot.logs.set(id, messageHistory)
     //logChannel.send(embed)
     console.log(bot.logs)
 

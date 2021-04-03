@@ -31,9 +31,10 @@ module.exports = {
 
         let embed = new Discord.MessageEmbed()
             .setTitle(`Results for '${search}' | Page ${currInd + 1}`)
-            .setDescription(`Reacts must be from Asker and reacts will stop working \nafter 1 minute. \n\n Asker: <@${author.id}> \n [Source](${chosenOneSRC}) \n`)
+            .setDescription(`Asker: <@${author.id}> \n [Source](${chosenOneSRC}) \n`)
             .setColor(colours.green_light)
             .setImage(chosenOne)
+            .setFooter("Reacts will stop working after 1 minute.")
 
         message.channel.send(embed).then(message => {
             if (currInd >= img_res.length) return
@@ -64,9 +65,10 @@ module.exports = {
                     let chosenOneSRC = img_res[currInd].source
                     let embed = new Discord.MessageEmbed()
                         .setTitle(`Results for '${search}' | Page ${currInd + 1}`)
-                        .setDescription(`Reacts must be from Asker and reacts will stop working \nafter 1 minute.\n\n Asker: <@${author.id}> \n [Source](${chosenOneSRC}) \n`)
+                        .setDescription(`Asker: <@${author.id}> \n [Source](${chosenOneSRC}) \n`)
                         .setColor(colours.green_light)
                         .setImage(chosenOne)
+                        .setFooter("Reacts will stop working after 1 minute.")
                     message.edit(embed)
                     // react with left arrow if it isn't the start (await is used so that the right arrow always goes after the left)
                     if (currInd !== 0) await message.react('⬅️')
