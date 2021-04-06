@@ -35,6 +35,7 @@ bot.help.delete("setstatus");
 bot.help.delete("unban");
 bot.help.delete("test");
 bot.help.delete("sd");
+bot.help.delete("say");
 
 bot.on('message', async message => {
     if (message.author.bot || message.channel.type === 'dm') return; //ignore DMs and bot messages
