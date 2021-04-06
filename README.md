@@ -22,6 +22,7 @@ Over 30+ Commands ranging from moderation, fun, and information.
 ---
 
 🛠 Dependencies Include:
+* [canvacord](https://canvacord.js.org/#/)
 * [node-fetch](https://www.npmjs.com/package/node-fetch)
 * [weather-js](https://www.npmjs.com/package/weather-js)
 * [novelcovid](https://www.npmjs.com/package/novelcovid)
