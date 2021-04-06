@@ -20,7 +20,7 @@ module.exports = {
         let ops = {
             'image': avatar,
             'message': msg,
-            'username': user.username
+            'username': message.guild.member(user).displayName //special characters breaks this when sent to canvacord. Use user.username
         }
         let image = await canvacord.Canvas.quote(ops);
 

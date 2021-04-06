@@ -6,35 +6,61 @@ const canvacord = require("canvacord");
 module.exports = {
     name: "spank",
     description: "Canvacord API",
-    usage: "?spank [@user] [@user]",
+    usage: "?spank [@user or Image Link] [@user or Image Link]",
     async execute(bot, message, args) {
 
-        if (!message.mentions.users.first()) return message.reply("Please @ two people. If only 1 @ then author is assumed.")
+        if (!args[0]) return message.reply(`Please follow format: **${module.exports.usage}**`)
 
         let user1;
         let user2;
+        let avatar1;
+        let avatar2;
         var count = 0;
         message.mentions.users.forEach(user => {
             count++;
             if (count >= 3) return message.reply("Only mention at most 2 users.");
             if (count === 1) {
-                user1 = user;
+                let id = `<@!${user.id}>`;
+                if (args[0] === id) {
+                    user1 = user;
+                } else {
+                    user2 = user;
+                }
             } else {
                 user2 = user;
             }
         })
-        if (!user2) user2 = message.author;
+        if (!user2) {
+            if (!args[1]) {
+                user2 = message.author;
+                avatar2 = user2.displayAvatarURL({
+                    format: 'png'
+                });
+            } else {
+                avatar2 = args[1];
+            }
+        } else {
+            avatar2 = user2.displayAvatarURL({
+                format: 'png'
+            });
+        }
 
-        const avatar1 = user1.displayAvatarURL({
-            format: "png"
-        });
-        const avatar2 = user2.displayAvatarURL({
-            format: "png"
-        });
-        const image = await canvacord.Canvas.spank(avatar2, avatar1);
-        let attachment = new Discord.MessageAttachment(image, "concord.png");
-        message.channel.send(attachment);
-        message.delete();
+        if (!user1) {
+            avatar1 = args[0];
+        } else {
+            avatar1 = user1.displayAvatarURL({
+                format: 'png'
+            })
+        }
+        try {
+            let image = await canvacord.Canvas.spank(avatar2, avatar1);
+            let attachment = new Discord.MessageAttachment(image, "concord.png");
+            message.channel.send(attachment);
+            message.delete();
+        } catch (err) {
+            console.log(err);
+            return message.reply(`Please follow format: **${module.exports.usage}**`)
+        }
 
     }
 }
