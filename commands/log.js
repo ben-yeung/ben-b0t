@@ -5,13 +5,13 @@ const colours = require("../colours.json");
 module.exports = {
     name: "log",
     description: "Returns a logged message with message ID",
-    usage: "?",
+    usage: "?log [message id]",
     execute(bot, message, args) {
 
-        if (!args[0]) return message.reply("Please specify a message URL to find the logs for.")
+        if (!args[0]) return message.reply("Error finding logs for message. Please specify id.")
 
         embedList = bot.logs.get(args[0])
-        if (!embedList) return message.reply("Error finding logs for message ID given. Please try again.")
+        if (!embedList) return message.reply("Error finding logs for message. It might not be edited.")
         let embed = embedList[0];
         let currInd = 0;
         let author = message.author

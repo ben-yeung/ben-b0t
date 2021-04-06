@@ -5,7 +5,7 @@ const colours = require("../colours.json");
 module.exports = {
     name: "setnick",
     description: "Sets the bot's current nickname",
-    usage: "?setick [name]",
+    usage: "?setnick [name]",
     execute(bot, message, args) {
 
         if (!message.member.hasPermission(["MANAGE_MESSAGES", "ADMINISTRATOR"])) {

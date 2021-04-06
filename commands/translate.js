@@ -101,8 +101,8 @@ var codes = {
 
 module.exports = {
     name: "translate",
-    description: "",
-    usage: "?",
+    description: "Translate message to given lang code.",
+    usage: "?translate [lang code] [text]",
     async execute(bot, message, args) {
 
         let lang = args[0].toLowerCase()

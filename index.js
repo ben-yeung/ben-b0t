@@ -16,22 +16,34 @@ bot.reminders = new Map();
 bot.mute = new Map();
 bot.logs = new Map();
 bot.counter = new Map();
+bot.help = new Map();
 
 
 const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
 for (const file of commandFiles) {
     const command = require(`./commands/${file}`);
     bot.commands.set(command.name, command);
+    bot.help.set(command.name, command.usage);
 }
+bot.help.delete("banuser"); //delete moderator commands from help list
+bot.help.delete("kickuser");
+bot.help.delete("mute");
+bot.help.delete("unmute");
+bot.help.delete("modclear");
+bot.help.delete("setnick");
+bot.help.delete("setstatus");
+bot.help.delete("unban");
+bot.help.delete("test");
+bot.help.delete("sd");
 
 bot.on('message', async message => {
-    if (message.author.bot || message.channel.type === 'dm') return;
+    if (message.author.bot || message.channel.type === 'dm') return; //ignore DMs and bot messages
 
     let prefix = botconfig.prefix;
     let messageArray = message.content.split(' ');
     let hasPrefix = messageArray[0][0] === prefix;
 
-    if (!bot.counter.get(message.channel.id)) {
+    if (!bot.counter.get(message.channel.id)) { //logic for getting message streaks
         let obj = new Map();
         obj.set('lastmsg', message.content.toLowerCase());
         obj.set('msgcount', 0);
@@ -51,7 +63,7 @@ bot.on('message', async message => {
         }
     }
 
-    if (!hasPrefix) return;
+    if (!hasPrefix) return; //ignore if message does not start with prefix
 
     let cmd = messageArray[0].toLowerCase().slice(1);
     let args = messageArray.slice(1);
@@ -59,13 +71,17 @@ bot.on('message', async message => {
         return el != '';
     })
 
-    switch (cmd) {
+    switch (cmd) { //handler for command shortcuts
         case 'tr':
             cmd = 'translate';
             break;
 
         case 'def':
             cmd = 'define';
+            break;
+
+        case 'cmm':
+            cmd = 'changemymind'
             break;
 
         default:
@@ -82,7 +98,7 @@ bot.on('message', async message => {
 })
 
 
-bot.on('messageUpdate', (oldMessage, newMessage) => {
+bot.on('messageUpdate', (oldMessage, newMessage) => { //logic for log command
     if (oldMessage.author.bot || oldMessage.channel.type === 'dm') return;
 
     logChannel = bot.channels.cache.get("701976025357090816")

@@ -6,7 +6,7 @@ const math = require('mathjs');
 module.exports = {
     name: "calc",
     description: "Calculate given input",
-    usage: "?calc",
+    usage: "?calc [expression]",
     execute(bot, message, args) {
 
         if (!args[0]) return message.reply("Please input a math problem");

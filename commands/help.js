@@ -8,7 +8,7 @@ module.exports = {
     usage: "?help",
     execute(bot, message, args) {
 
-        const comms = ['8ball [question]', 'ascii [text]', 'calc [expression]', 'cat', 'dog', 'clap [text]', 'vaporwave [text]', 'clear [amount]', 'covid [state/country]', 'decide [choice] or [choice] or ... [choice]', 'def [word]', 'syn [word]', 'find [search]', 'fliptext [text]', 'poll [question]', 'pollmc [choice] or [choice] or ... [choice]', 'rand [min] [max]', 'remind [me/@user] [time] [reminder]', 'tr [language code] [message]', 'trhelp', 'weather [city]', 'userinfo', 'uptime', 'ping'];
+        const comms = Array.from(bot.help.values()).sort();
         const embed = new Discord.MessageEmbed()
             .setColor(colours.red_light)
             .setTitle('Need assistance?')
