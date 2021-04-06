@@ -15,6 +15,7 @@ bot.commands = new Discord.Collection();
 bot.reminders = new Map();
 bot.mute = new Map();
 bot.logs = new Map();
+bot.counter = new Map();
 
 
 const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
@@ -29,6 +30,26 @@ bot.on('message', async message => {
     let prefix = botconfig.prefix;
     let messageArray = message.content.split(' ');
     let hasPrefix = messageArray[0][0] === prefix;
+
+    if (!bot.counter.get(message.channel.id)) {
+        let obj = new Map();
+        obj.set('lastmsg', message.content.toLowerCase());
+        obj.set('msgcount', 0);
+        bot.counter.set(message.channel.id, obj);
+    } else {
+        let msgCount = bot.counter.get(message.channel.id).get('msgcount');
+        let msgDuped = bot.counter.get(message.channel.id).get('lastmsg');
+        if (message.content.toLowerCase() == msgDuped.toLowerCase()) {
+            bot.counter.get(message.channel.id).set('msgcount', msgCount + 1);
+        } else if (msgCount >= 2) {
+            bot.counter.get(message.channel.id).set('lastmsg', message.content);
+            bot.counter.get(message.channel.id).set('msgcount', 0);
+            message.channel.send(`**${msgCount + 1}X Streak** for message: "${msgDuped}" broken by <@${message.author.id}>`);
+        } else {
+            bot.counter.get(message.channel.id).set('lastmsg', message.content);
+            bot.counter.get(message.channel.id).set('msgcount', 0);
+        }
+    }
 
     if (!hasPrefix) return;
 
