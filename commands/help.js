@@ -8,6 +8,20 @@ module.exports = {
     usage: "?help",
     execute(bot, message, args) {
 
+        if (bot.help.get('banuser')) {
+            bot.help.delete("banuser"); //delete moderator commands from help list
+            bot.help.delete("kickuser");
+            bot.help.delete("mute");
+            bot.help.delete("unmute");
+            bot.help.delete("modclear");
+            bot.help.delete("setnick");
+            bot.help.delete("setstatus");
+            bot.help.delete("unban");
+            bot.help.delete("test");
+            bot.help.delete("sd");
+            bot.help.delete("say");
+        }
+
         const comms = Array.from(bot.help.values()).sort();
 
         for (var i = 0; i < comms.length; i++) {

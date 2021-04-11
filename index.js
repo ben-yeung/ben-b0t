@@ -25,17 +25,6 @@ for (const file of commandFiles) {
     bot.commands.set(command.name, command);
     bot.help.set(command.name, command.usage);
 }
-bot.help.delete("banuser"); //delete moderator commands from help list
-bot.help.delete("kickuser");
-bot.help.delete("mute");
-bot.help.delete("unmute");
-bot.help.delete("modclear");
-bot.help.delete("setnick");
-bot.help.delete("setstatus");
-bot.help.delete("unban");
-bot.help.delete("test");
-bot.help.delete("sd");
-bot.help.delete("say");
 
 bot.on('message', async message => {
     if (message.author.bot || message.channel.type === 'dm') return; //ignore DMs and bot messages
