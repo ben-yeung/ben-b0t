@@ -21,7 +21,7 @@ module.exports = {
         if (!search) return message.reply("Please enter a search query")
         const author = message.author
 
-        message.channel.send(`Searching the web for '${search}' <a:working:821570743329882172>`).then(async (message) => { // replace with own emote
+        message.channel.send(`Searching the web for \`${search}\` <a:working:821570743329882172>`).then(async (message) => { // replace with own emote
             const img_res = await google.scrape(search, 5)
             console.log(img_res)
             console.log("\n----------------------------------------")
