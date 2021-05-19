@@ -8,7 +8,7 @@ const db = require("quick.db");
 // For documentation on how to get started visit https://dev.twitch.tv/docs/api
 // The command is automated via CronJob in index.js
 module.exports = {
-    name: "twitchclips",
+    name: "twitchclipsauto",
     description: "Grabs twitch clips of given channel",
     usage: "Automated by CronJob",
     execute(bot, message, args) {
@@ -28,8 +28,8 @@ module.exports = {
                 if (err) {
                     return console.log(err);
                 }
-                console.log(`Status: ${res.statusCode}`);
-                console.log(body);
+                console.log(`Token POST Status: ${res.statusCode}`);
+                //console.log(body);
 
                 callback(res);
             })
@@ -54,8 +54,8 @@ module.exports = {
                 if (err) {
                     return console.log(err);
                 }
-                console.log(`Status: ${res.statusCode}`);
-                console.log(JSON.parse(body));
+                console.log(`User GET Status: ${res.statusCode}`);
+                //console.log(JSON.parse(body));
 
                 callback(res);
             });
@@ -81,7 +81,7 @@ module.exports = {
                     if (err) {
                         return console.log(err);
                     }
-                    console.log(`Status: ${res.statusCode}`);
+                    console.log(`Clip GET Status: ${res.statusCode}`);
                     console.log(JSON.parse(body));
 
                     callback(res);
@@ -121,7 +121,7 @@ module.exports = {
                             }
                         }
                     }
-                    console.log(db.get('clips'));
+                    //console.log(db.get('clips'));
                 });
             }, 1000)
         }, 1000);
