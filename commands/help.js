@@ -20,6 +20,7 @@ module.exports = {
             bot.help.delete("test");
             bot.help.delete("sd");
             bot.help.delete("say");
+            bot.help.delete("twitchclips");
         }
 
         const comms = Array.from(bot.help.values()).sort();

@@ -26,8 +26,11 @@ for (const file of commandFiles) {
     bot.help.set(command.name, command.usage);
 }
 
+bot.commands.get("twitchclips").execute(bot, "", []);
+
 bot.on('message', async message => {
     if (message.author.bot || message.channel.type === 'dm') return; //ignore DMs and bot messages
+
 
     let prefix = botconfig.prefix;
     let messageArray = message.content.split(' ');
