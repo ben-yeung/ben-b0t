@@ -27,22 +27,10 @@ for (const file of commandFiles) {
     bot.help.set(command.name, command.usage);
 }
 
-let scheduledClipCheck = new cron.CronJob('0 0 */1 * * *', () => {
-
-    db.set(`nano.stock`, 10)
-    db.set(`3080.stock`, 10)
-
-    let channelID = '701976025357090816';
-    let messageToSend = "Nano and 3080 Stock set to 10."
-    try {
-        bot.channels.cache.get(channelID).send(messageToSend);
-    } catch (e) {
-        bot.channels.cache.get(channelID).send(e)
-    }
-
+let scheduleClipCheck = new cron.CronJob('0 0 */1 * * *', () => {
+    bot.commands.get("twitchclips").execute(bot, "", []);
 });
-scheduledRestockRegulars.start()
-bot.commands.get("twitchclips").execute(bot, "", []);
+scheduleClipCheck.start()
 
 bot.on('message', async message => {
     if (message.author.bot || message.channel.type === 'dm') return; //ignore DMs and bot messages
