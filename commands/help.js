@@ -54,7 +54,7 @@ module.exports = {
             const embed2 = new Discord.MessageEmbed()
                 .setColor(colours.red_light)
                 .setTitle('Need assistance? | Page 2')
-                .setDescription('Use any of the commands below with prefix: ? \n Commands with [...] may have options following the command.')
+                .setDescription('Use any of the commands below with prefix: ? \n')
                 .addField('Active Commands: ', comms_list2);
             message.author.send(embed2)
         }
