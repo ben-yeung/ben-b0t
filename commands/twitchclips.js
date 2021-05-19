@@ -2,6 +2,7 @@ const Discord = require("discord.js")
 const botconfig = require("../botconfig.json");
 const colours = require("../colours.json");
 const request = require("request");
+const db = require("quick.db");
 
 // This command uses Twitch API Client IDs and Client Secrets
 // For documentation on how to get started visit https://dev.twitch.tv/docs/api
@@ -65,11 +66,11 @@ module.exports = {
                 broadcaster_id = JSON.parse(res.body).data[0].id; //get user id from request
                 return broadcaster_id;
             })
-
+            var todayDate = new Date().toISOString();
             const getClips = (url, accessToken, callback) => {
 
                 const clipOptions = {
-                    url: url + broadcaster_id + '&first=100', // See https://dev.twitch.tv/docs/api/reference#get-clips examples
+                    url: url + broadcaster_id + `&first=100&started_at=${todayDate}`, // See https://dev.twitch.tv/docs/api/reference#get-clips examples
                     method: "GET",
                     headers: {
                         'Client-ID': botconfig.CLIENT_ID,
@@ -81,7 +82,7 @@ module.exports = {
                         return console.log(err);
                     }
                     console.log(`Status: ${res.statusCode}`);
-                    //console.log(JSON.parse(body).data);
+                    console.log(JSON.parse(body));
 
                     callback(res);
                 });
@@ -91,10 +92,39 @@ module.exports = {
             setTimeout(() => {
                 getClips(botconfig.GET_CLIPS, AT, (res) => {
                     const clipsArr = JSON.parse(res.body).data;
-                    console.log(clipsArr)
-                })
+                    var prevClips = db.get('clips');
+                    if (!prevClips) {
+                        db.set('clips', []);
+                        prevClips = [];
+                    }
+
+                    let channelID = '844469067901304883';
+
+                    for (var i = 0; i < clipsArr.length; i++) {
+                        let clip = clipsArr[i];
+                        var date = new Date(clip.created_at)
+                        //console.log(`${date.getMonth()}/${date.getDate()}/${date.getFullYear()}`)
+                        if (!prevClips.includes(clip.id)) {
+                            db.push('clips', clip.id);
+
+                            // let embed = new Discord.MessageEmbed()
+                            //     .setTitle(clip.title)
+                            //     .setURL(clip.url)
+                            //     .setDescription(`**Clipped by:** ${clip.creator_name}\n**Created:** ${date.getMonth()}/${date.getDate()}/${date.getFullYear()}\n**Views:** ${clip.view_count}`)
+                            //     .setImage(clip.thumbnail_url)
+                            //     .setFooter(clip.id)
+                            //     .setColor(colours.purple_medium);
+                            try {
+                                bot.channels.cache.get(channelID).send(clip.url);
+                            } catch (e) {
+                                return message.channel.send(e)
+                            }
+                        }
+                    }
+                    console.log(db.get('clips'));
+                });
             }, 1000)
-        }, 1000)
+        }, 1000);
 
 
     }

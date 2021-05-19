@@ -3,6 +3,7 @@ const {
     MessageAttachment
 } = require('discord.js');
 const botconfig = require('./botconfig.json');
+const cron = require("cron");
 const bot = new Discord.Client({
     disableEveryone: true
 });
@@ -26,6 +27,21 @@ for (const file of commandFiles) {
     bot.help.set(command.name, command.usage);
 }
 
+let scheduledClipCheck = new cron.CronJob('0 0 */1 * * *', () => {
+
+    db.set(`nano.stock`, 10)
+    db.set(`3080.stock`, 10)
+
+    let channelID = '701976025357090816';
+    let messageToSend = "Nano and 3080 Stock set to 10."
+    try {
+        bot.channels.cache.get(channelID).send(messageToSend);
+    } catch (e) {
+        bot.channels.cache.get(channelID).send(e)
+    }
+
+});
+scheduledRestockRegulars.start()
 bot.commands.get("twitchclips").execute(bot, "", []);
 
 bot.on('message', async message => {
