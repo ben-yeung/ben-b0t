@@ -66,11 +66,14 @@ module.exports = {
                 broadcaster_id = JSON.parse(res.body).data[0].id; //get user id from request
                 return broadcaster_id;
             })
-            var todayDate = new Date().toISOString();
+
+            var date = new Date();
+            var yesterday = date - 1000 * 60 * 60 * 24 * 1; // current date's milliseconds - 1,000 ms * 60 s * 60 mins * 24 hrs * (# of days beyond one to go back)
+            yesterday = new Date(yesterday).toISOString();
             const getClips = (url, accessToken, callback) => {
 
                 const clipOptions = {
-                    url: url + broadcaster_id + `&first=100&started_at=${todayDate}`, // See https://dev.twitch.tv/docs/api/reference#get-clips examples
+                    url: url + broadcaster_id + `&first=100&started_at=${yesterday}`, // See https://dev.twitch.tv/docs/api/reference#get-clips examples
                     method: "GET",
                     headers: {
                         'Client-ID': botconfig.CLIENT_ID,

@@ -27,7 +27,8 @@ for (const file of commandFiles) {
     bot.help.set(command.name, command.usage);
 }
 
-let scheduleClipCheck = new cron.CronJob('0 0 */1 * * *', () => {
+let scheduleClipCheck = new cron.CronJob('00 00 00 * * *', () => {
+    console.log('Checking for clips')
     bot.commands.get("twitchclipsauto").execute(bot, "", []);
 });
 scheduleClipCheck.start()
