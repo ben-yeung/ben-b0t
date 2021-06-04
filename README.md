@@ -1,7 +1,8 @@
 # ben-b0t
-[![Discord.js](https://img.shields.io/badge/discord.js-V.12-blue?style=for-the-badge&logo=discord)](https://www.npmjs.com/package/discord.js)
+[![Discord.js](https://img.shields.io/badge/discord.js-v12-blue?style=for-the-badge&logo=discord)](https://www.npmjs.com/package/discord.js)
 [![Twitch API](https://img.shields.io/badge/Twitch%20API-Doc-blueviolet?style=for-the-badge&logo=twitch)](https://dev.twitch.tv/docs/)
-[![npm](https://img.shields.io/badge/npm-6.14.6-red?style=for-the-badge&logo=npm)](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+[![npm](https://img.shields.io/badge/npm-v7.15.1-red?style=for-the-badge&logo=npm)](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+[![Node.js](https://img.shields.io/badge/Node.js-v16.3.0-brightgreen?style=for-the-badge&logo=nodejs)](https://dev.twitch.tv/docs/)
 
 
 ## Discord Bot written in JavaScript using discord.js
