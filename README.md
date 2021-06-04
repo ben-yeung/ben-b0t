@@ -12,7 +12,7 @@ This project began Fall 2020 and was published to a public repo on 04/24/21
 
 ## 🤖 A simple, personalized Discord Bot utilizing Node.js and npm to handle dependencies. 
 
-Overall a very fun and interactive project that allowed me to learn more about Data Structures, String manipulation, and parsing input/output.
+Overall a very fun and interactive project that allowed me to learn more about Data Structures, String manipulation, OAuth Flows, and parsing I/O.
 
 ---
 
