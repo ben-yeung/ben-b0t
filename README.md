@@ -11,8 +11,8 @@ This project began Fall 2020 and was published to a public repo on 04/24/21
 
 ## 🤖 A simple, personalized Discord Bot utilizing Node.js and npm to handle dependencies. 
 
-Overall a very fun and interactive project that allowed me to learn more about Data Structures, String manipulation, OAuth Flows, and parsing I/O.
-
+Overall a very interactive project that allowed me to learn more about Data Structures, string manipulation, OAuth Flows, and parsing I/O.
+Originally an single file full of if statements, this repo publication is a cleaner and more organized version with a command handler.
 
 ## 👾 Over 30+ Commands ranging from moderation, fun, and information.
 * 🚨 **Moderation**: `ban`, `kick`, `mute`, `modclear`, `clearb0t`, `shutdown`, and more
