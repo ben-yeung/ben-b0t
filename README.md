@@ -16,7 +16,7 @@ Overall a very fun and interactive project that allowed me to learn more about D
 
 ---
 
-## Over 30+ Commands ranging from moderation, fun, and information.
+## 👾 Over 30+ Commands ranging from moderation, fun, and information.
 * 🚨 **Moderation**: `ban`, `kick`, `mute`, `modclear`, `clearb0t`, `shutdown`, and more
 * 🎊 **Fun**: `dog`, `cat`, `ascii`, `8ball`, `fliptext`, `ytsearch`, and more
 * 🔎 **Search**: `define`, `syn`, `translate`, `find [Google Image Search]`, and more
