@@ -28,6 +28,8 @@ Over 30+ Commands ranging from moderation, fun, and information.
   * Do note that this command is used and tested on a smaller channel.
   * There is no spam prevention and thus any clips within the past day are sent automatically to a given channel.
 
+---
+
 🛠 Dependencies Include:
 * [canvacord](https://canvacord.js.org/#/)
 * [node-fetch](https://www.npmjs.com/package/node-fetch)
