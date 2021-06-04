@@ -21,6 +21,13 @@ Over 30+ Commands ranging from moderation, fun, and information.
 
 ---
 
+📺 Twitch API Integration | [LINK](https://dev.twitch.tv/docs/)
+* Client Credentials OAuth Flow
+* Return information about a given streamer username with the `twitch [username]` command.
+* Options to setup a CronJob to automatically send Twitch clips of a given streamer to a Discord channel.
+  * Do note that this command is used and tested on a smaller channel.
+  * There is no spam prevention and thus any clips within the past day are sent automatically to a given channel.
+
 🛠 Dependencies Include:
 * [canvacord](https://canvacord.js.org/#/)
 * [node-fetch](https://www.npmjs.com/package/node-fetch)
