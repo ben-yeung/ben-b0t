@@ -64,6 +64,7 @@ module.exports = {
         setTimeout(() => {
             getUserID(botconfig.GET_ID, AT, (res) => {
                 broadcaster_id = JSON.parse(res.body).data[0].id; //get user id from request
+                console.log(broadcaster_id)
                 return broadcaster_id;
             })
 
