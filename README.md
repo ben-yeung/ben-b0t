@@ -1,6 +1,6 @@
 # ben-b0t
-[![Discord.js](https://img.shields.io/badge/discord.js-V.12-blue?style=flat-square&logo=appveyor)](https://www.npmjs.com/package/discord.js)
-[![Twitch API](https://img.shields.io/badge/Twitch%20API-Doc-blueviolet)](https://dev.twitch.tv/docs/)
+[![Discord.js](https://img.shields.io/badge/discord.js-V.12-blue?style=flat-square&logo=discord)](https://www.npmjs.com/package/discord.js)
+[![Twitch API](https://img.shields.io/badge/Twitch%20API-Doc-blueviolet?style=flat-square&logo=twitch)](https://dev.twitch.tv/docs/)
 
 ## Discord Bot written in JavaScript using discord.js
 This project began Fall 2020 and was published to a public repo on 04/24/21
