@@ -19,6 +19,8 @@ Originally an single file full of if statements, this repo publication is a clea
 * 🎊 **Fun**: `dog`, `cat`, `ascii`, `8ball`, `fliptext`, `ytsearch`, and more
 * 🔎 **Search**: `define`, `syn`, `translate`, `find [Google Image Search]`, and more
 * 📊 **Information**: `covid`, `weather`, `poll`, `uptime`, `remind`, `decide`, and more
+* 💬 Log chat message streaks and those who willingly or accidentally break them!
+* 👽 Have fun trolling friends with image manipulation using Canvacord API
 
 
 ## 📺 Twitch API Integration
