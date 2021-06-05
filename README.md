@@ -28,6 +28,12 @@ Originally an single file full of if statements, this repo publication is a clea
   * Do note that this command is used and tested on a smaller channel.
   * There is no spam prevention and thus any clips within the past day are sent automatically to a given channel.
 
+## 🧰 Debugging / Notes
+* Note that some commands may use the `quick.db` package 
+ * Trying to deploy with services such as Heroku may not support long term storage that quick.db may need
+ * Check with the provider FAQs to see if there is an alternative approach
+* The help command excludes some moderation / bot config commands from general public access; adjust as necessary
+* Some moderation commands may become deprecated as Discord.js changes
 
 ## 🛠 Dependencies Include:
 * [canvacord](https://canvacord.js.org/#/)
