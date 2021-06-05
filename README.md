@@ -30,8 +30,8 @@ Originally an single file full of if statements, this repo publication is a clea
 
 ## 🧰 Debugging / Notes
 * Note that some commands may use the `quick.db` package 
- * Trying to deploy with services such as Heroku may not support long term storage that quick.db may need
- * Check with the provider FAQs to see if there is an alternative approach
+  * Trying to deploy with services such as Heroku may not support long term storage that quick.db may need
+  * Check with the provider FAQs to see if there is an alternative approach
 * The help command excludes some moderation / bot config commands from general public access; adjust as necessary
 * Some moderation commands may become deprecated as Discord.js changes
 
