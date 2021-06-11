@@ -32,7 +32,6 @@ module.exports = {
                 message.channel.send(`ERROR: ${e.message}`)
             }
 
-            message.channel.lastMessage.delete();
 
         } else if (args.length == 1) {
             const amount = parseInt(args[0]) + 1;
@@ -49,7 +48,7 @@ module.exports = {
                     messages = messages.array().slice(0, amount);
                     message.channel.bulkDelete(messages);
                 });
-                message.channel.lastMessage.delete();
+
             } catch (e) {
                 message.channel.send(`ERROR: ${e.message}`)
             }
