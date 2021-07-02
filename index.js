@@ -33,9 +33,20 @@ let scheduleClipCheck = new cron.CronJob('00 00 00 * * *', () => {
 });
 scheduleClipCheck.start()
 
+bot.on('ready', async () => {
+    console.log(`${bot.user.username} is online`)
+
+    // Adding slash commands
+    const slashCommands = await bot.api
+        .applications(bot.user.id)
+        .guilds(botconfig.GUILD_ID) // Use Guild ID for quicker command testing
+        .commands.get()
+
+    console.log(slashCommands)
+})
+
 bot.on('message', async message => {
     if (message.author.bot || message.channel.type === 'dm') return; //ignore DMs and bot messages
-
 
     let prefix = botconfig.prefix;
     let messageArray = message.content.split(' ');
