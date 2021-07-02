@@ -24,8 +24,8 @@ module.exports = {
 
         message.channel.send(`Searching the web for \`${search}\` <a:working:821570743329882172>`).then(async (message) => { // replace with own emote <a:(emote id)>
             const img_res = await google.scrape(search, 5)
-            console.log(img_res)
-            console.log("\n----------------------------------------")
+            // console.log(img_res)
+            // console.log("\n----------------------------------------")
             if (!img_res.length) return message.channel.send("No images found with these keywords. It might be NSFW 😳")
 
             let currInd = 0
