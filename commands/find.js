@@ -23,7 +23,7 @@ module.exports = {
         const authorMessageID = message.id
 
         const intros = ['Searching the web for', 'Scouring the web for', 'Researching scholarly articles for', 'Surfing the web for', 'Checking a picture book for', 'Feeling lucky? Looking for', 'Hey Alexa, what is a', 'Hey Siri, what is a', 'Asking a professor for']
-        const choice = intros[Math.random() * intros.length]
+        let choice = intros[Math.floor(Math.random() * intros.length)]
         message.channel.send(`${choice} \`${search}\` <a:working:821570743329882172>`).then(async (message) => { // replace with own emote <a:(emote id)>
             const img_res = await google.scrape(search, 5)
             // console.log(img_res)
