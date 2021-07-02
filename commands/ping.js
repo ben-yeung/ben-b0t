@@ -5,7 +5,6 @@ module.exports = {
     name: "ping",
     description: "Displays api and bot latency",
     usage: "?ping",
-    slash: 'both',
     execute(bot, message, args) {
         let ping = message.createdTimestamp - message.createdTimestamp
         let choices = ["Is my ping bad?", "I might be slower today.", "I forgot to eat breakfast today."]
@@ -19,12 +18,9 @@ module.exports = {
             .setColor(colours.green_light)
             .setTimestamp()
 
-        // if (message) {
-        //     message.channel.send("Pinging...").then(m => {
-        //         m.edit(embed)
-        //     })
-        // }
-        return embed
+        message.channel.send("Pinging...").then(m => {
+            m.edit(embed)
+        })
 
     }
 }
