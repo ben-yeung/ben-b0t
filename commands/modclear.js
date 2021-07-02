@@ -46,7 +46,7 @@ module.exports = {
                     limit: 100
                 }).then(messages => { // Fetches the messages
                     messages = messages.array().slice(0, amount);
-                    message.channel.bulkDelete(messages);
+                    message.channel.bulkDelete(messages, true);
                 });
 
             } catch (e) {
