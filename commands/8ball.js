@@ -7,7 +7,6 @@ module.exports = {
     description: "Returns 8ball answer",
     usage: "?8ball [msg]",
     execute(bot, message, args) {
-
         if (!args[1]) return message.reply("Please ask a complete question!");
         let replies = ['Maybe', 'Yes', 'No', 'Ask again later', 'Definitely Yes', 'I\'m leaning towards no', 'I think so', 'Very doubtful', 'Yessir', 'Negative'];
         let question = args.join(' ');

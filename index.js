@@ -7,11 +7,14 @@ const cron = require("cron");
 const bot = new Discord.Client({
     disableEveryone: true
 });
+const WOKCommands = require('wokcommands') // Used to implement slash commands / command handler
+
 require("./util/eventHandler")(bot)
 
+let guildID = botconfig.GUILD_ID
 
 const fs = require('fs');
-bot.commands = new Discord.Collection();
+//bot.commands = new Discord.Collection();
 
 bot.reminders = new Map();
 bot.mute = new Map();
@@ -20,12 +23,12 @@ bot.counter = new Map();
 bot.help = new Map();
 
 
-const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
-for (const file of commandFiles) {
-    const command = require(`./commands/${file}`);
-    bot.commands.set(command.name, command);
-    bot.help.set(command.name, command.usage);
-}
+// const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
+// for (const file of commandFiles) {
+//     const command = require(`./commands/${file}`);
+//     bot.commands.set(command.name, command);
+//     bot.help.set(command.name, command.usage);
+// }
 
 let scheduleClipCheck = new cron.CronJob('00 00 00 * * *', () => {
     console.log('Checking for clips')
@@ -33,17 +36,16 @@ let scheduleClipCheck = new cron.CronJob('00 00 00 * * *', () => {
 });
 scheduleClipCheck.start()
 
-bot.on('ready', async () => {
+bot.on('ready', () => {
     console.log(`${bot.user.username} is online`)
 
-    // Adding slash commands
-    const slashCommands = await bot.api
-        .applications(bot.user.id)
-        .guilds(botconfig.GUILD_ID) // Use Guild ID for quicker command testing
-        .commands.get()
-
-    console.log(slashCommands)
+    new WOKCommands(bot, {
+        commandsDir: 'commands',
+        testServers: [guildID], // guildID allows for quicker slash command testing
+        showWarns: false,
+    })
 })
+
 
 bot.on('message', async message => {
     if (message.author.bot || message.channel.type === 'dm') return; //ignore DMs and bot messages
