@@ -20,8 +20,9 @@ module.exports = {
         let search = args.join(" ");
         if (!search) return message.reply("Please enter a search query")
         const author = message.author
+        const authorMessageID = message.id
 
-        message.channel.send(`Searching the web for \`${search}\` <a:working:821570743329882172>`).then(async (message) => { // replace with own emote
+        message.channel.send(`Searching the web for \`${search}\` <a:working:821570743329882172>`).then(async (message) => { // replace with own emote <a:(emote id)>
             const img_res = await google.scrape(search, 5)
             console.log(img_res)
             console.log("\n----------------------------------------")
@@ -36,7 +37,7 @@ module.exports = {
                 .setDescription(`Asker: <@${author.id}> \n [Source](${chosenOneSRC}) \n`)
                 .setColor(colours.green_light)
                 .setImage(chosenOne)
-                .setFooter("Reacts will stop working after 1 minute.")
+                .setFooter("Reacts will stop working after 1 minute. React with ❌ to delete query.")
 
             message.edit(' ­') //invisible char to make embed edit cleaner
             message.edit(embed).then(async (message) => {
@@ -62,7 +63,8 @@ module.exports = {
                         } else if (reaction.emoji.name === '↩️') {
                             currInd = 0
                         } else if (reaction.emoji.name === '❌') {
-                            message.delete()
+                            message.delete() // Delete bot embed
+                            message.channel.messages.fetch(authorMessageID).then(message => message.delete()).catch(console.error) // Delete user command call
                             return
                         } else {
                             currInd += 1
@@ -75,7 +77,7 @@ module.exports = {
                             .setDescription(`Asker: <@${author.id}> \n [Source](${chosenOneSRC}) \n`)
                             .setColor(colours.green_light)
                             .setImage(chosenOne)
-                            .setFooter("Reacts will stop working after 1 minute.")
+                            .setFooter("Reacts will stop working after 1 minute. React with ❌ to delete query.")
                         message.edit(embed)
                         // react with left arrow if it isn't the start (await is used so that the right arrow always goes after the left)
                         if (currInd !== 0) await message.react('⬅️')
