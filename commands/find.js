@@ -39,13 +39,14 @@ module.exports = {
                 .setFooter("Reacts will stop working after 1 minute.")
 
             message.edit(' ­') //invisible char to make embed edit cleaner
-            message.edit(embed).then(message => {
+            message.edit(embed).then(async (message) => {
                 if (currInd >= img_res.length) return
-                message.react('➡️')
+                await message.react('➡️')
+                message.react('❌')
 
                 const collector = message.createReactionCollector(
                     // only collect left and right arrow reactions from the message author
-                    (reaction, user) => ['⬅️', '➡️', '↩️'].includes(reaction.emoji.name) && user.id === author.id,
+                    (reaction, user) => ['⬅️', '➡️', '↩️', '❌'].includes(reaction.emoji.name) && user.id === author.id,
                     // time out after a minute
                     {
                         time: 90000
@@ -60,6 +61,9 @@ module.exports = {
                             currInd -= 1
                         } else if (reaction.emoji.name === '↩️') {
                             currInd = 0
+                        } else if (reaction.emoji.name === '❌') {
+                            message.delete()
+                            return
                         } else {
                             currInd += 1
                         }
@@ -79,6 +83,8 @@ module.exports = {
                         if (currInd + 1 < img_res.length) message.react('➡️')
                         // react with back to start if isn't start
                         if (currInd !== 0) message.react('↩️')
+                        // react with x to delete find query
+                        message.react('❌')
                     })
                 })
 
