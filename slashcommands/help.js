@@ -3,14 +3,13 @@ const colours = require("../colours.json");
 
 module.exports = {
     slash: true,
-    description: "Get a message on all active slash commands!",
-    testOnly: true, //guild testing when true, set to false for global
+    description: "View all active slash commands!",
+    testOnly: false, //guild testing when true, set to false for global
     callback: async ({ //see https://docs.wornoffkeys.com/commands/commands for more command properties
         client,
         channel,
         interaction,
     }) => {
-
 
         const embed = new Discord.MessageEmbed()
             .setTitle('Active Commands')
@@ -21,7 +20,7 @@ module.exports = {
         try {
             let user = await client.users.fetch(`${interaction.member.user.id}`)
             user.send(embed)
-            return 'Check DMs'
+            return 'Check DMs 😳'
 
         } catch (e) {
             console.log(e)
