@@ -17,7 +17,7 @@ function validURL(str) {
 module.exports = {
     slash: true,
     description: "Distracted meme. Use @user or image links!",
-    testOnly: true, //guild testing when true, set to false for global
+    testOnly: false, //guild testing when true, set to false for global
     minArgs: 3,
     expectedArgs: '<girl in red> <guy> <jealous girl>', //note: have these all lowercased!
     callback: async ({ // put async after 'callback:' for async functions
