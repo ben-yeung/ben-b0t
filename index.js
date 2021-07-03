@@ -36,8 +36,10 @@ let scheduleClipCheck = new cron.CronJob('00 00 00 * * *', () => {
 });
 scheduleClipCheck.start()
 
-bot.on('ready', () => {
+bot.on('ready', async () => {
     console.log(`${bot.user.username} is online`)
+    const commands = await bot.api.applications(bot.user.id).commands.get()
+    console.log(commands)
 
     new WOKCommands(bot, { //WOKCommands to implement slash commands. See https://docs.wornoffkeys.com/commands/slash-commands 
         commandsDir: 'slashcommands',
