@@ -14,12 +14,11 @@ module.exports = {
 
         const embed = new Discord.MessageEmbed()
             .setColor(colours.purple_medium)
-            .setTitle(':8ball:')
-            .addField('Asker: ', message.member.displayName)
+            .setTitle('Magic :8ball: Oracle')
             .addField('Question: ', question)
             .addField('Answer: ', replies[num])
 
-        message.channel.send(embed);
+        message.reply(embed);
 
     }
 }
