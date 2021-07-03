@@ -13,7 +13,7 @@ module.exports = {
         interaction,
         args
     }) => {
-        console.log(args)
+
         let choice = args[Math.floor(Math.random() * args.length)]
         let phrases = ['Survey says:', 'I\'m feeling:', 'Local expert recommends:', 'Siri said:', 'If I were you I would choose:', 'This is a good choice:', 'I would definitely choose:']
         let phraseChoice = phrases[Math.floor(Math.random() * phrases.length)]
