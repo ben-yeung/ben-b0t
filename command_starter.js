@@ -16,6 +16,7 @@ module.exports = {
 
 // Slash command handling with WOKCommands
 // Guild testing allows for instant command edit updates for whitelisted servers
+//see https://docs.wornoffkeys.com/commands/commands for more command properties
 const Discord = require("discord.js")
 const colours = require("../colours.json");
 
@@ -25,7 +26,7 @@ module.exports = {
     testOnly: true, //guild testing when true, set to false for global
     minArgs: 2,
     expectedArgs: '<required> <required> [optional]', //note: have these all lowercased!
-    callback: ({ //see https://docs.wornoffkeys.com/commands/commands for more command properties
+    callback: ({ // put async after 'callback:' for async functions
         client,
         channel,
         interaction,
