@@ -44,8 +44,10 @@ client.on('ready', async () => {
         testServers: [guildID], // guildID allows for quicker slash command testing as global slash commands take about an hour to update
         showWarns: false,
     })
+    const commandsGuild = await client.api.applications(client.user.id).guilds(botconfig.GUILD_ID).commands.get();
+    console.log(commandsGuild)
     const commands = await client.api.applications(client.user.id).commands.get();
-    console.log(commands)
+    // console.log(commands)
     var cmdList = []
     for (const command of commands) {
         cmdList.push(`/${command.name}`)
