@@ -4,7 +4,7 @@ const colours = require("../colours.json");
 module.exports = {
     slash: true,
     description: "Clears last X messages in current channel",
-    testOnly: true, //guild testing when true, set to false for global
+    testOnly: false, //guild testing when true, set to false for global
     minArgs: 1,
     expectedArgs: '<amount>', //note: have these all lowercased!
     callback: async ({ // put async after 'callback:' for async functions

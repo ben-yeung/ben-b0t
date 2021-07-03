@@ -5,7 +5,7 @@ const math = require('mathjs');
 module.exports = {
     slash: true,
     description: "Calculates a given expression",
-    testOnly: true, //guild testing when true, set to false for global
+    testOnly: false, //guild testing when true, set to false for global
     minArgs: 1,
     expectedArgs: '<expression>', //note: have these all lowercased!
     callback: ({ // put async after 'callback:' for async functions
