@@ -21,6 +21,7 @@ module.exports = {
             bot.help.delete("sd");
             bot.help.delete("say");
             bot.help.delete("twitchclipsauto");
+            bot.help.delete("delete")
         }
 
         const comms = Array.from(bot.help.values()).sort();

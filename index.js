@@ -45,6 +45,7 @@ client.on('ready', async () => {
         showWarns: false,
     })
     const commands = await client.api.applications(client.user.id).commands.get();
+    console.log(commands)
     var cmdList = []
     for (const command of commands) {
         cmdList.push(`/${command.name}`)
