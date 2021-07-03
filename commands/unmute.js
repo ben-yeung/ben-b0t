@@ -11,6 +11,7 @@ module.exports = {
         if (!message.member.hasPermission("MANAGE_MESSAGES") || !message.member.hasPermission("MUTE_MEMBERS") || !message.member.hasPermission("ADMINISTRATOR")) {
             return message.channel.send("You don't have the perms to do that m8.");
         }
+        message.delete()
 
         let user = message.guild.member(message.mentions.users.first());
         if (!user) return message.channel.send("You need to mention the user.");

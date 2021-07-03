@@ -10,7 +10,7 @@ module.exports = {
     async execute(bot, message, args) {
 
         if (!message.member.hasPermission(["ADMINISTRATOR"])) return message.reply("You don't have that permission");
-
+        message.delete()
         let user = message.guild.member(message.mentions.users.first());
         if (!user) {
             return message.reply("No member found with that name");
