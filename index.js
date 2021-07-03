@@ -38,14 +38,15 @@ scheduleClipCheck.start()
 
 bot.on('ready', async () => {
     console.log(`${bot.user.username} is online`)
-    const commands = await bot.api.applications(bot.user.id).commands.get()
-    console.log(commands)
 
     new WOKCommands(bot, { //WOKCommands to implement slash commands. See https://docs.wornoffkeys.com/commands/slash-commands 
         commandsDir: 'slashcommands',
         testServers: [guildID], // guildID allows for quicker slash command testing as global slash commands take about an hour to update
         showWarns: false,
     })
+
+    const commands = await bot.api.applications(bot.user.id).commands.get()
+    console.log(commands)
     // Also note that in order for slash commands to work bot must be given applications.commands scope
     // See https://discord.com/developers/docs/interactions/slash-commands for more info
 })

@@ -3,8 +3,9 @@ const colours = require("../colours.json");
 
 module.exports = {
     slash: true,
+    name: '8ball',
     description: "The Magic 8 Ball Oracle has answer to all the questions.",
-    testOnly: false, //guild testing when true, set to false for global
+    testOnly: true, //guild testing when true, set to false for global
     minArgs: 1,
     expectedArgs: '<question>', //note: have these all lowercased!
     callback: ({ //see https://docs.wornoffkeys.com/commands/commands for more command properties
@@ -14,6 +15,7 @@ module.exports = {
         args
     }) => {
         const [question] = args
+        if (question.split(' ').length <= 1) return 'Please enter a valid question!'
         let replies = ['Maybe', 'Yes', 'No', 'Ask again later', 'Definitely Yes', 'I\'m leaning towards no', 'I think so', 'Very doubtful', 'Yessir', 'Negative'];
         let num = Math.floor(Math.random() * replies.length);
 
