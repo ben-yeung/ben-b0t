@@ -24,8 +24,9 @@ module.exports = {
         }).then(messages => { // Fetches the messages
             const filterBy = interaction.member.user.id;
             messages = messages.filter(m => m.author.id === filterBy).array().slice(0, amount);
-            channel.bulkDelete(messages);
+            channel.bulkDelete(messages, true);
         });
+
         return 'Nothing to see here...' //use return for slash commands for POST output!
     },
 }

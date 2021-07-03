@@ -20,7 +20,7 @@ module.exports = {
         }).then(messages => { // Fetches the messages
             const filterBy = message.author.id;
             messages = messages.filter(m => m.author.id === filterBy).array().slice(0, amount);
-            message.channel.bulkDelete(messages);
+            message.channel.bulkDelete(messages, true);
         });
 
     }
