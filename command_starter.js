@@ -16,7 +16,9 @@ module.exports = {
 
 // Slash command handling with WOKCommands
 // Guild testing allows for instant command edit updates for whitelisted servers
-//see https://docs.wornoffkeys.com/commands/commands for more command properties
+// See https://docs.wornoffkeys.com/commands/commands for more command properties
+// Manually unwrapping interactions may produce warnings from WOKCommands which are safe to ignore
+// See the pollmc command to find how to add reactions to slash command calls and get message object
 const Discord = require("discord.js")
 const colours = require("../colours.json");
 const botconfig = require("../botconfig.json");
