@@ -147,4 +147,42 @@ client.on('messageUpdate', (oldMessage, newMessage) => { //logic for log command
 
 })
 
+// Helpers for manual Interaction processing and posting
+// Used for slash commands when WOKCommand flow isn't suitable
+// Credit: https://github.com/AlexzanderFlores/Worn-Off-Keys-Discord-Js/blob/master/82-Slash-Commands/index.js
+client.reply = async (interaction, response) => {
+    let data = {
+        content: response,
+    }
+
+    // Check for embeds
+    if (typeof response === 'object') {
+        data = await client.createAPIMessage(interaction, response)
+    }
+
+    client.api.interactions(interaction.id, interaction.token).callback.post({
+        data: {
+            type: 4,
+            data,
+        },
+    })
+}
+
+client.createAPIMessage = async (interaction, content) => {
+    const {
+        data,
+        files
+    } = await Discord.APIMessage.create(
+            client.channels.resolve(interaction.channel_id),
+            content
+        )
+        .resolveData()
+        .resolveFiles()
+
+    return {
+        ...data,
+        files
+    }
+}
+
 client.login(botconfig.token);

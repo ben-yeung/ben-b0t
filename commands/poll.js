@@ -17,6 +17,7 @@ module.exports = {
             .setTitle('📊 Poll Time!')
             .setDescription(pollDesc)
             .setColor('YELLOW')
+
         let msgEmbed = await message.channel.send(embedPoll);
         await msgEmbed.react('👍')
         await msgEmbed.react('👎')
