@@ -25,7 +25,7 @@ module.exports = {
         } else {
             let task = args.splice(2).join(" ");
 
-            if (ms(time) == undefined) return message.reply("You must specify an amount of time! EX: 30m Make sure number and time variant (min/hr/day) is not separated.")
+            if (ms(time) == undefined) return message.reply("Error parsing args. Example Usage: ?remind [@user/me] [time] [task]")
 
             let timer = setTimeout(function () {
                 message.channel.send(`**Reminder** <@${user.id}>: ${task}`)
