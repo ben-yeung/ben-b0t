@@ -19,6 +19,7 @@ module.exports = {
 //see https://docs.wornoffkeys.com/commands/commands for more command properties
 const Discord = require("discord.js")
 const colours = require("../colours.json");
+const botconfig = require("../botconfig.json");
 
 module.exports = {
     slash: true,
