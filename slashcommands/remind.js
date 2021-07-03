@@ -8,7 +8,7 @@ module.exports = {
     description: "Create a reminder for a user or for yourself!",
     testOnly: false, //guild testing when true, set to false for global
     minArgs: 3,
-    expectedArgs: '<user> <reminder> <time>', //note: have these all lowercased!
+    expectedArgs: '<user> <task> <time>', //note: have these all lowercased!
     callback: async ({ // put async after 'callback:' for async functions
         client,
         channel,
