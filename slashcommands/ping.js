@@ -5,7 +5,9 @@ module.exports = {
     name: "ping",
     description: "Displays api and bot latency",
     slash: true,
-    callback: ({}) => {
-        return 'pong!!!'
+    callback: ({
+        instance
+    }) => {
+
     },
 }
