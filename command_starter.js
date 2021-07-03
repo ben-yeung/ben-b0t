@@ -15,6 +15,7 @@ module.exports = {
 }
 
 // Slash command handling with WOKCommands
+// Guild testing allows for instant command edit updates for whitelisted servers
 const Discord = require("discord.js")
 const colours = require("../colours.json");
 
