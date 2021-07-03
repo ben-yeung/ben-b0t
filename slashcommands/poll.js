@@ -6,7 +6,7 @@ module.exports = {
     slash: true,
     description: "Create a Yes or No poll!",
     testOnly: false, //guild testing when true, set to false for global
-    minArgs: 2,
+    minArgs: 1,
     expectedArgs: '<statement>', //note: have these all lowercased!
     callback: async ({ // put async after 'callback:' for async functions
         client,
