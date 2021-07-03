@@ -4,7 +4,7 @@ const colours = require("../colours.json");
 module.exports = {
     slash: true,
     description: "Returns a given user's avatar PNG",
-    testOnly: false, //guild testing when true, set to false for global
+    testOnly: true, //guild testing when true, set to false for global
     minArgs: 1,
     expectedArgs: '<user>', //note: have these all lowercased!
     callback: async ({ //see https://docs.wornoffkeys.com/commands/commands for more command properties

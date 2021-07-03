@@ -4,7 +4,7 @@ const colours = require("../colours.json");
 module.exports = {
     description: "Displays api and bot latency",
     slash: true,
-    testOnly: false, // Guild testing set to false for global
+    testOnly: true, // Guild testing set to false for global
     callback: ({
         client,
         interaction
