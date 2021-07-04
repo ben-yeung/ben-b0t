@@ -39,10 +39,11 @@ module.exports = {
 
             let embed = new Discord.MessageEmbed()
                 .setTitle(`Results for '${search}' | Page ${currInd + 1}`)
-                .setDescription(`Asker: <@${author.id}> \n [Source](${chosenOneSRC}) \n`)
+                .setDescription(`Asker: <@${author.id}> \n`)
                 .setColor(colours.green_light)
                 .setImage(chosenOne)
-                .setFooter("Reacts will stop working after 1 minute. React with ❌ to delete query.")
+                .setFooter("Buttons will stop working after 1 minute.")
+                .setTimestamp()
 
             let nextBtn = new MessageButton()
                 .setLabel('Next')
@@ -60,9 +61,14 @@ module.exports = {
                 .setID('find_close')
                 .setStyle('red')
 
+            let sourceBtn = new MessageButton()
+                .setLabel('Source')
+                .setURL(chosenOneSRC)
+                .setStyle('url')
+
             message.edit(' ­') //invisible char to make embed edit cleaner
             message.edit({
-                buttons: [prevBtn, nextBtn, closeBtn],
+                buttons: [prevBtn, nextBtn, sourceBtn, closeBtn],
                 embed: embed
             }).then(async (message) => {
                 if (currInd >= img_res.length) return
@@ -72,7 +78,7 @@ module.exports = {
                 })
 
                 collector.on('collect', async (b) => {
-                    console.log(b.id)
+                    // console.log(b.id)
                     await b.reply.defer();
 
                     if (b.id === 'find_next') {
@@ -82,18 +88,21 @@ module.exports = {
                         let chosenOneSRC = img_res[currInd].source
                         let embed = new Discord.MessageEmbed()
                             .setTitle(`Results for '${search}' | Page ${currInd + 1}`)
-                            .setDescription(`Asker: <@${author.id}> \n [Source](${chosenOneSRC}) \n`)
+                            .setDescription(`Asker: <@${author.id}> \n`)
                             .setColor(colours.green_light)
                             .setImage(chosenOne)
                             .setFooter("Buttons will stop working after 1 minute.")
+                            .setTimestamp()
 
                         if (currInd == 4) {
                             nextBtn.disabled = true
                         } else {
                             nextBtn.disabled = false
                         }
+
+                        sourceBtn.setURL(chosenOneSRC)
                         message.edit({
-                            buttons: [prevBtn, nextBtn, closeBtn],
+                            buttons: [prevBtn, nextBtn, sourceBtn, closeBtn],
                             embed: embed
                         })
 
@@ -104,17 +113,19 @@ module.exports = {
                         let chosenOneSRC = img_res[currInd].source
                         let embed = new Discord.MessageEmbed()
                             .setTitle(`Results for '${search}' | Page ${currInd + 1}`)
-                            .setDescription(`Asker: <@${author.id}> \n [Source](${chosenOneSRC}) \n`)
+                            .setDescription(`Asker: <@${author.id}> \n`)
                             .setColor(colours.green_light)
                             .setImage(chosenOne)
                             .setFooter("Buttons will stop working after 1 minute.")
+                            .setTimestamp()
 
                         if (currInd === 0) {
                             prevBtn.disabled = true
                         }
 
+                        sourceBtn.setURL(chosenOneSRC)
                         message.edit({
-                            buttons: [prevBtn, nextBtn, closeBtn],
+                            buttons: [prevBtn, nextBtn, sourceBtn, closeBtn],
                             embed: embed
                         })
 
