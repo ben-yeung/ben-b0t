@@ -1,4 +1,4 @@
-const Discord = require("discord.js")
+const Discord = require("discord.js");
 const botconfig = require("../botconfig.json");
 const colours = require("../colours.json");
 
@@ -7,7 +7,7 @@ module.exports = {
     name: "",
     description: "",
     usage: "?",
-    execute(bot, message, args) {
+    execute(client, message, args) {
 
 
 
@@ -19,7 +19,7 @@ module.exports = {
 // See https://docs.wornoffkeys.com/commands/commands for more command properties
 // Manually unwrapping interactions may produce warnings from WOKCommands which are safe to ignore
 // See the pollmc command to find how to add reactions to slash command calls and get message object
-const Discord = require("discord.js")
+const Discord = require("discord.js");
 const colours = require("../colours.json");
 const botconfig = require("../botconfig.json");
 
