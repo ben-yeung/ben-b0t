@@ -13,7 +13,7 @@ var google = new Scraper({
 module.exports = {
     slash: true,
     description: "Search Google Images for anything! ... for the most part",
-    testOnly: false, //guild testing when true, set to false for global
+    testOnly: true, //guild testing when true, set to false for global
     minArgs: 1,
     expectedArgs: '<query>', //note: have these all lowercased!
     callback: async ({ // put async after 'callback:' for async functions
@@ -102,6 +102,5 @@ module.exports = {
             })
 
         })
-        return 'Finished'
     },
 }

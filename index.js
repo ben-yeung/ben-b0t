@@ -9,6 +9,7 @@ const client = new Discord.Client({
 });
 const WOKCommands = require('wokcommands') // Used to implement slash command handler
 
+require('discord-buttons')(client)
 require("./util/eventHandler")(client)
 
 let guildID = botconfig.GUILD_ID
@@ -184,5 +185,6 @@ client.createAPIMessage = async (interaction, content) => {
         files
     }
 }
+
 
 client.login(botconfig.token);
