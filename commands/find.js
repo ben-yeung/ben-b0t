@@ -97,7 +97,6 @@ module.exports = {
                             embed: embed
                         })
 
-                        //message.edit(embed)
                     } else if (b.id === 'find_prev') {
                         nextBtn.disabled = false
                         currInd--
@@ -127,6 +126,9 @@ module.exports = {
                 })
 
             })
+
+
+            // Old way of handling embed pagination with react buttons
 
             // .then(async (message) => {
             //     if (currInd >= img_res.length) return
