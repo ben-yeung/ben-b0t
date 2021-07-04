@@ -41,7 +41,7 @@ module.exports = {
                 })
             } catch (e) {
                 console.log(e)
-                return `Invalid URL or invalid mentioned user`
+                return `Invalid URL or invalid mentioned user. Command works best with smaller images PNGs preferred!`
             }
 
         }
@@ -53,7 +53,7 @@ module.exports = {
                 })
             } catch (e) {
                 console.log(e)
-                return `Invalid URL or invalid mentioned user`
+                return `Invalid URL or invalid mentioned user. Command works best with smaller images PNGs preferred!`
             }
 
         }
@@ -65,7 +65,7 @@ module.exports = {
                 })
             } catch (e) {
                 console.log(e)
-                return `Invalid URL or invalid mentioned user`
+                return `Invalid URL or invalid mentioned user. Command works best with smaller images PNGs preferred!`
             }
 
         }
@@ -88,7 +88,7 @@ module.exports = {
             messageObj.channel.send(attachment)
         } catch (err) {
             console.log(err);
-            return `Error occurred. Image URL may be incompatible`
+            return `Error occurred. Command works best with smaller images. PNGs preferred!`
         }
     },
 }
