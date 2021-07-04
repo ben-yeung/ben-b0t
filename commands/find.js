@@ -79,7 +79,7 @@ module.exports = {
 
                 collector.on('collect', async (b) => {
                     // console.log(b.id)
-                    await b.reply.defer();
+                    b.reply.defer();
 
                     if (b.id === 'find_next') {
                         prevBtn.disabled = false

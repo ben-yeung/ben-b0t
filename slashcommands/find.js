@@ -81,7 +81,7 @@ module.exports = {
             if (currInd >= img_res.length) return 'I had trouble finding results :('
 
             client.on('clickButton', async (b) => {
-                await b.reply.defer();
+                b.reply.defer();
 
                 if (b.id === 'find_next') {
                     prevBtn.disabled = false

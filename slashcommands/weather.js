@@ -40,7 +40,7 @@ module.exports = {
     slash: true,
     description: "Find info on the weather in a given location!",
     testOnly: false, //guild testing when true, set to false for global
-    minArgs: 2,
+    minArgs: 1,
     expectedArgs: '<location>', //note: have these all lowercased!
     callback: async ({ // put async after 'callback:' for async functions
         client,
@@ -57,7 +57,7 @@ module.exports = {
             degreeType: degreeType
         }, async function (err, result) {
 
-            if (err || result === undefined || result.length === 0) return message.reply(`Error finding the given city: **${city}**. Please check for typos. If this is a real city then tell Ben his code broke.`)
+            if (err || result === undefined || result.length === 0) return `Error finding the given city: **${city}**. Please check for typos. If this is a real city then tell Ben his code broke.`
 
             let current = result[0].current;
             let location = result[0].location;
@@ -185,7 +185,7 @@ module.exports = {
                 embed: embed
             }).then(async (message) => {
                 client.on('clickButton', async (b) => {
-                    await b.reply.defer()
+                    b.reply.defer()
 
                     if (b.id === 'weather_next') {
                         currInd += 1
