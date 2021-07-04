@@ -2,6 +2,7 @@ const Discord = require("discord.js")
 const colours = require("../colours.json");
 const botconfig = require("../botconfig.json");
 const weather = require("weather-js");
+const disbut = require('discord-buttons');
 
 function tConvert(time) {
     // Check correct time format and split into components
@@ -161,33 +162,51 @@ module.exports = {
                 .addField("Observed", `${tConvert(current.observationtime)}`, true)
                 .addField("Timezone", `GMT ${location.timezone}`, true)
                 .addField("\u200B", '\u200B', true)
-                .setFooter(`Use reacts to see upcoming forecast`)
 
-            client.reply(interaction, embed)
+            let nextBtn = new disbut.MessageButton()
+                .setLabel('Show Forecast')
+                .setID('weather_next')
+                .setStyle('blurple')
+
+            let backBtn = new disbut.MessageButton()
+                .setLabel('Back')
+                .setID('weather_back')
+                .setStyle('blurple')
+
+            client.reply(interaction, `Searching for the weather in ${city} :mag:`)
             const message = await client.api.webhooks(client.user.id, interaction.token).messages('@original').patch({
                 data: {}
             })
 
             let messageObj = new Discord.Message(client, message, client.channels.cache.get(message.channel_id))
-            messageObj.react('➡️')
+            messageObj.edit(' ­') //invisible char to make embed edit cleaner
+            messageObj.channel.send({
+                buttons: [nextBtn],
+                embed: embed
+            }).then(async (message) => {
+                client.on('clickButton', async (b) => {
+                    await b.reply.defer()
 
-            const collector = messageObj.createReactionCollector(
-                // only collect left and right arrow reactions from the message author
-                (reaction, user) => ['⬅️', '➡️'].includes(reaction.emoji.name) && user.id === author.id,
-                // time out after a minute
-                {
-                    time: 90000
-                }
-            )
+                    if (b.id === 'weather_next') {
+                        currInd += 1
+                        let foreEmb = new Discord.MessageEmbed()
+                            .setTitle(`Forecast for ${current.observationpoint}`)
+                            .setColor(colours.gold)
+                            .addField(`${forecast[0].day}  (${dConvert(forecast[0].date)})`, `> ${forecast[0].skytextday} \u200B ${skycodes[0]} \n High: **${forecast[0].high}°F**  |  Low: **${forecast[0].low}°F**  |  Precip: **${getPrecip(forecast[0])}**\n`)
+                            .addField(`${forecast[1].day}  (${dConvert(forecast[1].date)})`, `> ${forecast[1].skytextday} \u200B ${skycodes[1]} \n High: **${forecast[1].high}°F**  |  Low: **${forecast[1].low}°F**  |  Precip: **${getPrecip(forecast[1])}**\n`)
+                            .addField(`${forecast[2].day}  (${dConvert(forecast[2].date)})`, `> ${forecast[2].skytextday} \u200B ${skycodes[2]} \n High: **${forecast[2].high}°F**  |  Low: **${forecast[2].low}°F**  |  Precip: **${getPrecip(forecast[2])}**\n`)
+                            .addField(`${forecast[3].day}  (${dConvert(forecast[3].date)})`, `> ${forecast[3].skytextday} \u200B ${skycodes[3]} \n High: **${forecast[3].high}°F**  |  Low: **${forecast[3].low}°F**  |  Precip: **${getPrecip(forecast[3])}**\n`)
+                            .addField(`${forecast[4].day}  (${dConvert(forecast[4].date)})`, `> ${forecast[4].skytextday} \u200B ${skycodes[4]} \n High: **${forecast[4].high}°F**  |  Low: **${forecast[4].low}°F**  |  Precip: **${getPrecip(forecast[4])}**\n`)
 
-            collector.on('collect', reaction => {
-                // remove the existing reactions
-                messageObj.reactions.removeAll().then(async () => {
-                    let embed = new Discord.MessageEmbed()
-                    // increase/decrease index
-                    if (reaction.emoji.name === '⬅️') {
+                        message.edit({
+                            buttons: [backBtn],
+                            embed: foreEmb
+                        })
+
+                    } else if (b.id === 'weather_back') {
                         currInd -= 1
-                        embed.setTitle(`Weather in ${current.observationpoint}`)
+                        let mainEmb = new Discord.MessageEmbed()
+                            .setTitle(`Weather in ${current.observationpoint}`)
                             .setColor(colours.gold)
                             .setDescription(`**${current.day} (${dConvert(current.date)})** \n> ${current.skytext}\n`)
                             .setThumbnail(current.imageUrl)
@@ -200,25 +219,67 @@ module.exports = {
                             .addField("Observed", `${tConvert(current.observationtime)}`, true)
                             .addField("Timezone", `GMT ${location.timezone}`, true)
                             .addField("\u200B", '\u200B', true)
-                            .setFooter(`Use reacts to see upcoming forecast`)
-                    } else {
-                        currInd += 1
-                        embed.setTitle(`Forecast for ${current.observationpoint}`)
-                            .setColor(colours.gold)
-                            .addField(`${forecast[0].day}  (${dConvert(forecast[0].date)})`, `> ${forecast[0].skytextday} \u200B ${skycodes[0]} \n High: **${forecast[0].high}°F**  |  Low: **${forecast[0].low}°F**  |  Precip: **${getPrecip(forecast[0])}**\n`)
-                            .addField(`${forecast[1].day}  (${dConvert(forecast[1].date)})`, `> ${forecast[1].skytextday} \u200B ${skycodes[1]} \n High: **${forecast[1].high}°F**  |  Low: **${forecast[1].low}°F**  |  Precip: **${getPrecip(forecast[1])}**\n`)
-                            .addField(`${forecast[2].day}  (${dConvert(forecast[2].date)})`, `> ${forecast[2].skytextday} \u200B ${skycodes[2]} \n High: **${forecast[2].high}°F**  |  Low: **${forecast[2].low}°F**  |  Precip: **${getPrecip(forecast[2])}**\n`)
-                            .addField(`${forecast[3].day}  (${dConvert(forecast[3].date)})`, `> ${forecast[3].skytextday} \u200B ${skycodes[3]} \n High: **${forecast[3].high}°F**  |  Low: **${forecast[3].low}°F**  |  Precip: **${getPrecip(forecast[3])}**\n`)
-                            .addField(`${forecast[4].day}  (${dConvert(forecast[4].date)})`, `> ${forecast[4].skytextday} \u200B ${skycodes[4]} \n High: **${forecast[4].high}°F**  |  Low: **${forecast[4].low}°F**  |  Precip: **${getPrecip(forecast[4])}**\n`)
+
+                        message.edit({
+                            buttons: [nextBtn],
+                            embed: mainEmb
+                        })
                     }
-                    // edit message with new embed
-                    messageObj.edit(embed)
-                    // react with left arrow if it isn't the start (await is used so that the right arrow always goes after the left)
-                    if (currInd !== 0) await messageObj.react('⬅️')
-                    // react with right arrow if it isn't the end
-                    if (currInd !== 1) messageObj.react('➡️')
                 })
             })
+
+
+
+            //     messageObj.react('➡️')
+
+            //     const collector = messageObj.createReactionCollector(
+            //         // only collect left and right arrow reactions from the message author
+            //         (reaction, user) => ['⬅️', '➡️'].includes(reaction.emoji.name) && user.id === author.id,
+            //         // time out after a minute
+            //         {
+            //             time: 90000
+            //         }
+            //     )
+
+            //     collector.on('collect', reaction => {
+            //         // remove the existing reactions
+            //         messageObj.reactions.removeAll().then(async () => {
+            //             let embed = new Discord.MessageEmbed()
+            //             // increase/decrease index
+            //             if (reaction.emoji.name === '⬅️') {
+            //                 currInd -= 1
+            //                 embed.setTitle(`Weather in ${current.observationpoint}`)
+            //                     .setColor(colours.gold)
+            //                     .setDescription(`**${current.day} (${dConvert(current.date)})** \n> ${current.skytext}\n`)
+            //                     .setThumbnail(current.imageUrl)
+            //                     .addField("Temperature", `${current.temperature}°F`, true)
+            //                     .addField("It Feels Like", `${current.feelslike}°F`, true)
+            //                     .addField("\u200B", '\u200B', true)
+            //                     .addField("Winds", current.winddisplay, true)
+            //                     .addField("Humidity", `${current.humidity}%`, true)
+            //                     .addField("\u200B", '\u200B', true)
+            //                     .addField("Observed", `${tConvert(current.observationtime)}`, true)
+            //                     .addField("Timezone", `GMT ${location.timezone}`, true)
+            //                     .addField("\u200B", '\u200B', true)
+            //                     .setFooter(`Use reacts to see upcoming forecast`)
+            //             } else {
+            //                 currInd += 1
+            //                 embed.setTitle(`Forecast for ${current.observationpoint}`)
+            //                     .setColor(colours.gold)
+            //                     .addField(`${forecast[0].day}  (${dConvert(forecast[0].date)})`, `> ${forecast[0].skytextday} \u200B ${skycodes[0]} \n High: **${forecast[0].high}°F**  |  Low: **${forecast[0].low}°F**  |  Precip: **${getPrecip(forecast[0])}**\n`)
+            //                     .addField(`${forecast[1].day}  (${dConvert(forecast[1].date)})`, `> ${forecast[1].skytextday} \u200B ${skycodes[1]} \n High: **${forecast[1].high}°F**  |  Low: **${forecast[1].low}°F**  |  Precip: **${getPrecip(forecast[1])}**\n`)
+            //                     .addField(`${forecast[2].day}  (${dConvert(forecast[2].date)})`, `> ${forecast[2].skytextday} \u200B ${skycodes[2]} \n High: **${forecast[2].high}°F**  |  Low: **${forecast[2].low}°F**  |  Precip: **${getPrecip(forecast[2])}**\n`)
+            //                     .addField(`${forecast[3].day}  (${dConvert(forecast[3].date)})`, `> ${forecast[3].skytextday} \u200B ${skycodes[3]} \n High: **${forecast[3].high}°F**  |  Low: **${forecast[3].low}°F**  |  Precip: **${getPrecip(forecast[3])}**\n`)
+            //                     .addField(`${forecast[4].day}  (${dConvert(forecast[4].date)})`, `> ${forecast[4].skytextday} \u200B ${skycodes[4]} \n High: **${forecast[4].high}°F**  |  Low: **${forecast[4].low}°F**  |  Precip: **${getPrecip(forecast[4])}**\n`)
+            //             }
+            //             // edit message with new embed
+            //             messageObj.edit(embed)
+            //             // react with left arrow if it isn't the start (await is used so that the right arrow always goes after the left)
+            //             if (currInd !== 0) await messageObj.react('⬅️')
+            //             // react with right arrow if it isn't the end
+            //             if (currInd !== 1) messageObj.react('➡️')
+            //         })
+            //     })
         })
     },
 }

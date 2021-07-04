@@ -32,11 +32,11 @@ for (const file of commandFiles) {
     client.help.set(command.name, command.usage);
 }
 
-let scheduleClipCheck = new cron.CronJob('00 00 00 * * *', () => {
-    console.log('Checking for clips')
-    client.commands.get("twitchclipsauto").execute(client, "", []);
-});
-scheduleClipCheck.start()
+// let scheduleClipCheck = new cron.CronJob('00 00 00 * * *', () => {
+//     console.log('Checking for clips')
+//     client.commands.get("twitchclipsauto").execute(client, "", []);
+// });
+// scheduleClipCheck.start()
 
 client.on('ready', async () => {
     console.log(`${client.user.username} is online`)
