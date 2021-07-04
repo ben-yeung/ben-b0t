@@ -7,22 +7,22 @@ const cron = require("cron");
 const client = new Discord.Client({
     disableEveryone: true
 });
-
 const WOKCommands = require('wokcommands') // Used to implement slash command handler
-
 require('discord-buttons')(client)
 require("./util/eventHandler")(client)
 
 let guildID = botconfig.GUILD_ID
 
 const fs = require('fs');
-client.commands = new Discord.Collection();
+const cardFolder = './media/cards/'
 
+client.commands = new Discord.Collection();
 client.reminders = new Map();
 client.mute = new Map();
 client.logs = new Map();
 client.counter = new Map();
 client.help = new Map();
+client.cards = []
 
 
 const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
@@ -186,6 +186,20 @@ client.createAPIMessage = async (interaction, content) => {
         files
     }
 }
+
+// Creates an array of card file names
+// Used in card games such as higher or lower
+fs.readdir(cardFolder, (err, files) => {
+    if (err) {
+        console.log(err)
+        return
+    }
+
+    files.forEach(file => {
+        // console.log(file);
+        client.cards.push(file)
+    });
+});
 
 
 client.login(botconfig.token);
