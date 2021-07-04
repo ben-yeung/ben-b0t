@@ -7,6 +7,7 @@ const cron = require("cron");
 const client = new Discord.Client({
     disableEveryone: true
 });
+
 const WOKCommands = require('wokcommands') // Used to implement slash command handler
 
 require('discord-buttons')(client)

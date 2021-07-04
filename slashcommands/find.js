@@ -2,6 +2,7 @@ const Discord = require("discord.js")
 const colours = require("../colours.json");
 const botconfig = require("../botconfig.json");
 var Scraper = require('images-scraper');
+const disbut = require('discord-buttons');
 
 var google = new Scraper({
     puppeteer: {
@@ -13,7 +14,7 @@ var google = new Scraper({
 module.exports = {
     slash: true,
     description: "Search Google Images for anything! ... for the most part",
-    testOnly: true, //guild testing when true, set to false for global
+    testOnly: false, //guild testing when true, set to false for global
     minArgs: 1,
     expectedArgs: '<query>', //note: have these all lowercased!
     callback: async ({ // put async after 'callback:' for async functions
@@ -39,10 +40,32 @@ module.exports = {
 
         let embed = new Discord.MessageEmbed()
             .setTitle(`Results for '${search}' | Page ${currInd + 1}`)
-            .setDescription(`Asker: <@${author.id}> \n [Source](${chosenOneSRC}) \n`)
+            .setDescription(`Asker: <@${author.id}> \n`)
             .setColor(colours.green_light)
             .setImage(chosenOne)
-            .setFooter("Reacts will stop working after 1 minute. React with ❌ to delete query.")
+            .setFooter("Buttons will stop working after 1 minute.")
+            .setTimestamp()
+
+        let nextBtn = new disbut.MessageButton()
+            .setLabel('Next')
+            .setID('find_next')
+            .setStyle('blurple')
+
+        let prevBtn = new disbut.MessageButton()
+            .setLabel('Back')
+            .setID('find_prev')
+            .setStyle('blurple')
+            .setDisabled()
+
+        let closeBtn = new disbut.MessageButton()
+            .setLabel('Close')
+            .setID('find_close')
+            .setStyle('red')
+
+        let sourceBtn = new disbut.MessageButton()
+            .setLabel('Source')
+            .setURL(chosenOneSRC)
+            .setStyle('url')
 
         const message = await client.api.webhooks(client.user.id, interaction.token).messages('@original').patch({
             data: {}
@@ -51,56 +74,72 @@ module.exports = {
         let messageObj = new Discord.Message(client, message, client.channels.cache.get(message.channel_id))
 
         messageObj.edit(' ­') //invisible char to make embed edit cleaner
-        messageObj.edit(embed).then(async (message) => {
-            if (currInd >= img_res.length) return
-            await message.react('➡️')
-            message.react('❌')
+        messageObj.channel.send({
+            buttons: [prevBtn, nextBtn, sourceBtn, closeBtn],
+            embed: embed
+        }).then(async (message) => {
+            if (currInd >= img_res.length) return 'I had trouble finding results :('
 
-            const collector = message.createReactionCollector(
-                // only collect left and right arrow reactions from the message author
-                (reaction, user) => ['⬅️', '➡️', '↩️', '❌'].includes(reaction.emoji.name) && user.id === author.id,
-                // time out after a minute
-                {
-                    time: 90000
-                }
-            )
+            client.on('clickButton', async (b) => {
+                await b.reply.defer();
 
-            collector.on('collect', reaction => {
-                // remove the existing reactions
-                message.reactions.removeAll().then(async () => {
-                    // increase/decrease index
-                    if (reaction.emoji.name === '⬅️') {
-                        currInd -= 1
-                    } else if (reaction.emoji.name === '↩️') {
-                        currInd = 0
-                    } else if (reaction.emoji.name === '❌') {
-                        message.delete() // Delete bot embed
-                        message.channel.messages.fetch(authorMessageID).then(message => message.delete()).catch(console.error) // Delete user command call
-                        return
-                    } else {
-                        currInd += 1
-                    }
-                    // edit message with new embed
+                if (b.id === 'find_next') {
+                    prevBtn.disabled = false
+                    currInd++
                     let chosenOne = img_res[currInd].url
                     let chosenOneSRC = img_res[currInd].source
                     let embed = new Discord.MessageEmbed()
                         .setTitle(`Results for '${search}' | Page ${currInd + 1}`)
-                        .setDescription(`Asker: <@${author.id}> \n [Source](${chosenOneSRC}) \n`)
+                        .setDescription(`Asker: <@${author.id}> \n`)
                         .setColor(colours.green_light)
                         .setImage(chosenOne)
-                        .setFooter("Reacts will stop working after 1 minute. React with ❌ to delete query.")
-                    message.edit(embed)
-                    // react with left arrow if it isn't the start (await is used so that the right arrow always goes after the left)
-                    if (currInd !== 0) await message.react('⬅️')
-                    // react with right arrow if it isn't the end
-                    if (currInd + 1 < img_res.length) message.react('➡️')
-                    // react with back to start if isn't start
-                    if (currInd !== 0) message.react('↩️')
-                    // react with x to delete find query
-                    message.react('❌')
-                })
-            })
+                        .setFooter("Buttons will stop working after 1 minute.")
+                        .setTimestamp()
 
+                    if (currInd == 4) {
+                        nextBtn.disabled = true
+                    } else {
+                        nextBtn.disabled = false
+                    }
+
+                    sourceBtn.setURL(chosenOneSRC)
+                    message.edit({
+                        buttons: [prevBtn, nextBtn, sourceBtn, closeBtn],
+                        embed: embed
+                    })
+
+                } else if (b.id === 'find_prev') {
+                    nextBtn.disabled = false
+                    currInd--
+                    let chosenOne = img_res[currInd].url
+                    let chosenOneSRC = img_res[currInd].source
+                    let embed = new Discord.MessageEmbed()
+                        .setTitle(`Results for '${search}' | Page ${currInd + 1}`)
+                        .setDescription(`Asker: <@${author.id}> \n`)
+                        .setColor(colours.green_light)
+                        .setImage(chosenOne)
+                        .setFooter("Buttons will stop working after 1 minute.")
+                        .setTimestamp()
+
+                    if (currInd === 0) {
+                        prevBtn.disabled = true
+                    }
+
+                    sourceBtn.setURL(chosenOneSRC)
+                    message.edit({
+                        buttons: [prevBtn, nextBtn, sourceBtn, closeBtn],
+                        embed: embed
+                    })
+
+                } else if (b.id === 'find_close') {
+                    message.delete() // Delete bot embed
+                    messageObj.delete()
+                    return
+                }
+            })
         })
+
+
+
     },
 }
