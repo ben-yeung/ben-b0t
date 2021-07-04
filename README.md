@@ -9,7 +9,7 @@
 This project began Fall 2020 and was published to a public repo on 04/24/21
 
 
-## 🤖 A simple, personalized Discord Bot to interact, moderate, and log a Discord server. 
+## 🤖 A simple, personalized Discord Bot to interact and moderate a Discord server. 
 
 Overall a very interactive project that allowed me to learn more about Data Structures, string manipulation, OAuth Flows, and parsing I/O.
 Originally an single file full of if statements, this repo publication is a cleaner and more organized version with a command handler.
@@ -30,12 +30,30 @@ Originally an single file full of if statements, this repo publication is a clea
   * Do note that this command is used and tested on a smaller channel.
   * There is no spam prevention and thus any clips within the past day are sent automatically to a given channel.
 
+## 🆕 Discord Button Integration!
+*  With the beta release of Discord buttons set to launch with d.js V13 embeds incorporating reactions for user input now looks a lot cleaner!
+*  Using [discord-buttons](https://www.npmjs.com/package/discord-buttons), many commands that once relied on reactions now have a spiffy new look with better funcitonality
+*  Instead of waiting for the bot to add reactions (embed pagination for example), these buttons can be instantly accessed and edited across several message edits!
+
+## 🆕 Slash Command Integration
+* Another novel and interesting addition to d.js is the ability for bots to have custom slash commands.
+* The usage of slash commands and its integration over prefix commands is the ease of access for both the developer and user.
+* Slash commands provide a layout for required/optional arguments for specific commands, reducing the vagueness that comes with trying to type a full command out.
+* On the developer side, slash commands neatly organize and store arguments so developers do not have to parse raw input and decipher which words belong in which argument.
+* As custom slash commands are still in beta, [WOKCommands](https://docs.wornoffkeys.com/commands/slash-commands) provides an awesome slash command handler to do the heavy lifting.
+
 ## 🧰 Debugging / Notes
 * Note that some commands may use the `quick.db` package.
   * Trying to deploy with services such as Heroku may not support long term storage that quick.db may need.
   * Check with the provider FAQs to see if there is an alternative approach.
 * The help command excludes some moderation / bot config commands from general public access; adjust as necessary.
 * Some moderation commands may become deprecated as Discord.js changes.
+* Helpful documentation that I referenced:
+  * [Discord Dev Docs on Slash Commands](https://discord.com/developers/docs/interactions/slash-commands)
+  * [discord-buttons examples](https://github.com/discord-buttons/discord-buttons/blob/main/examples.md)
+  * [WOKCommands Command Properties](https://docs.wornoffkeys.com/commands/commands)
+  * [WOKCommands Slash Commands Docs](https://docs.wornoffkeys.com/commands/slash-commands)
+  * [discord.js-slash-commands.md by advaith1](https://gist.github.com/advaith1/287e69c3347ef5165c0dbde00aa305d2)
 
 ## 🛠 Dependencies Include:
 * [canvacord](https://canvacord.js.org/#/)
