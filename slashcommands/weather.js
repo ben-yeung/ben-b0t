@@ -146,7 +146,6 @@ module.exports = {
             }
 
             const author = interaction.member.user;
-            var currInd = 0;
 
             const embed = new Discord.MessageEmbed()
                 .setTitle(`Weather in ${current.observationpoint}`)
@@ -188,7 +187,6 @@ module.exports = {
                     b.reply.defer()
 
                     if (b.id === 'weather_next') {
-                        currInd += 1
                         let foreEmb = new Discord.MessageEmbed()
                             .setTitle(`Forecast for ${current.observationpoint}`)
                             .setColor(colours.gold)
@@ -204,7 +202,6 @@ module.exports = {
                         })
 
                     } else if (b.id === 'weather_back') {
-                        currInd -= 1
                         let mainEmb = new Discord.MessageEmbed()
                             .setTitle(`Weather in ${current.observationpoint}`)
                             .setColor(colours.gold)
