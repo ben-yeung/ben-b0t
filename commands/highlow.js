@@ -3,6 +3,7 @@ const botconfig = require("../botconfig.json");
 const colours = require("../colours.json");
 const Canvas = require("canvas");
 const disbut = require('discord-buttons');
+const db = require('quick.db');
 
 module.exports = {
     name: "highlow",
@@ -22,11 +23,14 @@ module.exports = {
         const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'card.png')
 
         const player = message.author.id
+        db.set(`${player}.highlowstreak`, 0)
+
+        if (!db.get(`${player}.highlowrecord`)) db.set(`${player}.highlowrecord`, 0)
 
         let embed = new Discord.MessageEmbed()
             .setTitle("Higher or Lower?")
-            .setColor(colours.purple_medium)
-            .setDescription(`Player: <@${player}>`)
+            .setColor(colours.blurple)
+            .setDescription(`Player: <@${player}> \n Highest Streak: ${db.get(`${player}.highlowrecord`)}`)
             .attachFiles(attachment)
             .setImage('attachment://card.png')
 
@@ -57,6 +61,7 @@ module.exports = {
             if (b.clicker.user.id == player) {
                 context.clearRect(0, 0, canvas.width, canvas.height)
                 if (b.id === 'highlow_gameover') { // Restart game
+                    db.set(`${player}.highlowstreak`, 0)
                     randCard = client.cards[Math.floor(Math.random() * client.cards.length)]
 
                     context.clearRect(0, 0, canvas.width, canvas.height)
@@ -67,8 +72,8 @@ module.exports = {
 
                     let embed = new Discord.MessageEmbed()
                         .setTitle("Higher or Lower?")
-                        .setColor(colours.purple_medium)
-                        .setDescription(`Player: <@${player}>`)
+                        .setColor(colours.purple_light)
+                        .setDescription(`Player: <@${player}> \n Highest Streak: ${db.get(`${player}.highlowrecord`)}`)
                         .attachFiles(cardAttachment)
                         .setImage('attachment://cardnewgame.png')
 
@@ -79,7 +84,7 @@ module.exports = {
                     })
                 } else {
                     var newCard = randCard
-                    let order = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '1', 'J', 'Q', 'K'] // 1 -> 10 file name
+                    let order = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '1', 'J', 'Q', 'K'] // first char file name
 
                     let currVal = order.indexOf(randCard.substring(0, 1))
 
@@ -120,14 +125,17 @@ module.exports = {
 
                     if (outcome == 'correct') {
                         randCard = newCard
+                        db.add(`${player}.highlowstreak`, 1)
+                        let currStreak = db.get(`${player}.highlowstreak`)
+                        let highestStreak = (db.get(`${player}.highlowrecord`) > currStreak) ? db.get(`${player}.highlowrecord`) : currStreak
 
                         const correctLabel = await Canvas.loadImage(`./media/correct.png`)
                         context.drawImage(correctLabel, canvas.width / 4 - 150, canvas.height / 4, 1000, 500)
                         const cardAttachment = new Discord.MessageAttachment(canvas.toBuffer(), 'cardcorrect.png')
                         let embed = new Discord.MessageEmbed()
                             .setTitle("Higher or Lower?")
-                            .setColor(colours.purple_medium)
-                            .setDescription(`Player: <@${player}>`)
+                            .setColor(colours.green_light)
+                            .setDescription(`Player: <@${player}> \n Highest Streak: ${highestStreak} \n Current Streak: ${currStreak}`)
                             .attachFiles(cardAttachment)
                             .setImage('attachment://cardcorrect.png')
 
@@ -139,8 +147,8 @@ module.exports = {
                                 const updatedAttach = new Discord.MessageAttachment(canvas.toBuffer(), 'cardnext.png')
                                 let embed = new Discord.MessageEmbed()
                                     .setTitle("Higher or Lower?")
-                                    .setColor(colours.purple_medium)
-                                    .setDescription(`Player: <@${player}>`)
+                                    .setColor(colours.purple_light)
+                                    .setDescription(`Player: <@${player}> \n Highest Streak: ${highestStreak} \n Current Streak: ${currStreak}`)
                                     .attachFiles(updatedAttach)
                                     .setImage('attachment://cardnext.png')
 
@@ -149,17 +157,21 @@ module.exports = {
                                     buttons: [lowBtn, highBtn],
                                     embed: embed
                                 })
-                            }, 1500)
+                            }, 1000)
                         })
 
                     } else {
+                        let currStreak = db.get(`${player}.highlowstreak`)
+                        let highestStreak = (db.get(`${player}.highlowrecord`) > currStreak) ? db.get(`${player}.highlowrecord`) : currStreak
+                        db.set(`${player}.highlowrecord`, highestStreak)
+
                         const wrongLabel = await Canvas.loadImage(`./media/wrong.png`)
                         context.drawImage(wrongLabel, canvas.width / 4 - 150, canvas.height / 4, 1000, 500)
                         const cardAttachment = new Discord.MessageAttachment(canvas.toBuffer(), 'cardgameover.png')
                         let embed = new Discord.MessageEmbed()
                             .setTitle("Higher or Lower?")
-                            .setColor(colours.purple_medium)
-                            .setDescription(`Player: <@${player}>`)
+                            .setColor(colours.red_light)
+                            .setDescription(`Player: <@${player}> \n Highest Streak: ${highestStreak} \n Current Streak: ${currStreak}`)
                             .attachFiles(cardAttachment)
                             .setImage('attachment://cardgameover.png')
                         b.message.channel.send({
