@@ -11,6 +11,16 @@ module.exports = {
     usage: "?highlow",
     async execute(client, message, args) {
 
+        const player = message.author.id
+
+        // Prevent user from starting multiple games unless prior open game is older than 5 minutes
+        if (db.get(`${player}.isplayinghighlow`) && Date.now() - db.get(`${player}.highlowstart`) <= 300000) {
+            return message.reply("You have an existing game already! Please finish that game before moving on.")
+        } else {
+            db.set(`${player}.isplayinghighlow`, true)
+            db.set(`${player}.highlowstart`, Date.now())
+        }
+
         const canvas = Canvas.createCanvas(1500, 1100)
         const context = canvas.getContext('2d')
 
@@ -22,7 +32,6 @@ module.exports = {
         context.drawImage(cardBack, 800, 0, 700, 1100)
         const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'card.png')
 
-        const player = message.author.id
         db.set(`${player}.highlowstreak`, 0)
         db.set(`${player}.currcards`, [randCard])
 
@@ -64,6 +73,7 @@ module.exports = {
                     db.set(`${player}.highlowstreak`, 0)
                     randCard = client.cards[Math.floor(Math.random() * client.cards.length)]
                     db.set(`${player}.currcards`, [randCard])
+                    db.set(`${player}.isplayinghighlow`, true)
 
                     context.clearRect(0, 0, canvas.width, canvas.height)
                     const newCardCanvas = await Canvas.loadImage(`./media/cards/${randCard}`)
@@ -79,7 +89,7 @@ module.exports = {
                         .setImage('attachment://cardnewgame.png')
 
                     b.message.delete()
-                    message.channel.send({
+                    b.message.channel.send({
                         buttons: [lowBtn, highBtn],
                         embed: embed
                     })
@@ -189,6 +199,7 @@ module.exports = {
                         let currStreak = db.get(`${player}.highlowstreak`)
                         let highestStreak = (db.get(`${player}.highlowrecord`) > currStreak) ? db.get(`${player}.highlowrecord`) : currStreak
                         db.set(`${player}.highlowrecord`, highestStreak)
+                        db.set(`${player}.isplayinghighlow`, false)
 
                         const wrongLabel = await Canvas.loadImage(`./media/wrong.png`)
                         context.drawImage(wrongLabel, canvas.width / 4 - 150, canvas.height / 4, 1000, 500)

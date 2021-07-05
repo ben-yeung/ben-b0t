@@ -14,7 +14,7 @@ var google = new Scraper({
 module.exports = {
     slash: true,
     description: "Search Google Images for anything! ... for the most part",
-    testOnly: true, //guild testing when true, set to false for global
+    testOnly: false, //guild testing when true, set to false for global
     minArgs: 1,
     expectedArgs: '<query>', //note: have these all lowercased!
     callback: async ({ // put async after 'callback:' for async functions
@@ -30,6 +30,8 @@ module.exports = {
         let choice = intros[Math.floor(Math.random() * intros.length)]
 
         client.reply(interaction, `${choice} \`${search}\` <a:working:821570743329882172>`)
+
+
 
         const img_res = await google.scrape(search, 5)
         if (!img_res.length) return "No images found with these keywords. It might be NSFW 😳"
