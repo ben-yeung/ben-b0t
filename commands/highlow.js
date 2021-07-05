@@ -113,7 +113,7 @@ module.exports = {
                             outcome = 'correct'
                         } else if (currVal < newVal) { // User is incorrect
                             outcome = 'wrong'
-                        } else { // New carda nd Curr card are same value
+                        } else { // New card and Curr card are same value
                             outcome = 'wrong'
                         }
                     }
@@ -129,10 +129,11 @@ module.exports = {
                         randCard = newCard
                         db.add(`${player}.highlowstreak`, 1)
                         db.push(`${player}.currcards`, randCard)
+
                         let currStreak = db.get(`${player}.highlowstreak`)
                         let highestStreak = (db.get(`${player}.highlowrecord`) > currStreak) ? db.get(`${player}.highlowrecord`) : currStreak
 
-                        if (currStreak === 52) {
+                        if (currStreak === 52 && db.get(`${player}.highlowrecord`) < 52) {
                             const winScreen = await Canvas.loadImage(`./media/win.png`)
                             context.drawImage(winScreen, 0, 0, canvas.width, canvas.height)
                             const cardAttachment = new Discord.MessageAttachment(canvas.toBuffer(), 'cardwin.png')
@@ -143,7 +144,12 @@ module.exports = {
                                 .attachFiles(cardAttachment)
                                 .setImage('attachment://cardwin.png')
 
-                            return b.message.channel.send(embed)
+                            return b.message.channel.send({
+                                buttons: [gameoverBtn],
+                                embed: embed
+                            })
+                        } else { // Enables endless mode for winners
+                            db.set(`${player}.currcards`, [randCard])
                         }
 
                         const correctLabel = await Canvas.loadImage(`./media/correct.png`)
