@@ -93,7 +93,6 @@ module.exports = {
                         buttons: [lowBtn, highBtn],
                         embed: embed
                     })
-                    b.reply.defer()
                 } else {
                     var newCard = randCard
                     let order = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '1', 'J', 'Q', 'K'] // first char file name
@@ -215,10 +214,10 @@ module.exports = {
                             embed: embed
                         })
                     }
-                    b.reply.defer()
                 }
 
             }
+            b.reply.defer()
 
         })
 
