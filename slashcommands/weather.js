@@ -39,7 +39,7 @@ function getPrecip(forecast) {
 module.exports = {
     slash: true,
     description: "Find info on the weather in a given location!",
-    testOnly: true, //guild testing when true, set to false for global
+    testOnly: false, //guild testing when true, set to false for global
     minArgs: 1,
     expectedArgs: '<location>', //note: have these all lowercased!
     callback: async ({ // put async after 'callback:' for async functions
