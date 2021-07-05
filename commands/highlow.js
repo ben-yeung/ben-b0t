@@ -56,7 +56,6 @@ module.exports = {
         })
 
         client.on('clickButton', async (b) => {
-            b.reply.defer()
             await b.clicker.fetch();
 
             if (b.clicker.user.id == player) {
@@ -84,6 +83,7 @@ module.exports = {
                         buttons: [lowBtn, highBtn],
                         embed: embed
                     })
+                    b.reply.defer()
                 } else {
                     var newCard = randCard
                     let order = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '1', 'J', 'Q', 'K'] // first char file name
@@ -144,10 +144,12 @@ module.exports = {
                                 .attachFiles(cardAttachment)
                                 .setImage('attachment://cardwin.png')
 
-                            return b.message.channel.send({
+                            b.message.channel.send({
                                 buttons: [gameoverBtn],
                                 embed: embed
                             })
+                            b.reply.defer()
+                            return
                         } else { // Enables endless mode for winners
                             db.set(`${player}.currcards`, [randCard])
                         }
@@ -202,6 +204,7 @@ module.exports = {
                             embed: embed
                         })
                     }
+                    b.reply.defer()
                 }
 
             }

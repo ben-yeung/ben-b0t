@@ -14,7 +14,7 @@ var google = new Scraper({
 module.exports = {
     slash: true,
     description: "Search Google Images for anything! ... for the most part",
-    testOnly: false, //guild testing when true, set to false for global
+    testOnly: true, //guild testing when true, set to false for global
     minArgs: 1,
     expectedArgs: '<query>', //note: have these all lowercased!
     callback: async ({ // put async after 'callback:' for async functions
@@ -81,7 +81,6 @@ module.exports = {
             if (currInd >= img_res.length) return 'I had trouble finding results :('
 
             client.on('clickButton', async (b) => {
-                b.reply.defer();
                 await b.clicker.fetch();
 
                 if (b.clicker.user.id == author.id) {
@@ -138,6 +137,8 @@ module.exports = {
                         messageObj.delete()
                         return
                     }
+
+                    b.reply.defer();
                 }
             })
         })

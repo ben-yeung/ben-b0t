@@ -79,7 +79,6 @@ module.exports = {
 
                 collector.on('collect', async (b) => {
                     // console.log(b.id)
-                    b.reply.defer();
                     await b.clicker.fetch();
 
                     if (b.clicker.user.id == author.id) {
@@ -137,6 +136,7 @@ module.exports = {
                             return
                         }
                     }
+                    b.reply.defer();
 
                 })
 

@@ -175,7 +175,6 @@ module.exports = {
             }).then(message => {
 
                 client.on('clickButton', async (b) => {
-                    b.reply.defer()
                     await b.clicker.fetch();
 
                     if (b.clicker.user.id == author.id) {
@@ -216,6 +215,7 @@ module.exports = {
                             })
                         }
                     }
+                    b.reply.defer()
 
                 })
 
