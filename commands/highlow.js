@@ -24,6 +24,7 @@ module.exports = {
 
         const player = message.author.id
         db.set(`${player}.highlowstreak`, 0)
+        db.set(`${player}.currcards`, [randCard])
 
         if (!db.get(`${player}.highlowrecord`)) db.set(`${player}.highlowrecord`, 0)
 
@@ -63,6 +64,7 @@ module.exports = {
                 if (b.id === 'highlow_gameover') { // Restart game
                     db.set(`${player}.highlowstreak`, 0)
                     randCard = client.cards[Math.floor(Math.random() * client.cards.length)]
+                    db.set(`${player}.currcards`, [randCard])
 
                     context.clearRect(0, 0, canvas.width, canvas.height)
                     const newCardCanvas = await Canvas.loadImage(`./media/cards/${randCard}`)
@@ -88,7 +90,7 @@ module.exports = {
 
                     let currVal = order.indexOf(randCard.substring(0, 1))
 
-                    while (newCard == randCard) { //prevent exact same card from being drawn
+                    while (newCard == randCard || db.get(`${player}.currcards`).includes(newCard)) { //prevent exact same card from being drawn
                         newCard = client.cards[Math.floor(Math.random() * client.cards.length)]
                     }
 
@@ -126,8 +128,23 @@ module.exports = {
                     if (outcome == 'correct') {
                         randCard = newCard
                         db.add(`${player}.highlowstreak`, 1)
+                        db.push(`${player}.currcards`, randCard)
                         let currStreak = db.get(`${player}.highlowstreak`)
                         let highestStreak = (db.get(`${player}.highlowrecord`) > currStreak) ? db.get(`${player}.highlowrecord`) : currStreak
+
+                        if (currStreak === 52) {
+                            const winScreen = await Canvas.loadImage(`./media/win.png`)
+                            context.drawImage(winScreen, 0, 0, canvas.width, canvas.height)
+                            const cardAttachment = new Discord.MessageAttachment(canvas.toBuffer(), 'cardwin.png')
+                            let embed = new Discord.MessageEmbed()
+                                .setTitle("Higher or Lower?")
+                                .setColor(colours.green_light)
+                                .setDescription(`Player: <@${player}> \n Highest Streak: ${highestStreak} \n Current Streak: ${currStreak}`)
+                                .attachFiles(cardAttachment)
+                                .setImage('attachment://cardwin.png')
+
+                            return b.message.channel.send(embed)
+                        }
 
                         const correctLabel = await Canvas.loadImage(`./media/correct.png`)
                         context.drawImage(correctLabel, canvas.width / 4 - 150, canvas.height / 4, 1000, 500)
