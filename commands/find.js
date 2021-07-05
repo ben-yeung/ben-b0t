@@ -80,60 +80,64 @@ module.exports = {
                 collector.on('collect', async (b) => {
                     // console.log(b.id)
                     b.reply.defer();
+                    await b.clicker.fetch();
 
-                    if (b.id === 'find_next') {
-                        prevBtn.disabled = false
-                        currInd++
-                        let chosenOne = img_res[currInd].url
-                        let chosenOneSRC = img_res[currInd].source
-                        let embed = new Discord.MessageEmbed()
-                            .setTitle(`Results for '${search}' | Page ${currInd + 1}`)
-                            .setDescription(`Asker: <@${author.id}> \n`)
-                            .setColor(colours.green_light)
-                            .setImage(chosenOne)
-                            .setFooter("Buttons will stop working after 1 minute.")
-                            .setTimestamp()
+                    if (b.clicker.user.id == author.id) {
+                        if (b.id === 'find_next') {
+                            prevBtn.disabled = false
+                            currInd++
+                            let chosenOne = img_res[currInd].url
+                            let chosenOneSRC = img_res[currInd].source
+                            let embed = new Discord.MessageEmbed()
+                                .setTitle(`Results for '${search}' | Page ${currInd + 1}`)
+                                .setDescription(`Asker: <@${author.id}> \n`)
+                                .setColor(colours.green_light)
+                                .setImage(chosenOne)
+                                .setFooter("Buttons will stop working after 1 minute.")
+                                .setTimestamp()
 
-                        if (currInd == 4) {
-                            nextBtn.disabled = true
-                        } else {
+                            if (currInd == 4) {
+                                nextBtn.disabled = true
+                            } else {
+                                nextBtn.disabled = false
+                            }
+
+                            sourceBtn.setURL(chosenOneSRC)
+                            message.edit({
+                                buttons: [prevBtn, nextBtn, sourceBtn, closeBtn],
+                                embed: embed
+                            })
+
+                        } else if (b.id === 'find_prev') {
                             nextBtn.disabled = false
+                            currInd--
+                            let chosenOne = img_res[currInd].url
+                            let chosenOneSRC = img_res[currInd].source
+                            let embed = new Discord.MessageEmbed()
+                                .setTitle(`Results for '${search}' | Page ${currInd + 1}`)
+                                .setDescription(`Asker: <@${author.id}> \n`)
+                                .setColor(colours.green_light)
+                                .setImage(chosenOne)
+                                .setFooter("Buttons will stop working after 1 minute.")
+                                .setTimestamp()
+
+                            if (currInd === 0) {
+                                prevBtn.disabled = true
+                            }
+
+                            sourceBtn.setURL(chosenOneSRC)
+                            message.edit({
+                                buttons: [prevBtn, nextBtn, sourceBtn, closeBtn],
+                                embed: embed
+                            })
+
+                        } else if (b.id === 'find_close') {
+                            message.delete() // Delete bot embed
+                            message.channel.messages.fetch(authorMessageID).then(message => message.delete()).catch(console.error) // Delete user command call
+                            return
                         }
-
-                        sourceBtn.setURL(chosenOneSRC)
-                        message.edit({
-                            buttons: [prevBtn, nextBtn, sourceBtn, closeBtn],
-                            embed: embed
-                        })
-
-                    } else if (b.id === 'find_prev') {
-                        nextBtn.disabled = false
-                        currInd--
-                        let chosenOne = img_res[currInd].url
-                        let chosenOneSRC = img_res[currInd].source
-                        let embed = new Discord.MessageEmbed()
-                            .setTitle(`Results for '${search}' | Page ${currInd + 1}`)
-                            .setDescription(`Asker: <@${author.id}> \n`)
-                            .setColor(colours.green_light)
-                            .setImage(chosenOne)
-                            .setFooter("Buttons will stop working after 1 minute.")
-                            .setTimestamp()
-
-                        if (currInd === 0) {
-                            prevBtn.disabled = true
-                        }
-
-                        sourceBtn.setURL(chosenOneSRC)
-                        message.edit({
-                            buttons: [prevBtn, nextBtn, sourceBtn, closeBtn],
-                            embed: embed
-                        })
-
-                    } else if (b.id === 'find_close') {
-                        message.delete() // Delete bot embed
-                        message.channel.messages.fetch(authorMessageID).then(message => message.delete()).catch(console.error) // Delete user command call
-                        return
                     }
+
                 })
 
             })

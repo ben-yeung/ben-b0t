@@ -39,7 +39,7 @@ function getPrecip(forecast) {
 module.exports = {
     slash: true,
     description: "Find info on the weather in a given location!",
-    testOnly: false, //guild testing when true, set to false for global
+    testOnly: true, //guild testing when true, set to false for global
     minArgs: 1,
     expectedArgs: '<location>', //note: have these all lowercased!
     callback: async ({ // put async after 'callback:' for async functions
@@ -185,43 +185,47 @@ module.exports = {
             }).then(async (message) => {
                 client.on('clickButton', async (b) => {
                     b.reply.defer()
+                    await b.clicker.fetch();
 
-                    if (b.id === 'weather_next') {
-                        let foreEmb = new Discord.MessageEmbed()
-                            .setTitle(`Forecast for ${current.observationpoint}`)
-                            .setColor(colours.gold)
-                            .addField(`${forecast[0].day}  (${dConvert(forecast[0].date)})`, `> ${forecast[0].skytextday} \u200B ${skycodes[0]} \n High: **${forecast[0].high}°F**  |  Low: **${forecast[0].low}°F**  |  Precip: **${getPrecip(forecast[0])}**\n`)
-                            .addField(`${forecast[1].day}  (${dConvert(forecast[1].date)})`, `> ${forecast[1].skytextday} \u200B ${skycodes[1]} \n High: **${forecast[1].high}°F**  |  Low: **${forecast[1].low}°F**  |  Precip: **${getPrecip(forecast[1])}**\n`)
-                            .addField(`${forecast[2].day}  (${dConvert(forecast[2].date)})`, `> ${forecast[2].skytextday} \u200B ${skycodes[2]} \n High: **${forecast[2].high}°F**  |  Low: **${forecast[2].low}°F**  |  Precip: **${getPrecip(forecast[2])}**\n`)
-                            .addField(`${forecast[3].day}  (${dConvert(forecast[3].date)})`, `> ${forecast[3].skytextday} \u200B ${skycodes[3]} \n High: **${forecast[3].high}°F**  |  Low: **${forecast[3].low}°F**  |  Precip: **${getPrecip(forecast[3])}**\n`)
-                            .addField(`${forecast[4].day}  (${dConvert(forecast[4].date)})`, `> ${forecast[4].skytextday} \u200B ${skycodes[4]} \n High: **${forecast[4].high}°F**  |  Low: **${forecast[4].low}°F**  |  Precip: **${getPrecip(forecast[4])}**\n`)
+                    if (b.clicker.user.id == author.id) {
+                        if (b.id === 'weather_next') {
+                            let foreEmb = new Discord.MessageEmbed()
+                                .setTitle(`Forecast for ${current.observationpoint}`)
+                                .setColor(colours.gold)
+                                .addField(`${forecast[0].day}  (${dConvert(forecast[0].date)})`, `> ${forecast[0].skytextday} \u200B ${skycodes[0]} \n High: **${forecast[0].high}°F**  |  Low: **${forecast[0].low}°F**  |  Precip: **${getPrecip(forecast[0])}**\n`)
+                                .addField(`${forecast[1].day}  (${dConvert(forecast[1].date)})`, `> ${forecast[1].skytextday} \u200B ${skycodes[1]} \n High: **${forecast[1].high}°F**  |  Low: **${forecast[1].low}°F**  |  Precip: **${getPrecip(forecast[1])}**\n`)
+                                .addField(`${forecast[2].day}  (${dConvert(forecast[2].date)})`, `> ${forecast[2].skytextday} \u200B ${skycodes[2]} \n High: **${forecast[2].high}°F**  |  Low: **${forecast[2].low}°F**  |  Precip: **${getPrecip(forecast[2])}**\n`)
+                                .addField(`${forecast[3].day}  (${dConvert(forecast[3].date)})`, `> ${forecast[3].skytextday} \u200B ${skycodes[3]} \n High: **${forecast[3].high}°F**  |  Low: **${forecast[3].low}°F**  |  Precip: **${getPrecip(forecast[3])}**\n`)
+                                .addField(`${forecast[4].day}  (${dConvert(forecast[4].date)})`, `> ${forecast[4].skytextday} \u200B ${skycodes[4]} \n High: **${forecast[4].high}°F**  |  Low: **${forecast[4].low}°F**  |  Precip: **${getPrecip(forecast[4])}**\n`)
 
-                        message.edit({
-                            buttons: [backBtn],
-                            embed: foreEmb
-                        })
+                            message.edit({
+                                buttons: [backBtn],
+                                embed: foreEmb
+                            })
 
-                    } else if (b.id === 'weather_back') {
-                        let mainEmb = new Discord.MessageEmbed()
-                            .setTitle(`Weather in ${current.observationpoint}`)
-                            .setColor(colours.gold)
-                            .setDescription(`**${current.day} (${dConvert(current.date)})** \n> ${current.skytext}\n`)
-                            .setThumbnail(current.imageUrl)
-                            .addField("Temperature", `${current.temperature}°F`, true)
-                            .addField("It Feels Like", `${current.feelslike}°F`, true)
-                            .addField("\u200B", '\u200B', true)
-                            .addField("Winds", current.winddisplay, true)
-                            .addField("Humidity", `${current.humidity}%`, true)
-                            .addField("\u200B", '\u200B', true)
-                            .addField("Observed", `${tConvert(current.observationtime)}`, true)
-                            .addField("Timezone", `GMT ${location.timezone}`, true)
-                            .addField("\u200B", '\u200B', true)
+                        } else if (b.id === 'weather_back') {
+                            let mainEmb = new Discord.MessageEmbed()
+                                .setTitle(`Weather in ${current.observationpoint}`)
+                                .setColor(colours.gold)
+                                .setDescription(`**${current.day} (${dConvert(current.date)})** \n> ${current.skytext}\n`)
+                                .setThumbnail(current.imageUrl)
+                                .addField("Temperature", `${current.temperature}°F`, true)
+                                .addField("It Feels Like", `${current.feelslike}°F`, true)
+                                .addField("\u200B", '\u200B', true)
+                                .addField("Winds", current.winddisplay, true)
+                                .addField("Humidity", `${current.humidity}%`, true)
+                                .addField("\u200B", '\u200B', true)
+                                .addField("Observed", `${tConvert(current.observationtime)}`, true)
+                                .addField("Timezone", `GMT ${location.timezone}`, true)
+                                .addField("\u200B", '\u200B', true)
 
-                        message.edit({
-                            buttons: [nextBtn],
-                            embed: mainEmb
-                        })
+                            message.edit({
+                                buttons: [nextBtn],
+                                embed: mainEmb
+                            })
+                        }
                     }
+
                 })
             })
 

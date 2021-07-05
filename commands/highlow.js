@@ -13,9 +13,9 @@ module.exports = {
         const canvas = Canvas.createCanvas(700, 1100)
         const context = canvas.getContext('2d')
 
-        console.log(client.cards)
+        const randCard = client.cards[Math.floor(Math.random() * client.cards.length)]
 
-        const card = await Canvas.loadImage('./media/cards/3H.png')
+        const card = await Canvas.loadImage(`./media/cards/${randCard}`)
         context.drawImage(card, 0, 0, canvas.width, canvas.height)
         const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'card.png')
 
@@ -41,6 +41,23 @@ module.exports = {
         message.channel.send({
             buttons: [highBtn, lowBtn],
             embed: embed
+        }).then(async (message, randCard) => {
+
+            client.on('clickButton', (b) => {
+                b.reply.defer()
+                await b.clicker.fetch();
+
+                var newCard = ''
+                let order = ['A', '2', '3', '4', '5,', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
+
+                while (newCard !== randCard) { //prevent exact same card from being drawn
+                    newCard = client.cards[Math.floor(Math.random() * client.cards.length)]
+                }
+
+
+
+            })
+
         })
 
     }
