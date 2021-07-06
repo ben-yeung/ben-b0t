@@ -24,6 +24,7 @@ client.logs = new Map(); // commands/log.js command
 client.counter = new Map(); // Keeping track of message streaks in client.on('message'...)
 client.help = new Map(); // commands/help.js command
 client.cards = [] // commands/highlow.js command
+client.responses = new Map() // commands/menu.js command
 
 // Basic prefix command handler taking filenamems from ./commands/ and putting them into a Discord.Collection
 // Further down in client.on('message'...) it is used to redirect incoming input to the relative commands
