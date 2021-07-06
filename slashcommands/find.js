@@ -33,7 +33,7 @@ module.exports = {
 
 
 
-        const img_res = await google.scrape(search, 5)
+        const img_res = await google.scrape(search, 10)
         if (!img_res.length) return "No images found with these keywords. It might be NSFW 😳"
 
         let currInd = 0
@@ -99,7 +99,7 @@ module.exports = {
                             .setFooter("Buttons will stop working after 1 minute.")
                             .setTimestamp()
 
-                        if (currInd == 4) {
+                        if (currInd == 9 || currInd == img_res.length) {
                             nextBtn.disabled = true
                         } else {
                             nextBtn.disabled = false

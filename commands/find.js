@@ -28,7 +28,7 @@ module.exports = {
         const intros = ['Searching the web for', 'Scouring the web for', 'Researching scholarly articles for', 'Surfing the web for', 'Checking a picture book for', 'Feeling lucky? Looking for', 'Hey Alexa, what is a', 'Hey Siri, what is a', 'Asking a professor for']
         let choice = intros[Math.floor(Math.random() * intros.length)]
         message.channel.send(`${choice} \`${search}\` <a:working:821570743329882172>`).then(async (message) => { // replace with own emote <a:(emote id)>
-            const img_res = await google.scrape(search, 5)
+            const img_res = await google.scrape(search, 10)
             // console.log(img_res)
             // console.log("\n----------------------------------------")
             if (!img_res.length) return message.channel.send("No images found with these keywords. It might be NSFW 😳")
@@ -95,7 +95,7 @@ module.exports = {
                                 .setFooter("Buttons will stop working after 1 minute.")
                                 .setTimestamp()
 
-                            if (currInd == 4) {
+                            if (currInd == 9 || currInd == img_res.length) {
                                 nextBtn.disabled = true
                             } else {
                                 nextBtn.disabled = false
