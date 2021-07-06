@@ -15,7 +15,7 @@ module.exports = {
 
         // Prevent user from starting multiple games unless prior open game is older than 5 minutes
         if (db.get(`${player}.isplayinghighlow`) && Date.now() - db.get(`${player}.highlowstart`) <= 300000) {
-            return message.reply("You have an existing game already! Please finish that game before moving on.")
+            return message.reply("You have an existing game already! Please finish that game before moving on. (Inactive games expire in 5 minutes)")
         } else {
             db.set(`${player}.isplayinghighlow`, true)
             db.set(`${player}.highlowstart`, Date.now())
@@ -39,7 +39,7 @@ module.exports = {
 
         let embed = new Discord.MessageEmbed()
             .setTitle("Higher or Lower?")
-            .setColor(colours.blurple)
+            .setColor(colours.purple_light)
             .setDescription(`Player: <@${player}> \n Highest Streak: ${db.get(`${player}.highlowrecord`)}`)
             .attachFiles(attachment)
             .setImage('attachment://card.png')
@@ -68,6 +68,7 @@ module.exports = {
             await b.clicker.fetch();
 
             if (b.clicker.user.id == player) {
+                db.set(`${player}.highlowstart`, Date.now())
                 context.clearRect(0, 0, canvas.width, canvas.height)
                 if (b.id === 'highlow_gameover') { // Restart game
                     db.set(`${player}.highlowstreak`, 0)
@@ -108,6 +109,14 @@ module.exports = {
 
                     console.log(`${currVal} Card: ${randCard}`)
                     console.log(`${newVal} Card: ${newCard}`)
+
+                    var possibleCards = []
+
+                    for (var i = 0; i < 52; i++) {
+                        if (!db.get(`${player}.currcards`).includes(client.cards[i])) {
+                            possibleCards.push(client.cards[i].replace('.png', ''))
+                        }
+                    }
 
                     if (b.id === 'highlow_higher') {
                         if (currVal < newVal) { // User is correct
@@ -182,7 +191,7 @@ module.exports = {
                                 let embed = new Discord.MessageEmbed()
                                     .setTitle("Higher or Lower?")
                                     .setColor(colours.purple_light)
-                                    .setDescription(`Player: <@${player}> \n Highest Streak: ${highestStreak} \n Current Streak: ${currStreak}`)
+                                    .setDescription(`Player: <@${player}> \n Highest Streak: ${highestStreak} \n Current Streak: ${currStreak} \n Possible Cards: ${possibleCards.join(', ')}`)
                                     .attachFiles(updatedAttach)
                                     .setImage('attachment://cardnext.png')
 
