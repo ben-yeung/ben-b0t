@@ -16,21 +16,27 @@ let guildID = botconfig.GUILD_ID
 const fs = require('fs');
 const cardFolder = './media/cards/'
 
-client.commands = new Discord.Collection();
-client.reminders = new Map();
-client.mute = new Map();
-client.logs = new Map();
-client.counter = new Map();
-client.help = new Map();
-client.cards = []
+// Various objects initialized in index.js and used in commands
+client.commands = new Discord.Collection(); // Command Handler
+client.reminders = new Map(); // commands/remind.js command
+client.mute = new Map(); // commands/mute.js and commands/unmute.js commands
+client.logs = new Map(); // commands/log.js command
+client.counter = new Map(); // Keeping track of message streaks in client.on('message'...)
+client.help = new Map(); // commands/help.js command
+client.cards = [] // commands/highlow.js command
 
-
+// Basic prefix command handler taking filenamems from ./commands/ and putting them into a Discord.Collection
+// Further down in client.on('message'...) it is used to redirect incoming input to the relative commands
 const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
 for (const file of commandFiles) {
     const command = require(`./commands/${file}`);
     client.commands.set(command.name, command);
     client.help.set(command.name, command.usage);
 }
+
+// This Cron Job automates the commands/twitchclips.js command 
+// Every day at midnight it searches for Twitch clips from a given channel and posts them
+// to a specific channel automatically
 
 // let scheduleClipCheck = new cron.CronJob('00 00 00 * * *', () => {
 //     console.log('Checking for clips')
@@ -70,7 +76,11 @@ client.on('message', async message => {
     let messageArray = message.content.split(' ');
     let hasPrefix = messageArray[0][0] === prefix;
 
-    if (!client.counter.get(message.channel.id)) { //logic for getting message streaks
+    // Logic for channel message streaks
+    // If a specific message in a certain channel is repeated at least 3 times it becomes a streak
+    // The 'lastmsg' and 'msgcount' are nested Maps within a larger client.counter Map
+    // Each channel is given a Map to account for streaks using their channel id
+    if (!client.counter.get(message.channel.id)) {
         let obj = new Map();
         obj.set('lastmsg', message.content.toLowerCase());
         obj.set('msgcount', 0);
@@ -92,6 +102,7 @@ client.on('message', async message => {
 
     if (!hasPrefix) return; //ignore if message does not start with prefix
 
+    // some general parsing, splitting the command from its arguments
     let cmd = messageArray[0].toLowerCase().slice(1);
     let args = messageArray.slice(1);
     args = args.filter(function (el) {
@@ -115,6 +126,8 @@ client.on('message', async message => {
             break;
     }
 
+    // If the command exists in ./commands/ then execute
+    // else just ignore
     if (!client.commands.has(cmd)) return;
     try {
         client.commands.get(cmd).execute(client, message, args);
@@ -124,8 +137,11 @@ client.on('message', async message => {
 
 })
 
-
-client.on('messageUpdate', (oldMessage, newMessage) => { //logic for log command
+// Logic for logging message edits and populating a Map tied to message id 
+// Map holds message id as key and stores an embed as value
+// Messages that have been edited multiple times have multiple embeds meant for pagination
+// See commands/log.js for details on how embeds are processed and outputted
+client.on('messageUpdate', (oldMessage, newMessage) => {
     if (oldMessage.author.bot || oldMessage.channel.type === 'dm') return;
 
     logChannel = client.channels.cache.get("701976025357090816")
@@ -145,12 +161,13 @@ client.on('messageUpdate', (oldMessage, newMessage) => { //logic for log command
     let id = oldMessage.id
     client.logs.set(id, messageHistory)
     //logChannel.send(embed)
-    console.log(client.logs)
+    //console.log(client.logs)
 
 })
 
 // Helpers for manual Interaction processing and posting
 // Used for slash commands when WOKCommand flow isn't suitable
+// Basic usage: client.reply(interaction, content) where content is a string, embed, etc
 // Credit: https://github.com/AlexzanderFlores/Worn-Off-Keys-Discord-Js/blob/master/82-Slash-Commands/index.js
 client.reply = async (interaction, response) => {
     let data = {
