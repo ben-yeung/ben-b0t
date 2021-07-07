@@ -13,9 +13,9 @@ module.exports = {
 
         const player = message.author.id
 
-        // Prevent user from starting multiple games unless prior open game is older than 5 minutes
-        if (db.get(`${player}.isplayinghighlow`) && Date.now() - db.get(`${player}.highlowstart`) <= 300000) {
-            return message.reply("You have an existing game already! Please finish that game before moving on. (Inactive games expire in 5 minutes)")
+        // Prevent user from starting multiple games unless prior open game is older than 3 minutes
+        if (db.get(`${player}.isplayinghighlow`) && Date.now() - db.get(`${player}.highlowstart`) <= 180000) {
+            return message.reply("You have an existing game already! Please finish that game before moving on. (Inactive games expire in 3 minutes)")
         } else {
             db.set(`${player}.isplayinghighlow`, true)
             db.set(`${player}.highlowstart`, Date.now())
@@ -68,6 +68,11 @@ module.exports = {
             await b.clicker.fetch();
 
             if (b.clicker.user.id == player) {
+                if (Date.now() - db.get(`${b.clicker.user.id}.highlowstart`) >= 180000) { // Make buttons expire after 5min of inactivity
+                    await b.reply.defer()
+                    return
+                }
+
                 db.set(`${player}.highlowstart`, Date.now())
                 context.clearRect(0, 0, canvas.width, canvas.height)
                 if (b.id === 'highlow_gameover') { // Restart game
