@@ -126,17 +126,13 @@ module.exports = {
                     if (b.id === 'highlow_higher') {
                         if (currVal < newVal) { // User is correct
                             outcome = 'correct'
-                        } else if (currVal > newVal) { // User is incorrect
-                            outcome = 'wrong'
-                        } else { // New card and Curr card are same value
+                        } else if (currVal >= newVal) { // User is incorrect
                             outcome = 'wrong'
                         }
                     } else if (b.id === 'highlow_lower') {
                         if (currVal > newVal) { // User is correct
                             outcome = 'correct'
-                        } else if (currVal < newVal) { // User is incorrect
-                            outcome = 'wrong'
-                        } else { // New card and Curr card are same value
+                        } else if (currVal <= newVal) { // User is incorrect
                             outcome = 'wrong'
                         }
                     }
