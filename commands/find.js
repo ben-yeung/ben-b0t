@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 const botconfig = require("../botconfig.json");
 const colours = require("../colours.json");
 var Scraper = require('images-scraper');
+const db = require('quick.db');
 const {
     MessageButton
 } = require('discord-buttons');
@@ -24,6 +25,12 @@ module.exports = {
         if (!search) return message.reply("Please enter a search query")
         const author = message.author
         const authorMessageID = message.id
+
+        if (db.get(`${author.id}.findstarted`) && Date.now() - db.get(`${author.id}.findstarted`) <= 60000) {
+            return message.reply('Please close your most recent find command or wait 1 minute before starting another query!')
+        } else {
+            db.set(`${author.id}.findstarted`, Date.now())
+        }
 
         const intros = ['Searching the web for', 'Scouring the web for', 'Researching scholarly articles for', 'Surfing the web for', 'Checking a picture book for', 'Feeling lucky? Looking for', 'Hey Alexa, what is a', 'Hey Siri, what is a', 'Asking a professor for']
         let choice = intros[Math.floor(Math.random() * intros.length)]
@@ -74,7 +81,7 @@ module.exports = {
                 if (currInd >= img_res.length) return
 
                 const collector = message.createButtonCollector((button) => button.clicker.user.id === author.id, {
-                    time: 90000
+                    time: 60000
                 })
 
                 collector.on('collect', async (b) => {
@@ -132,6 +139,7 @@ module.exports = {
                         b.reply.defer();
                         b.message.delete() // Delete bot embed
                         message.channel.messages.fetch(authorMessageID).then(message => message.delete()).catch(console.error) // Delete user command call
+                        db.delete(`${author.id}.findstarted`)
                         return
                     }
                     b.reply.defer();
