@@ -4,6 +4,7 @@ const botconfig = require("../botconfig.json");
 var Scraper = require('images-scraper');
 const disbut = require('discord-buttons');
 const db = require('quick.db');
+const ms = require("ms");
 
 var google = new Scraper({
     puppeteer: {
@@ -16,7 +17,6 @@ module.exports = {
     slash: true,
     description: "Search Google Images for anything! ... for the most part",
     testOnly: false, //guild testing when true, set to false for global
-    cooldown: '60s',
     minArgs: 1,
     expectedArgs: '<query>', //note: have these all lowercased!
     callback: async ({ // put async after 'callback:' for async functions
@@ -29,7 +29,7 @@ module.exports = {
         const author = interaction.member.user
 
         if (db.get(`${author.id}.findquery`) && Date.now() - db.get(`${author.id}.findstarted`) <= 60000) {
-            return 'Please close your most recent find command or wait 1 minute before starting another query!'
+            return `Please close your most recent find command or wait ${ms(60000 - (Date.now()- db.get(`${author.id}.findstarted`)))} before starting another query!`
         } else {
             db.set(`${author.id}.findquery`, [])
             db.set(`${author.id}.findstarted`, Date.now())

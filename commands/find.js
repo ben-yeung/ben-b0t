@@ -3,6 +3,7 @@ const botconfig = require("../botconfig.json");
 const colours = require("../colours.json");
 var Scraper = require('images-scraper');
 const db = require('quick.db');
+const ms = require("ms");
 const {
     MessageButton
 } = require('discord-buttons');
@@ -27,7 +28,7 @@ module.exports = {
         const authorMessageID = message.id
 
         if (db.get(`${author.id}.findstarted`) && Date.now() - db.get(`${author.id}.findstarted`) <= 60000) {
-            return message.reply('Please close your most recent find command or wait 1 minute before starting another query!')
+            return message.reply(`Please close your most recent find command or wait ${ms(60000 - (Date.now()- db.get(`${author.id}.findstarted`)))} before starting another query!`)
         } else {
             db.set(`${author.id}.findstarted`, Date.now())
         }
@@ -80,7 +81,7 @@ module.exports = {
             }).then(async (message) => {
                 if (currInd >= img_res.length) return
 
-                const collector = message.createButtonCollector((button) => button.clicker.user.id === author.id, {
+                const collector = message.createButtonCollector((button) => button.clicker.user.id === author.id && Date.now() - db.get(`${button.clicker.user.id}.findstarted`) < 60000, {
                     time: 60000
                 })
 
