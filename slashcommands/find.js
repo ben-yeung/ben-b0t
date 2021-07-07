@@ -15,7 +15,7 @@ var google = new Scraper({
 module.exports = {
     slash: true,
     description: "Search Google Images for anything! ... for the most part",
-    testOnly: true, //guild testing when true, set to false for global
+    testOnly: false, //guild testing when true, set to false for global
     cooldown: '60s',
     minArgs: 1,
     expectedArgs: '<query>', //note: have these all lowercased!
@@ -93,6 +93,10 @@ module.exports = {
             await b.clicker.fetch();
 
             if (b.clicker.user.id === author.id && db.get(`${b.clicker.user.id}.findquery`)) {
+                if (Date.now() - db.get(`${b.clicker.user.id}.findstarted`) >= 60000) { // Make buttons expire after 60 seconds
+                    await b.reply.defer()
+                    return
+                }
                 if (b.id === 'find_next') {
                     prevBtn.disabled = false
                     currInd++
