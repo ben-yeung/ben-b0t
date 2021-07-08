@@ -111,6 +111,7 @@ module.exports = {
 
                     let newVal = order.indexOf(newCard.substring(0, 1))
                     var outcome = ''
+                    db.push(`${player}.currcards`, newCard)
 
                     console.log(`${currVal} Card: ${randCard}`)
                     console.log(`${newVal} Card: ${newCard}`)
