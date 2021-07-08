@@ -188,7 +188,7 @@ module.exports = {
                                 .addField(`${forecast[3].day}  (${dConvert(forecast[3].date)})`, `> ${forecast[3].skytextday} \u200B ${skycodes[3]} \n High: **${forecast[3].high}°F**  |  Low: **${forecast[3].low}°F**  |  Precip: **${getPrecip(forecast[3])}**\n`)
                                 .addField(`${forecast[4].day}  (${dConvert(forecast[4].date)})`, `> ${forecast[4].skytextday} \u200B ${skycodes[4]} \n High: **${forecast[4].high}°F**  |  Low: **${forecast[4].low}°F**  |  Precip: **${getPrecip(forecast[4])}**\n`)
 
-                            message.edit({
+                            await b.message.edit({
                                 buttons: [backBtn],
                                 embed: foreEmb
                             })
@@ -209,7 +209,7 @@ module.exports = {
                                 .addField("Timezone", `GMT ${location.timezone}`, true)
                                 .addField("\u200B", '\u200B', true)
 
-                            message.edit({
+                            await b.message.edit({
                                 buttons: [nextBtn],
                                 embed: mainEmb
                             })

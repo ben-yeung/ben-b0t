@@ -108,7 +108,7 @@ module.exports = {
                         }
 
                         sourceBtn.setURL(chosenOneSRC)
-                        b.message.edit({
+                        await b.message.edit({
                             buttons: [prevBtn, nextBtn, sourceBtn, closeBtn],
                             embed: embed
                         })
@@ -131,16 +131,16 @@ module.exports = {
                         }
 
                         sourceBtn.setURL(chosenOneSRC)
-                        b.message.edit({
+                        await b.message.edit({
                             buttons: [prevBtn, nextBtn, sourceBtn, closeBtn],
                             embed: embed
                         })
 
                     } else if (b.id === 'find_close') {
-                        b.reply.defer();
                         b.message.delete() // Delete bot embed
-                        message.channel.messages.fetch(authorMessageID).then(message => message.delete()).catch(console.error) // Delete user command call
+                        await message.channel.messages.fetch(authorMessageID).then(message => message.delete()).catch(console.error) // Delete user command call
                         db.delete(`${author.id}.findstarted`)
+                        b.reply.defer();
                         return
                     }
                     b.reply.defer();
