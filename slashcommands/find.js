@@ -57,18 +57,18 @@ module.exports = {
 
         let nextBtn = new disbut.MessageButton()
             .setLabel('Next')
-            .setID('find_next')
+            .setID('slashfind_next')
             .setStyle('blurple')
 
         let prevBtn = new disbut.MessageButton()
             .setLabel('Back')
-            .setID('find_prev')
+            .setID('slashfind_prev')
             .setStyle('blurple')
             .setDisabled()
 
         let closeBtn = new disbut.MessageButton()
             .setLabel('Close')
-            .setID('find_close')
+            .setID('slashfind_close')
             .setStyle('red')
 
         let sourceBtn = new disbut.MessageButton()
@@ -97,7 +97,7 @@ module.exports = {
                     await b.reply.defer()
                     return
                 } else {
-                    if (b.id === 'find_next') {
+                    if (b.id === 'slashfind_next') {
                         prevBtn.disabled = false
                         currInd++
                         let chosenOne = db.get(`${b.clicker.user.id}.findquery`)[0][currInd].url
@@ -123,7 +123,7 @@ module.exports = {
                         })
                         b.reply.defer();
 
-                    } else if (b.id === 'find_prev') {
+                    } else if (b.id === 'slashfind_prev') {
                         nextBtn.disabled = false
                         currInd--
                         let chosenOne = db.get(`${b.clicker.user.id}.findquery`)[0][currInd].url
@@ -147,7 +147,7 @@ module.exports = {
                         })
                         b.reply.defer();
 
-                    } else if (b.id === 'find_close') {
+                    } else if (b.id === 'slashfind_close') {
                         b.message.delete() // Delete bot embed
                         await b.channel.messages.fetch(db.get(`${b.clicker.user.id}.findquery`)[1].id).then(m => {
                             m.delete()
