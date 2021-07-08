@@ -28,7 +28,7 @@ module.exports = {
         const [search] = args
         const author = interaction.member.user
 
-        if (db.get(`${author.id}.findquery`) && Date.now() - db.get(`${author.id}.findstarted`) <= 60000) {
+        if (db.get(`${author.id}.findstarted`) && Date.now() - db.get(`${author.id}.findstarted`) <= 60000) {
             return `Please close your most recent find command or wait ${ms(60000 - (Date.now()- db.get(`${author.id}.findstarted`)))} before starting another query!`
         } else {
             db.set(`${author.id}.findquery`, [])
@@ -152,7 +152,7 @@ module.exports = {
                         await b.channel.messages.fetch(db.get(`${b.clicker.user.id}.findquery`)[1].id).then(m => {
                             m.delete()
                         })
-                        db.delete(`${b.clicker.user.id}.findquery`)
+                        db.delete(`${b.clicker.user.id}.findstarted`)
                         b.reply.defer();
                     }
                 }
