@@ -1,7 +1,7 @@
 # ben-b0t
 [![Discord.js](https://img.shields.io/badge/discord.js-v12-blue?style=for-the-badge&logo=discord)](https://www.npmjs.com/package/discord.js)
-   [![npm](https://img.shields.io/badge/npm-v7.15.1-red?style=for-the-badge&logo=npm)](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
-   [![Node.js](https://img.shields.io/badge/Node.js-v16.3.0-brightgreen?style=for-the-badge&logo=nodejs)](https://dev.twitch.tv/docs/)
+   [![npm](https://img.shields.io/badge/npm-v6.14.13-red?style=for-the-badge&logo=npm)](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+   [![Node.js](https://img.shields.io/badge/Node.js-v14.17.3-brightgreen?style=for-the-badge&logo=nodejs)](https://dev.twitch.tv/docs/)
    [![Twitch API](https://img.shields.io/badge/Twitch%20API-Doc-blueviolet?style=for-the-badge&logo=twitch)](https://dev.twitch.tv/docs/)
 
 
@@ -47,8 +47,10 @@ Originally an single file full of if statements, this repo publication is a clea
 
 ## 🧰 Debugging / Notes
 * Note that some commands may use the `quick.db` package.
-  * Trying to deploy with services such as Heroku may not support long term storage that quick.db may need.
+  * Trying to deploy with services such as Heroku may not support long term storage.
+  * Heroku reruns daily so quick.db essentially restarts everyday.
   * Check with the provider FAQs to see if there is an alternative approach.
+  * One approach could be quickmongo but be sure to check for potential updated solutions.
 * The help command excludes some moderation / bot config commands from general public access; adjust as necessary.
 * Some moderation commands may become deprecated as Discord.js changes.
 * Helpful documentation that I referenced:
