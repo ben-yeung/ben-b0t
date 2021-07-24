@@ -8,9 +8,13 @@ const {
     MessageButton
 } = require('discord-buttons');
 
+// Note that heroku might not launch natively with Puppeteer. 
+// See https://elements.heroku.com/buildpacks/jontewks/puppeteer-heroku-buildpack
+
 var google = new Scraper({
     puppeteer: {
-        headless: true
+        headless: true,
+        args: ['--no-sandbox']
     },
     safe: true
 })
