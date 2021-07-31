@@ -31,8 +31,8 @@ module.exports = {
         const author = message.author
         const authorMessageID = message.id
 
-        if (db.get(`${author.id}.findstarted`) && Date.now() - db.get(`${author.id}.findstarted`) <= 60000) {
-            return message.reply(`Please close your most recent find command or wait ${ms(60000 - (Date.now()- db.get(`${author.id}.findstarted`)))} before starting another query!`)
+        if (db.get(`${author.id}.findstarted`) && Date.now() - db.get(`${author.id}.findstarted`) <= 10000) {
+            return message.reply(`Please close your most recent find command or wait ${ms(10000 - (Date.now()- db.get(`${author.id}.findstarted`)))} before starting another query!`)
         } else {
             db.set(`${author.id}.findstarted`, Date.now())
         }
