@@ -14,14 +14,15 @@ This project began Fall 2020 and was published to a public repo on 04/24/21
 Overall a very interactive project that allowed me to learn more about Data Structures, string manipulation, OAuth Flows, and parsing I/O.
 Originally an single file full of if statements, this repo publication is a cleaner and more organized version with a command handler.
 
-## 👾 Over 30+ Commands ranging from moderation, fun, and information.
+## 👾 Over 30+ Commands ranging from moderation, information, and fun.
 * 🚨 **Moderation**: `ban`, `kick`, `mute`, `modclear`, `clearb0t`, `shutdown`, and more
 * 🎊 **Fun**: `dog`, `cat`, `ascii`, `8ball`, `fliptext`, `ytsearch`, and more
 * 🔎 **Search**: `define`, `syn`, `translate`, `find [Google Image Search]`, and more
-* 📊 **Information**: `covid`, `weather`, `poll`, `uptime`, `remind`, `decide`, and more
+* 📊 **Information**: `covid`, `weather`, `poll`, `uptime`, `remind`, `decide`, `calc` and more
 * 💬 Log chat message streaks and those who willingly or accidentally break them!
-* 👽 Have fun trolling friends with image manipulation using Canvacord API
-
+* 👽 Have fun trolling friends with image manipulation using Canvacord API.
+* 📚 Quickly find images, definitions, translations, YouTube videos, and more with ease!
+* ⚖️ Create polls, generate random numbers, flip a coin, ask an 8ball for guidance, find random cat gifs.
 
 ## 📺 Twitch API Integration
 * Client Credentials OAuth Flow
@@ -54,6 +55,7 @@ Originally an single file full of if statements, this repo publication is a clea
   * One approach could be quickmongo but be sure to check for potential updated solutions.
 * The help command excludes some moderation / bot config commands from general public access; adjust as necessary.
 * Some moderation commands may become deprecated as Discord.js changes.
+* Some commands are tailored specifically with botconfig.json or specific server settings. This repo mainly serves as a way for other developers to find inspiration for new commands and improve the ones that are currently here.
 * Helpful documentation that I referenced:
   * [Discord Dev Docs on Slash Commands](https://discord.com/developers/docs/interactions/slash-commands)
   * [discord-buttons examples](https://github.com/discord-buttons/discord-buttons/blob/main/examples.md)
