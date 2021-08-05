@@ -23,7 +23,6 @@ client.mute = new Map(); // commands/mute.js and commands/unmute.js commands
 client.logs = new Map(); // commands/log.js command
 client.counter = new Map(); // Keeping track of message streaks in client.on('message'...)
 client.help = new Map(); // commands/help.js command
-client.cards = [] // commands/highlow.js command
 client.responses = new Map() // commands/menu.js command
 
 // Basic prefix command handler taking filenamems from ./commands/ and putting them into a Discord.Collection
@@ -204,20 +203,5 @@ client.createAPIMessage = async (interaction, content) => {
         files
     }
 }
-
-// Creates an array of card file names
-// Used in card games such as higher or lower
-fs.readdir(cardFolder, (err, files) => {
-    if (err) {
-        console.log(err)
-        return
-    }
-
-    files.forEach(file => {
-        // console.log(file);
-        client.cards.push(file)
-    });
-});
-
 
 client.login(botconfig.token);
