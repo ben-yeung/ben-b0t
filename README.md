@@ -24,13 +24,6 @@ Originally an single file full of if statements, this repo publication is a clea
 * 📚 Quickly find images, definitions, translations, YouTube videos, and more with ease!
 * ⚖️ Create polls, generate random numbers, flip a coin, ask an 8ball for guidance, find random cat gifs.
 
-## 📺 Twitch API Integration
-* Client Credentials OAuth Flow
-* Return information about a given streamer username with the `twitch [username]` command.
-* Options to setup a CronJob to automatically send Twitch clips of a given streamer to a Discord channel.
-  * Do note that this command is used and tested on a smaller channel.
-  * There is no spam prevention and thus any clips within the past day are sent automatically to a given channel.
-
 ## 🆕 Discord Button Integration
 *  With the beta release of Discord buttons set to launch with d.js V13, embeds incorporating reactions for user input now looks a lot cleaner!
 *  Using [discord-buttons](https://www.npmjs.com/package/discord-buttons), many commands that once relied on reactions now have a spiffy new look with better funcitonality.
@@ -45,6 +38,13 @@ Originally an single file full of if statements, this repo publication is a clea
   * https://github.com/AlexzanderFlores/WOKCommands/pull/108/files
   * This essentially made the WOKCommands handler only parse interactions of type 2 to prevent crashing when using other types of interactions (i.e. `interaction.type == 2`)
   * A very helpful package I found online was [patch-package](https://www.npmjs.com/package/patch-package) which allows you to edit these npm packages and when pushing to a host such as Heroku patch-package can modify these personal fixes when installing node_modules.
+
+## 📺 Twitch API Integration
+* Client Credentials OAuth Flow
+* Return information about a given streamer username with the `twitch [username]` command.
+* Options to setup a CronJob to automatically send Twitch clips of a given streamer to a Discord channel.
+  * Do note that this command is used and tested on a smaller channel.
+  * There is no spam prevention and thus any clips within the past day are sent automatically to a given channel.
 
 ## 🧰 Debugging / Notes
 * Note that some commands may use the `quick.db` package.
