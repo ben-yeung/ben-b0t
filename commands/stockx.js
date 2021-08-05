@@ -34,7 +34,10 @@ module.exports = {
                     limit: 10
                 });
 
-                if (products.length == 0) return message.reply("Could not find results on StockX for that search.")
+                if (products.length == 0) {
+                    db.delete(`${author.id}.findstarted`)
+                    return message.reply("Could not find results on StockX for that search.")
+                }
 
                 let currInd = 0
                 let stockXName = products[currInd].name
