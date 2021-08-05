@@ -105,8 +105,7 @@ module.exports = {
                             currInd++
                             let stockXName = products[currInd].name
                             let stockXImage = products[currInd].media.imageUrl
-                            let stockXURL = `
-                                    https: //stockx.com/${products[currInd].url}`
+                            let stockXURL = `https://stockx.com/${products[currInd].url}`
                             let retail = `$${products[currInd].price}`
                             let highBid = `$${products[currInd].highest_bid}`
                             let lowAsk = `$${products[currInd].lowest_ask}`
