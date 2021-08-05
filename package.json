@@ -19,6 +19,7 @@
     "node-fetch": "^2.6.1",
     "node-superfetch": "^0.1.11",
     "novelcovid": "^2.2.0",
+    "patch-package": "^6.4.7",
     "quick.db": "^7.1.3",
     "request": "^2.88.2",
     "stockx-api": "^1.1.0",
