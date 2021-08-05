@@ -38,7 +38,6 @@ Originally an single file full of if statements, this repo publication is a clea
 
 ## 🆕 Slash Command Integration
 * The usage of slash commands and its integration over prefix commands stems from the ease of access for both the developer and the user.
-* Slash commands provide a layout of required/optional arguments for specific commands, reducing the vagueness that comes with trying to type a full command out.
 * This is especially noticeable for longer commands with multiple arguments where it is easy to mess up the order of inputs.
 * On the developer side, slash commands neatly organize and store arguments in a given order so developers do not have to parse raw input and decipher which inputs belong to a given argument.
 * As custom slash commands are still in beta, [WOKCommands](https://docs.wornoffkeys.com/commands/slash-commands) provides an awesome slash command handler to do the heavy lifting.
