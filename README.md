@@ -44,6 +44,7 @@ Originally an single file full of if statements, this repo publication is a clea
 * Do note that in order to get discord-buttons integration working smoothly I had to edit WOKCommands Slash Command handler source with this PR:
   * https://github.com/AlexzanderFlores/WOKCommands/pull/108/files
   * This essentially made the WOKCommands handler only parse interactions of type 2 to prevent crashing when using other types of interactions (i.e. `interaction.type == 2`)
+  * A very helpful package I found online was [patch-package](https://www.npmjs.com/package/patch-package) which allows you to edit these npm packages and when pushing to a host such as Heroku patch-package can modify these personal fixes when installing node_modules.
 
 ## 🧰 Debugging / Notes
 * Note that some commands may use the `quick.db` package.
@@ -59,6 +60,9 @@ Originally an single file full of if statements, this repo publication is a clea
   * [WOKCommands Command Properties](https://docs.wornoffkeys.com/commands/commands)
   * [WOKCommands Slash Commands Docs](https://docs.wornoffkeys.com/commands/slash-commands)
   * [discord.js-slash-commands.md by advaith1](https://gist.github.com/advaith1/287e69c3347ef5165c0dbde00aa305d2)
+* [patch-package](https://www.npmjs.com/package/patch-package) edits:
+  * stockx-api/index.js require path fix to point to './src/classes/stockx.js'
+  * wokcommands/dist/SlashCommands.js (see PR linked above)
 
 ## 🛠 Dependencies Include:
 * [canvacord](https://canvacord.js.org/#/)
