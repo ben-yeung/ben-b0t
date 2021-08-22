@@ -26,14 +26,14 @@ module.exports = {
         bot.help.delete("delete")
 
         var pages = {};
-        var c = 1;
+        var c = 0;
         pages[c] = [];
 
         const comms = Array.from(bot.help.values()).sort();
         var charCount = 0; //each embed can only have 1024 chars max
 
         for (var i = 0; i < comms.length; i++) {
-            if (charCount > 935) { //length of embed chars left accounting for title/desc
+            if (charCount > 400) { //Char limit for each page
                 c += 1;
                 pages[c] = [];
                 charCount = 0;
@@ -42,11 +42,13 @@ module.exports = {
             charCount += comms[i].length
         }
 
+        console.log(pages);
+
         var embeds = [];
         for (var i = 0; i < Object.keys(pages).length; i++) {
             let embed = new Discord.MessageEmbed()
                 .setColor(colours.red_light)
-                .setTitle(`Need assistance? | Page ${i}`)
+                .setTitle(`Need assistance? | Page ${i + 1}`)
                 .setDescription('Use any of the commands below with prefix: ? \n')
                 .addField('Active Commands: ', pages[i].join("\n\n"))
                 .setFooter("Buttons will stop working after 1 minute.")
@@ -65,7 +67,7 @@ module.exports = {
             .setStyle('blurple')
             .setDisabled()
 
-        var currInd = 1;
+        var currInd = 0;
         const author = message.author;
 
         message.react('❤️');
@@ -85,9 +87,9 @@ module.exports = {
                 if (b.id === 'find_next') {
                     prevBtn.disabled = false
                     currInd++
-                    let embed = embeds[currInd - 1]
+                    let embed = embeds[currInd]
 
-                    if (currInd >= img_res.length) {
+                    if (currInd + 1 == embeds.length) {
                         nextBtn.disabled = true
                     } else {
                         nextBtn.disabled = false
@@ -100,19 +102,9 @@ module.exports = {
                 } else if (b.id === 'find_prev') {
                     nextBtn.disabled = false
                     currInd--
-                    let embed = embeds[currInd - 1]
+                    let embed = embeds[currInd]
 
-                    if (currInd >= img_res.length) {
-                        nextBtn.disabled = true
-                    } else {
-                        nextBtn.disabled = false
-                    }
-                    await b.message.edit({
-                        buttons: [prevBtn, nextBtn],
-                        embed: embed
-                    })
-
-                    if (currInd === 1) {
+                    if (currInd === 0) {
                         prevBtn.disabled = true
                     }
 

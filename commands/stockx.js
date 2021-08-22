@@ -20,10 +20,10 @@ module.exports = {
         const author = message.author
         const authorMessageID = message.id
 
-        if (db.get(`${author.id}.findstarted`) && Date.now() - db.get(`${author.id}.findstarted`) <= 15000) {
-            return message.reply(`Please close your most recent find command or wait ${ms(15000 - (Date.now()- db.get(`${author.id}.findstarted`)))} before starting another query!`)
+        if (db.get(`${author.id}.stockxstarted`) && Date.now() - db.get(`${author.id}.stockxstarted`) <= 15000) {
+            return message.reply(`Please close your most recent stockx command or wait ${ms(15000 - (Date.now()- db.get(`${author.id}.stockxstarted`)))} before starting another query!`)
         } else {
-            db.set(`${author.id}.findstarted`, Date.now())
+            db.set(`${author.id}.stockxstarted`, Date.now())
         }
 
         const intros = ['Searching StockX for', 'Scouring StockX for', 'Researching scholarly articles on StockX for', 'Paying resell to find', 'Checking a StockX picture book for', 'Feeling resell lucky? Looking for', 'Hey Alexa, look on StockX for', 'Hey Siri, search on StockX for', 'Asking a reseller for']
@@ -35,7 +35,7 @@ module.exports = {
                 });
 
                 if (products.length == 0) {
-                    db.delete(`${author.id}.findstarted`)
+                    db.delete(`${author.id}.stockxstarted`)
                     return message.reply("Could not find results on StockX for that search.")
                 }
 
@@ -96,7 +96,7 @@ module.exports = {
                 }).then(async (message) => {
                     if (currInd >= products.length) return
 
-                    const collector = message.createButtonCollector((button) => button.clicker.user.id === author.id && Date.now() - db.get(`${button.clicker.user.id}.findstarted`) < 15000, {
+                    const collector = message.createButtonCollector((button) => button.clicker.user.id === author.id && Date.now() - db.get(`${button.clicker.user.id}.stockxstarted`) < 15000, {
                         time: 60000
                     })
 
@@ -190,7 +190,7 @@ module.exports = {
                         } else if (b.id === 'find_close') {
                             b.message.delete() // Delete bot embed
                             await message.channel.messages.fetch(authorMessageID).then(message => message.delete()).catch(console.error) // Delete user command call
-                            db.delete(`${author.id}.findstarted`)
+                            db.delete(`${author.id}.stockxstarted`)
                             b.reply.defer();
                             return
                         }
