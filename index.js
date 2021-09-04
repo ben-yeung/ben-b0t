@@ -122,6 +122,14 @@ client.on('message', async message => {
             cmd = 'changemymind'
             break;
 
+        case 'rt':
+            cmd = 'rottentomato'
+            break;
+
+        case 'tomato':
+            cmd = 'rottentomato'
+            break;
+
         default:
             break;
     }
