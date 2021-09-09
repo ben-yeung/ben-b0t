@@ -29,6 +29,8 @@ module.exports = {
                 if (message.content[0] == '?') return message.reply("I couldn't find anything :(")
                 else return
             }
+            const author = message.author
+            const authorMessageID = message.id
 
             let currInd = 0
             let desc = results[currInd].snippet
@@ -38,7 +40,7 @@ module.exports = {
                 .setTitle(`${search}`)
                 .setDescription(`${desc}`)
                 .setColor(colours.blue_light)
-                .setFooter("Buttons will stop working after 1 minute | Page ${currInd + 1}")
+                .setFooter(`Page ${currInd + 1}`)
                 .setTimestamp()
 
             let nextBtn = new MessageButton()
@@ -85,7 +87,7 @@ module.exports = {
                             .setTitle(`${search}`)
                             .setDescription(`${desc}`)
                             .setColor(colours.blue_light)
-                            .setFooter("Buttons will stop working after 1 minute | Page ${currInd + 1}")
+                            .setFooter(`Page ${currInd + 1}`)
                             .setTimestamp()
 
                         if (currInd == results.length) {
@@ -110,7 +112,7 @@ module.exports = {
                             .setTitle(`${search}`)
                             .setDescription(`${desc}`)
                             .setColor(colours.blue_light)
-                            .setFooter("Buttons will stop working after 1 minute | Page ${currInd + 1}")
+                            .setFooter(`Page ${currInd + 1}`)
                             .setTimestamp()
 
                         if (currInd === 0) {
