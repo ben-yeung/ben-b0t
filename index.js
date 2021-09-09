@@ -100,6 +100,15 @@ client.on('message', async message => {
         }
     }
 
+    const wds = ['a', 'an']; // words to check for after "wtf is" to redirect to google command
+    if (messageArray.indexOf("wtf") > -1 && messageArray.length - messageArray.indexOf("wtf") > 2) {
+        if (messageArray[messageArray.indexOf("wtf") + 1] == 'is' && wds.includes(messageArray[messageArray.indexOf("wtf") + 2])) {
+            let query = messageArray.slice(messageArray.indexOf("wtf") + 2);
+            client.commands.get("google").execute(client, message, query);
+            return
+        }
+    }
+
     if (!hasPrefix) return; //ignore if message does not start with prefix
 
     // some general parsing, splitting the command from its arguments
