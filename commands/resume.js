@@ -4,12 +4,15 @@ const colours = require("../colours.json");
 
 // Regular prefix command handling
 module.exports = {
-    name: "",
-    description: "",
-    usage: "?",
+    name: "resume",
+    description: "Resumes the stream if a current song is paused",
+    usage: "?resume",
     execute(client, message, args) {
 
+        if (!message.member.voice.channel) return message.reply("You must be in a voice channel to use this command.")
 
+        client.distube.resume(message)
+        message.reply("has resumed the current song.")
 
     }
 }

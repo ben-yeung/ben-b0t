@@ -50,6 +50,8 @@ for (const file of commandFiles) {
 client.distube = new distube(client, {
     searchSongs: false,
     emitNewSongOnly: true,
+    leaveOnFinish: true,
+    leaveOnEmpty: true
 })
 client.distube
     .on('playSong', (queue, song) =>
@@ -60,7 +62,7 @@ client.distube
         ))
     .on('addSong', (queue, song) =>
         queue.channel.send(
-            `Added \`${song.songs[song.songs.length - 1].name} - \`${song.songs[song.songs.length - 1].formattedDuration}\` to the queue by ${song.songs[song.songs.length - 1].user}`,
+            `${song.songs[song.songs.length - 1].user} added \`${song.songs[song.songs.length - 1].name}\` - \`${song.songs[song.songs.length - 1].formattedDuration}\` to the queue.`,
         ))
     .on('error', (queue, e) => {
         console.error(e)

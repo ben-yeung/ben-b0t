@@ -19,7 +19,10 @@ module.exports = {
             client.distube.resume(message)
         } else {
             const query = args.join(" ")
-            await client.distube.play(message, query)
+            message.channel.send(`Searching YouTube <a:working:821570743329882172>`).then(async (messageNew) => {
+                await client.distube.play(message, query)
+                messageNew.edit(' ­')
+            })
 
         }
 
