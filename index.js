@@ -11,6 +11,8 @@ const WOKCommands = require('wokcommands') // Used to implement slash command ha
 require('discord-buttons')(client)
 require("./util/eventHandler")(client)
 
+const distube = require('distube')
+
 let guildID = botconfig.GUILD_ID
 
 const fs = require('fs');
@@ -43,6 +45,26 @@ for (const file of commandFiles) {
 //     client.commands.get("twitchclipsauto").execute(client, "", []);
 // });
 // scheduleClipCheck.start()
+
+// See example & docs here: https://distube.js.org/guide/example-bot.html 
+client.distube = new distube(client, {
+    searchSongs: false,
+    emitNewSongOnly: true,
+})
+client.distube
+    .on('playSong', (queue, song) =>
+        queue.channel.send(
+            `Playing \`${song.songs[0].name}\` - \`${
+				song.songs[0].formattedDuration
+			}\`\nRequested by: ${song.songs[0].user}\n`,
+        ))
+    .on('addSong', (queue, song) =>
+        queue.channel.send(
+            `Added \`${song.songs[song.songs.length - 1].name} - \`${song.songs[song.songs.length - 1].formattedDuration}\` to the queue by ${song.songs[song.songs.length - 1].user}`,
+        ))
+    .on('error', (queue, e) => {
+        console.error(e)
+    })
 
 client.on('ready', async () => {
     console.log(`${client.user.username} is online`)
@@ -103,7 +125,7 @@ client.on('message', async message => {
     const wds = ['a', 'an']; // words to check for after "wtf is" to redirect to google command
     if (messageArray.indexOf("wtf") > -1 && messageArray.length - messageArray.indexOf("wtf") > 2) {
         if (messageArray[messageArray.indexOf("wtf") + 1] == 'is' && wds.includes(messageArray[messageArray.indexOf("wtf") + 2])) {
-            let query = messageArray.slice(messageArray.indexOf("wtf") + 2);
+            let query = messageArray.slice(messageArray.indexOf("wtf") + 3);
             client.commands.get("google").execute(client, message, query);
             return
         }
@@ -118,7 +140,7 @@ client.on('message', async message => {
         return el != '';
     })
 
-    switch (cmd) { //handler for command shortcuts
+    switch (cmd) { //handler for command aliases
         case 'tr':
             cmd = 'translate';
             break;
@@ -137,6 +159,10 @@ client.on('message', async message => {
 
         case 'tomato':
             cmd = 'rottentomato'
+            break;
+
+        case 'stop':
+            cmd = 'leave'
             break;
 
         default:
