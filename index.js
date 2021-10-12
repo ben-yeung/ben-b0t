@@ -5,7 +5,8 @@ const {
 const botconfig = require('./botconfig.json');
 const cron = require("cron");
 const client = new Discord.Client({
-    disableEveryone: true
+    disableEveryone: true,
+    intents: [Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES, Discord.Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS, Discord.Intents.FLAGS.GUILD_INTERACTIONS, Discord.Intents.FLAGS.GUILD_MEMBERS]
 });
 const WOKCommands = require('wokcommands') // Used to implement slash command handler
 require('discord-buttons')(client)
@@ -92,6 +93,10 @@ client.on('ready', async () => {
     // See https://discord.com/developers/docs/interactions/slash-commands for more info
 })
 
+client.on('threadCreate', async thread => {
+    console.log(thread)
+    thread.join()
+})
 
 client.on('message', async message => {
     if (message.author.bot || message.channel.type === 'dm') return; //ignore DMs and bot messages
