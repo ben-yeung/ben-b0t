@@ -5,8 +5,9 @@ var Scraper = require('images-scraper');
 const db = require('quick.db');
 const ms = require("ms");
 const {
-    MessageButton
-} = require('discord-buttons');
+    MessageButton,
+    MessageActionRow
+} = require('discord.js');
 
 // Note that heroku might not launch natively with Puppeteer. 
 // See https://elements.heroku.com/buildpacks/jontewks/puppeteer-heroku-buildpack
@@ -54,45 +55,54 @@ module.exports = {
                 .setDescription(`Asker: <@${author.id}> \n`)
                 .setColor(colours.green_light)
                 .setImage(chosenOne)
-                .setFooter("Buttons will stop working after 1 minute.")
+                .setFooter("Buttons will stop working after 2 minutes.")
                 .setTimestamp()
 
-            let nextBtn = new MessageButton()
+            const nextBtn = new MessageButton()
                 .setLabel('Next')
-                .setID('find_next')
-                .setStyle('blurple')
+                .setCustomId('find_next')
+                .setStyle('PRIMARY')
 
-            let prevBtn = new MessageButton()
-                .setLabel('Back')
-                .setID('find_prev')
-                .setStyle('blurple')
-                .setDisabled()
+            const prevBtn = new MessageButton()
+                .setLabel('Prev')
+                .setCustomId('find_prev')
+                .setStyle('PRIMARY')
 
-            let closeBtn = new MessageButton()
+            const closeBtn = new MessageButton()
                 .setLabel('Close')
-                .setID('find_close')
-                .setStyle('red')
+                .setCustomId('find_close')
+                .setStyle('DANGER')
 
-            let sourceBtn = new MessageButton()
+            const sourceBtn = new MessageButton()
                 .setLabel('Source')
                 .setURL(chosenOneSRC)
-                .setStyle('url')
+                .setStyle('LINK')
+
+            const row = new MessageActionRow().addComponents(
+                nextBtn, prevBtn, sourceBtn, closeBtn
+            )
 
             message.edit(' ­') //invisible char to make embed edit cleaner
             message.edit({
-                buttons: [prevBtn, nextBtn, sourceBtn, closeBtn],
-                embed: embed
+                components: [row],
+                embeds: [embed]
             }).then(async (message) => {
                 if (currInd >= img_res.length) return
 
-                const collector = message.createButtonCollector((button) => button.clicker.user.id === author.id && Date.now() - db.get(`${button.clicker.user.id}.findstarted`) < 60000, {
-                    time: 60000
+                const filter = (btn) => {
+                    return author.id === btn.user.id
+                }
+
+                const collector = message.channel.createMessageComponentCollector({
+                    filter,
+                    time: 120000
                 })
 
-                collector.on('collect', async (b) => {
-                    // console.log(b.id)
+                collector.on('collect', async (ButtonInteraction) => {
+                    console.log(ButtonInteraction.customId)
+                    const id = ButtonInteraction.customId
 
-                    if (b.id === 'find_next') {
+                    if (id === 'find_next') {
                         prevBtn.disabled = false
                         currInd++
                         let chosenOne = img_res[currInd].url
@@ -102,7 +112,7 @@ module.exports = {
                             .setDescription(`Asker: <@${author.id}> \n`)
                             .setColor(colours.green_light)
                             .setImage(chosenOne)
-                            .setFooter("Buttons will stop working after 1 minute.")
+                            .setFooter("Buttons will stop working after 2 minutes.")
                             .setTimestamp()
 
                         if (currInd == 9 || currInd == img_res.length) {
@@ -112,12 +122,13 @@ module.exports = {
                         }
 
                         sourceBtn.setURL(chosenOneSRC)
-                        await b.message.edit({
-                            buttons: [prevBtn, nextBtn, sourceBtn, closeBtn],
-                            embed: embed
+                        await ButtonInteraction.message.edit({
+                            components: [row],
+                            embeds: [embed]
                         })
+                        ButtonInteraction.deferUpdate()
 
-                    } else if (b.id === 'find_prev') {
+                    } else if (id === 'find_prev') {
                         nextBtn.disabled = false
                         currInd--
                         let chosenOne = img_res[currInd].url
@@ -127,7 +138,7 @@ module.exports = {
                             .setDescription(`Asker: <@${author.id}> \n`)
                             .setColor(colours.green_light)
                             .setImage(chosenOne)
-                            .setFooter("Buttons will stop working after 1 minute.")
+                            .setFooter("Buttons will stop working after 2 minutes.")
                             .setTimestamp()
 
                         if (currInd === 0) {
@@ -135,19 +146,18 @@ module.exports = {
                         }
 
                         sourceBtn.setURL(chosenOneSRC)
-                        await b.message.edit({
-                            buttons: [prevBtn, nextBtn, sourceBtn, closeBtn],
-                            embed: embed
+                        await ButtonInteraction.message.edit({
+                            components: [row],
+                            embeds: [embed]
                         })
+                        ButtonInteraction.deferUpdate()
 
-                    } else if (b.id === 'find_close') {
-                        b.message.delete() // Delete bot embed
+                    } else if (id === 'find_close') {
+                        ButtonInteraction.message.delete() // Delete bot embed
                         await message.channel.messages.fetch(authorMessageID).then(message => message.delete()).catch(console.error) // Delete user command call
                         db.delete(`${author.id}.findstarted`)
-                        b.reply.defer();
                         return
                     }
-                    b.reply.defer();
 
                 })
 
