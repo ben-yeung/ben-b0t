@@ -78,6 +78,7 @@ module.exports = {
                 .setURL(chosenOneSRC)
                 .setStyle('LINK')
 
+            prevBtn.disabled = true
             const row = new MessageActionRow().addComponents(
                 nextBtn, prevBtn, sourceBtn, closeBtn
             )
@@ -99,7 +100,7 @@ module.exports = {
                 })
 
                 collector.on('collect', async (ButtonInteraction) => {
-                    console.log(ButtonInteraction.customId)
+                    //console.log(ButtonInteraction.customId)
                     const id = ButtonInteraction.customId
 
                     if (id === 'find_next') {
@@ -122,11 +123,13 @@ module.exports = {
                         }
 
                         sourceBtn.setURL(chosenOneSRC)
+                        const row = new MessageActionRow().setComponents(
+                            nextBtn, prevBtn, sourceBtn, closeBtn
+                        )
                         await ButtonInteraction.message.edit({
                             components: [row],
                             embeds: [embed]
                         })
-                        ButtonInteraction.deferUpdate()
 
                     } else if (id === 'find_prev') {
                         nextBtn.disabled = false
@@ -146,11 +149,13 @@ module.exports = {
                         }
 
                         sourceBtn.setURL(chosenOneSRC)
+                        const row = new MessageActionRow().setComponents(
+                            nextBtn, prevBtn, sourceBtn, closeBtn
+                        )
                         await ButtonInteraction.message.edit({
                             components: [row],
                             embeds: [embed]
                         })
-                        ButtonInteraction.deferUpdate()
 
                     } else if (id === 'find_close') {
                         ButtonInteraction.message.delete() // Delete bot embed
@@ -158,6 +163,8 @@ module.exports = {
                         db.delete(`${author.id}.findstarted`)
                         return
                     }
+
+                    ButtonInteraction.deferUpdate()
 
                 })
 

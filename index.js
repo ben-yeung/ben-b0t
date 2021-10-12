@@ -1,15 +1,18 @@
 const Discord = require('discord.js');
 const {
+    Client,
+    Intents
+} = require('discord.js')
+const {
     MessageAttachment
 } = require('discord.js');
 const botconfig = require('./botconfig.json');
 const cron = require("cron");
-const client = new Discord.Client({
-    disableEveryone: true,
-    intents: [Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES, Discord.Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS, Discord.Intents.FLAGS.GUILD_INTERACTIONS, Discord.Intents.FLAGS.GUILD_MEMBERS]
+const allIntents = new Discord.Intents(32767);
+const client = new Client({
+    intents: [allIntents]
 });
 const WOKCommands = require('wokcommands') // Used to implement slash command handler
-require('discord-buttons')(client)
 require("./util/eventHandler")(client)
 
 const distube = require('distube')
@@ -97,6 +100,14 @@ client.on('threadCreate', async thread => {
     console.log(thread)
     thread.join()
 })
+
+// client.on('interactionCreate', async (interaction) => {
+//     if (interaction.isButton()) {
+//         interaction.reply({
+//             content: `${interaction.user.tag} clicked button`
+//         })
+//     }
+// })
 
 client.on('message', async message => {
     if (message.author.bot || message.channel.type === 'dm') return; //ignore DMs and bot messages

@@ -3,8 +3,9 @@ const botconfig = require("../botconfig.json");
 const colours = require("../colours.json");
 const googleIt = require("google-it");
 const {
-    MessageButton
-} = require('discord-buttons');
+    MessageButton,
+    MessageActionRow
+} = require('discord.js');
 
 // Regular prefix command handling
 module.exports = {
@@ -43,41 +44,52 @@ module.exports = {
                 .setFooter(`Page ${currInd + 1}`)
                 .setTimestamp()
 
-            let nextBtn = new MessageButton()
+            const nextBtn = new MessageButton()
                 .setLabel('Next')
-                .setID('find_next')
-                .setStyle('blurple')
+                .setCustomId('google_next')
+                .setStyle('PRIMARY')
 
-            let prevBtn = new MessageButton()
-                .setLabel('Back')
-                .setID('find_prev')
-                .setStyle('blurple')
-                .setDisabled()
+            const prevBtn = new MessageButton()
+                .setLabel('Prev')
+                .setCustomId('google_prev')
+                .setStyle('PRIMARY')
 
-            let closeBtn = new MessageButton()
+            const closeBtn = new MessageButton()
                 .setLabel('Close')
-                .setID('find_close')
-                .setStyle('red')
+                .setCustomId('google_close')
+                .setStyle('DANGER')
 
-            let sourceBtn = new MessageButton()
+            const sourceBtn = new MessageButton()
                 .setLabel('Source')
                 .setURL(chosenOneSRC)
-                .setStyle('url')
+                .setStyle('LINK')
+
+            prevBtn.disabled = true
+
+            const row = new MessageActionRow().addComponents(
+                nextBtn, prevBtn, sourceBtn, closeBtn
+            )
 
             message.channel.send({
-                buttons: [prevBtn, nextBtn, sourceBtn, closeBtn],
-                embed: embed
+                components: [row],
+                embeds: [embed]
             }).then(async (message) => {
                 if (currInd >= results.length) return
 
-                const collector = message.createButtonCollector((button) => button.clicker.user.id === author.id, {
-                    time: 60000
+                const filter = (btn) => {
+                    return author.id === btn.user.id
+                }
+
+                const collector = message.channel.createMessageComponentCollector({
+                    filter,
+                    time: 120000
                 })
 
-                collector.on('collect', async (b) => {
-                    // console.log(b.id)
+                collector.on('collect', async (ButtonInteraction) => {
+                    //console.log(ButtonInteraction.customId)
+                    const id = ButtonInteraction.customId
 
-                    if (b.id === 'find_next') {
+                    if (id === 'google_next') {
                         prevBtn.disabled = false
                         currInd++
                         let desc = results[currInd].snippet
@@ -90,19 +102,23 @@ module.exports = {
                             .setFooter(`Page ${currInd + 1}`)
                             .setTimestamp()
 
-                        if (currInd == results.length) {
+                        if (currInd + 1 == results.length) {
                             nextBtn.disabled = true
                         } else {
                             nextBtn.disabled = false
                         }
-
                         sourceBtn.setURL(chosenOneSRC)
-                        await b.message.edit({
-                            buttons: [prevBtn, nextBtn, sourceBtn, closeBtn],
-                            embed: embed
+
+                        const row = new MessageActionRow().setComponents(
+                            nextBtn, prevBtn, sourceBtn, closeBtn
+                        )
+
+                        await ButtonInteraction.message.edit({
+                            components: [row],
+                            embeds: [embed]
                         })
 
-                    } else if (b.id === 'find_prev') {
+                    } else if (id === 'google_prev') {
                         nextBtn.disabled = false
                         currInd--
                         let desc = results[currInd].snippet
@@ -118,27 +134,29 @@ module.exports = {
                         if (currInd === 0) {
                             prevBtn.disabled = true
                         }
-
                         sourceBtn.setURL(chosenOneSRC)
-                        await b.message.edit({
-                            buttons: [prevBtn, nextBtn, sourceBtn, closeBtn],
-                            embed: embed
+
+                        const row = new MessageActionRow().setComponents(
+                            nextBtn, prevBtn, sourceBtn, closeBtn
+                        )
+
+                        await ButtonInteraction.message.edit({
+                            components: [row],
+                            embeds: [embed]
                         })
 
-                    } else if (b.id === 'find_close') {
-                        b.message.delete() // Delete bot embed
+                    } else if (id === 'google_close') {
+                        ButtonInteraction.message.delete() // Delete bot embed
                         await message.channel.messages.fetch(authorMessageID).then(message => message.delete()).catch(console.error) // Delete user command call
                         db.delete(`${author.id}.findstarted`)
-                        b.reply.defer();
                         return
                     }
-                    b.reply.defer();
+
+                    ButtonInteraction.deferUpdate()
 
                 })
 
             })
-
-
 
         }).catch(e => {
             console.log(e)

@@ -2,8 +2,9 @@ const Discord = require("discord.js")
 const botconfig = require("../botconfig.json");
 const colours = require("../colours.json");
 const {
-    MessageButton
-} = require('discord-buttons');
+    MessageButton,
+    MessageActionRow
+} = require('discord.js');
 
 module.exports = {
     name: "help",
@@ -42,7 +43,7 @@ module.exports = {
             charCount += comms[i].length
         }
 
-        console.log(pages);
+        //console.log(pages);
 
         var embeds = [];
         for (var i = 0; i < Object.keys(pages).length; i++) {
@@ -56,35 +57,43 @@ module.exports = {
             embeds.push(embed);
         }
 
-        let nextBtn = new MessageButton()
+        const nextBtn = new MessageButton()
             .setLabel('Next')
-            .setID('find_next')
-            .setStyle('blurple')
+            .setCustomId('help_next')
+            .setStyle('PRIMARY')
 
-        let prevBtn = new MessageButton()
-            .setLabel('Back')
-            .setID('find_prev')
-            .setStyle('blurple')
-            .setDisabled()
+        const prevBtn = new MessageButton()
+            .setLabel('Prev')
+            .setCustomId('help_prev')
+            .setStyle('PRIMARY')
+
+        const row = new MessageActionRow().addComponents(
+            nextBtn, prevBtn
+        )
 
         var currInd = 0;
         const author = message.author;
 
         message.react('❤️');
         message.author.send({
-            buttons: [prevBtn, nextBtn],
-            embed: embeds[0]
+            components: [row],
+            embeds: [embeds[0]]
         }).then(async (message) => {
             if (currInd >= embeds.length) return
 
-            const collector = message.createButtonCollector((button) => button.clicker.user.id === author.id, {
-                time: 60000
+            const filter = (btn) => {
+                return author.id === btn.user.id
+            }
+
+            const collector = message.channel.createMessageComponentCollector({
+                filter,
+                time: 120000
             })
 
-            collector.on('collect', async (b) => {
-                // console.log(b.id)
-
-                if (b.id === 'find_next') {
+            collector.on('collect', async (ButtonInteraction) => {
+                //console.log(ButtonInteraction.customId)
+                const id = ButtonInteraction.customId
+                if (id === 'help_next') {
                     prevBtn.disabled = false
                     currInd++
                     let embed = embeds[currInd]
@@ -94,12 +103,15 @@ module.exports = {
                     } else {
                         nextBtn.disabled = false
                     }
-                    await b.message.edit({
-                        buttons: [prevBtn, nextBtn],
-                        embed: embed
+                    const row = new MessageActionRow().setComponents(
+                        nextBtn, prevBtn
+                    )
+                    await ButtonInteraction.message.edit({
+                        components: [row],
+                        embeds: [embed]
                     })
 
-                } else if (b.id === 'find_prev') {
+                } else if (id === 'help_prev') {
                     nextBtn.disabled = false
                     currInd--
                     let embed = embeds[currInd]
@@ -107,18 +119,18 @@ module.exports = {
                     if (currInd === 0) {
                         prevBtn.disabled = true
                     }
-
-                    await b.message.edit({
-                        buttons: [prevBtn, nextBtn],
-                        embed: embed
+                    const row = new MessageActionRow().setComponents(
+                        nextBtn, prevBtn
+                    )
+                    await ButtonInteraction.message.edit({
+                        components: [row],
+                        embeds: [embed]
                     })
 
                 }
-                b.reply.defer();
 
+                ButtonInteraction.deferUpdate()
             })
-
-        });
-
+        })
     }
 }

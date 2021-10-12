@@ -3,8 +3,9 @@ const botconfig = require("../botconfig.json");
 const colours = require("../colours.json");
 const fetchRT = require("rottentomatoes-data")
 const {
-    MessageButton
-} = require('discord-buttons');
+    MessageButton,
+    MessageActionRow
+} = require('discord.js');
 const {
     set
 } = require("quick.db");
@@ -53,15 +54,19 @@ module.exports = {
                     .setFooter('Rotten Tomatoes')
                     .setTimestamp()
 
-                let sourceBtn = new MessageButton()
+                const sourceBtn = new MessageButton()
                     .setLabel('Source')
                     .setURL(url)
-                    .setStyle('url')
+                    .setStyle('LINK')
+
+                const row = new MessageActionRow().addComponents(
+                    nextBtn, prevBtn, sourceBtn, closeBtn
+                )
 
                 message.edit(' ­') //invisible char to make embed edit cleaner
                 message.edit({
-                    embed: embed,
-                    buttons: [sourceBtn]
+                    components: [row],
+                    embeds: [embed]
                 });
 
             } else {
