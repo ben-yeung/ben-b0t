@@ -25,15 +25,17 @@ Originally an single file full of if statements, this repo publication is a clea
 * ⚖️ Create polls, generate random numbers, flip a coin, ask an 8ball for guidance, find random cat gifs.
 
 ## 🆕 Discord Button Integration
-*  With the beta release of Discord buttons set to launch with d.js V13, embeds incorporating reactions for user input now looks a lot cleaner!
-*  Using [discord-buttons](https://www.npmjs.com/package/discord-buttons), many commands that once relied on reactions now have a spiffy new look with better funcitonality.
+*  [discord-buttons](https://www.npmjs.com/package/discord-buttons) is now deprecated along with Discord.js v12
+*  With Discord.js v13 buttons are now fully operational and implemented here!
 *  Instead of waiting for the bot to add reactions (embed pagination for example), these buttons can be instantly accessed and edited across several message edits!
 
-## 🆕 Slash Command Integration
+## 🆕 Slash Command Integration (WIP to merge to Discord v13)
 * The usage of slash commands and its integration over prefix commands stems from the ease of access for both the developer and the user.
 * This is especially noticeable for longer commands with multiple arguments where it is easy to mess up the order of inputs.
 * On the developer side, slash commands neatly organize and store arguments in a given order so developers do not have to parse raw input and decipher which inputs belong to a given argument.
 * As custom slash commands are still in beta, [WOKCommands](https://docs.wornoffkeys.com/commands/slash-commands) provides an awesome slash command handler to do the heavy lifting.
+
+### Items below are no longer an issue due to the v12 to v13 Discord.js update but patch-package is still very helpful
 * Do note that in order to get discord-buttons integration working smoothly I had to edit WOKCommands Slash Command handler source with this PR:
   * https://github.com/AlexzanderFlores/WOKCommands/pull/108/files
   * This essentially made the WOKCommands handler only parse interactions of type 2 to prevent crashing when using other types of interactions (i.e. `interaction.type == 2`)
@@ -57,10 +59,8 @@ Originally an single file full of if statements, this repo publication is a clea
 * Some commands are tailored specifically with botconfig.json or specific server settings. This repo mainly serves as a way for other developers to find inspiration for new commands and improve the ones that are currently here.
 * Helpful documentation that I referenced:
   * [Discord Dev Docs on Slash Commands](https://discord.com/developers/docs/interactions/slash-commands)
-  * [discord-buttons examples](https://github.com/discord-buttons/discord-buttons/blob/main/examples.md)
   * [WOKCommands Command Properties](https://docs.wornoffkeys.com/commands/commands)
   * [WOKCommands Slash Commands Docs](https://docs.wornoffkeys.com/commands/slash-commands)
-  * [discord.js-slash-commands.md by advaith1](https://gist.github.com/advaith1/287e69c3347ef5165c0dbde00aa305d2)
 * [patch-package](https://www.npmjs.com/package/patch-package) edits:
   * stockx-api/index.js require path fix to point to './src/classes/stockx.js'
   * wokcommands/dist/SlashCommands.js (see PR linked above)

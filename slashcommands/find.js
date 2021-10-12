@@ -2,7 +2,10 @@ const Discord = require("discord.js")
 const colours = require("../colours.json");
 const botconfig = require("../botconfig.json");
 var Scraper = require('images-scraper');
-const disbut = require('discord-buttons');
+const {
+    MessageButton,
+    MessageActionRow
+} = require('discord.js');
 const db = require('quick.db');
 const ms = require("ms");
 
@@ -59,26 +62,30 @@ module.exports = {
             .setFooter("Buttons will stop working after 1 minute.")
             .setTimestamp()
 
-        let nextBtn = new disbut.MessageButton()
+        const nextBtn = new MessageButton()
             .setLabel('Next')
-            .setID('slashfind_next')
-            .setStyle('blurple')
+            .setCustomId('find_next')
+            .setStyle('PRIMARY')
 
-        let prevBtn = new disbut.MessageButton()
-            .setLabel('Back')
-            .setID('slashfind_prev')
-            .setStyle('blurple')
-            .setDisabled()
+        const prevBtn = new MessageButton()
+            .setLabel('Prev')
+            .setCustomId('find_prev')
+            .setStyle('PRIMARY')
 
-        let closeBtn = new disbut.MessageButton()
+        const closeBtn = new MessageButton()
             .setLabel('Close')
-            .setID('slashfind_close')
-            .setStyle('red')
+            .setCustomId('find_close')
+            .setStyle('DANGER')
 
-        let sourceBtn = new disbut.MessageButton()
+        const sourceBtn = new MessageButton()
             .setLabel('Source')
             .setURL(chosenOneSRC)
-            .setStyle('url')
+            .setStyle('LINK')
+
+        prevBtn.disabled = true
+        const row = new MessageActionRow().addComponents(
+            nextBtn, prevBtn, sourceBtn, closeBtn
+        )
 
         const message = await client.api.webhooks(client.user.id, interaction.token).messages('@original').patch({
             data: {}
@@ -89,80 +96,161 @@ module.exports = {
 
         messageObj.edit(' ­') //invisible char to make embed edit cleaner
         messageObj.channel.send({
-            buttons: [prevBtn, nextBtn, sourceBtn, closeBtn],
-            embed: embed
+            components: [row],
+            embeds: [embed]
         })
 
-        client.on('clickButton', async (b) => {
-            await b.clicker.fetch();
+        if (currInd >= img_res.length) return
 
-            if (b.clicker.user.id === author.id && db.get(`${b.clicker.user.id}.findquery`)) {
-                if (Date.now() - db.get(`${b.clicker.user.id}.findstarted`) >= 60000) { // Make buttons expire after 60 seconds
-                    await b.reply.defer()
-                    return
+        const filter = (btn) => {
+            return author.id === btn.user.id
+        }
+
+        const collector = messageObj.channel.createMessageComponentCollector({
+            filter,
+            time: 120000
+        })
+
+        collector.on('collect', async (ButtonInteraction) => {
+            //console.log(ButtonInteraction.customId)
+            const id = ButtonInteraction.customId
+
+            if (id === 'find_next') {
+                prevBtn.disabled = false
+                currInd++
+                let chosenOne = img_res[currInd].url
+                let chosenOneSRC = img_res[currInd].source
+                let embed = new Discord.MessageEmbed()
+                    .setTitle(`Results for '${search}' | Page ${currInd + 1}`)
+                    .setDescription(`Asker: <@${author.id}> \n`)
+                    .setColor(colours.green_light)
+                    .setImage(chosenOne)
+                    .setFooter("Buttons will stop working after 2 minutes.")
+                    .setTimestamp()
+
+                if (currInd == 9 || currInd == img_res.length) {
+                    nextBtn.disabled = true
                 } else {
-                    if (b.id === 'slashfind_next') {
-                        prevBtn.disabled = false
-                        currInd++
-                        let chosenOne = db.get(`${b.clicker.user.id}.findquery`)[0][currInd].url
-                        let chosenOneSRC = db.get(`${b.clicker.user.id}.findquery`)[0][currInd].source
-                        let embed = new Discord.MessageEmbed()
-                            .setTitle(`Results for '${search}' | Page ${currInd + 1}`)
-                            .setDescription(`Asker: <@${author.id}> \n`)
-                            .setColor(colours.green_light)
-                            .setImage(chosenOne)
-                            .setFooter("Buttons will stop working after 1 minute.")
-                            .setTimestamp()
-
-                        if (currInd == 9 || currInd == img_res.length) {
-                            nextBtn.disabled = true
-                        } else {
-                            nextBtn.disabled = false
-                        }
-
-                        sourceBtn.setURL(chosenOneSRC)
-                        await b.message.edit({
-                            buttons: [prevBtn, nextBtn, sourceBtn, closeBtn],
-                            embed: embed
-                        })
-                        b.reply.defer();
-
-                    } else if (b.id === 'slashfind_prev') {
-                        nextBtn.disabled = false
-                        currInd--
-                        let chosenOne = db.get(`${b.clicker.user.id}.findquery`)[0][currInd].url
-                        let chosenOneSRC = db.get(`${b.clicker.user.id}.findquery`)[0][currInd].source
-                        let embed = new Discord.MessageEmbed()
-                            .setTitle(`Results for '${search}' | Page ${currInd + 1}`)
-                            .setDescription(`Asker: <@${author.id}> \n`)
-                            .setColor(colours.green_light)
-                            .setImage(chosenOne)
-                            .setFooter("Buttons will stop working after 1 minute.")
-                            .setTimestamp()
-
-                        if (currInd === 0) {
-                            prevBtn.disabled = true
-                        }
-
-                        sourceBtn.setURL(chosenOneSRC)
-                        await b.message.edit({
-                            buttons: [prevBtn, nextBtn, sourceBtn, closeBtn],
-                            embed: embed
-                        })
-                        b.reply.defer();
-
-                    } else if (b.id === 'slashfind_close') {
-                        b.message.delete() // Delete bot embed
-                        await b.channel.messages.fetch(db.get(`${b.clicker.user.id}.findquery`)[1].id).then(m => {
-                            m.delete()
-                        })
-                        db.delete(`${b.clicker.user.id}.findstarted`)
-                        b.reply.defer();
-                    }
+                    nextBtn.disabled = false
                 }
-            } else {
-                b.reply.defer()
+
+                sourceBtn.setURL(chosenOneSRC)
+                const row = new MessageActionRow().setComponents(
+                    nextBtn, prevBtn, sourceBtn, closeBtn
+                )
+                await ButtonInteraction.message.edit({
+                    components: [row],
+                    embeds: [embed]
+                })
+
+            } else if (id === 'find_prev') {
+                nextBtn.disabled = false
+                currInd--
+                let chosenOne = img_res[currInd].url
+                let chosenOneSRC = img_res[currInd].source
+                let embed = new Discord.MessageEmbed()
+                    .setTitle(`Results for '${search}' | Page ${currInd + 1}`)
+                    .setDescription(`Asker: <@${author.id}> \n`)
+                    .setColor(colours.green_light)
+                    .setImage(chosenOne)
+                    .setFooter("Buttons will stop working after 2 minutes.")
+                    .setTimestamp()
+
+                if (currInd === 0) {
+                    prevBtn.disabled = true
+                }
+
+                sourceBtn.setURL(chosenOneSRC)
+                const row = new MessageActionRow().setComponents(
+                    nextBtn, prevBtn, sourceBtn, closeBtn
+                )
+                await ButtonInteraction.message.edit({
+                    components: [row],
+                    embeds: [embed]
+                })
+
+            } else if (id === 'find_close') {
+                ButtonInteraction.message.delete() // Delete bot embed
+                await message.channel.messages.fetch(authorMessageID).then(message => message.delete()).catch(console.error) // Delete user command call
+                db.delete(`${author.id}.findstarted`)
+                return
             }
+
+            ButtonInteraction.deferUpdate()
+
         })
+
+
+        // client.on('clickButton', async (b) => {
+        //     await b.clicker.fetch();
+
+        //     if (b.clicker.user.id === author.id && db.get(`${b.clicker.user.id}.findquery`)) {
+        //         if (Date.now() - db.get(`${b.clicker.user.id}.findstarted`) >= 60000) { // Make buttons expire after 60 seconds
+        //             await b.reply.defer()
+        //             return
+        //         } else {
+        //             if (b.id === 'slashfind_next') {
+        //                 prevBtn.disabled = false
+        //                 currInd++
+        //                 let chosenOne = db.get(`${b.clicker.user.id}.findquery`)[0][currInd].url
+        //                 let chosenOneSRC = db.get(`${b.clicker.user.id}.findquery`)[0][currInd].source
+        //                 let embed = new Discord.MessageEmbed()
+        //                     .setTitle(`Results for '${search}' | Page ${currInd + 1}`)
+        //                     .setDescription(`Asker: <@${author.id}> \n`)
+        //                     .setColor(colours.green_light)
+        //                     .setImage(chosenOne)
+        //                     .setFooter("Buttons will stop working after 1 minute.")
+        //                     .setTimestamp()
+
+        //                 if (currInd == 9 || currInd == img_res.length) {
+        //                     nextBtn.disabled = true
+        //                 } else {
+        //                     nextBtn.disabled = false
+        //                 }
+
+        //                 sourceBtn.setURL(chosenOneSRC)
+        //                 await b.message.edit({
+        //                     buttons: [prevBtn, nextBtn, sourceBtn, closeBtn],
+        //                     embed: embed
+        //                 })
+        //                 b.reply.defer();
+
+        //             } else if (b.id === 'slashfind_prev') {
+        //                 nextBtn.disabled = false
+        //                 currInd--
+        //                 let chosenOne = db.get(`${b.clicker.user.id}.findquery`)[0][currInd].url
+        //                 let chosenOneSRC = db.get(`${b.clicker.user.id}.findquery`)[0][currInd].source
+        //                 let embed = new Discord.MessageEmbed()
+        //                     .setTitle(`Results for '${search}' | Page ${currInd + 1}`)
+        //                     .setDescription(`Asker: <@${author.id}> \n`)
+        //                     .setColor(colours.green_light)
+        //                     .setImage(chosenOne)
+        //                     .setFooter("Buttons will stop working after 1 minute.")
+        //                     .setTimestamp()
+
+        //                 if (currInd === 0) {
+        //                     prevBtn.disabled = true
+        //                 }
+
+        //                 sourceBtn.setURL(chosenOneSRC)
+        //                 await b.message.edit({
+        //                     buttons: [prevBtn, nextBtn, sourceBtn, closeBtn],
+        //                     embed: embed
+        //                 })
+        //                 b.reply.defer();
+
+        //             } else if (b.id === 'slashfind_close') {
+        //                 b.message.delete() // Delete bot embed
+        //                 await b.channel.messages.fetch(db.get(`${b.clicker.user.id}.findquery`)[1].id).then(m => {
+        //                     m.delete()
+        //                 })
+        //                 db.delete(`${b.clicker.user.id}.findstarted`)
+        //                 b.reply.defer();
+        //             }
+        //         }
+        //     } else {
+        //         b.reply.defer()
+        //     }
+        // })
     },
 }
