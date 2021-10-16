@@ -23,8 +23,8 @@ module.exports = {
 
         // The idea is that we take away the member role (general permissions)
         // and add the mute role in order to prevent chatting / indicate user is muted
-        let role = message.guild.roles.cache.get('720893708429688935'); // id of your mute role
-        let member = message.guild.roles.cache.get('720919936607715382'); // if you have a general member perm
+        let role = message.guild.roles.cache.get('720893708429688935'); // id of mute role
+        let member = message.guild.roles.cache.get('720919936607715382'); // id of member role
         if (!role) return console.log("mute role does not exist");
 
         let time = args[1]
