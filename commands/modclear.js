@@ -1,6 +1,9 @@
 const Discord = require("discord.js")
 const botconfig = require("../botconfig.json");
 const colours = require("../colours.json");
+const {
+    Permissions
+} = require('discord.js');
 
 module.exports = {
     name: "modclear",
@@ -8,9 +11,8 @@ module.exports = {
     usage: "?modclear [@user (optional)] [number]",
     async execute(bot, message, args) {
 
-        if (!message.member.hasPermission(["MANAGE_MESSAGES", "ADMINISTRATOR"])) {
-            return message.reply("Sorry you don't have that permission.");
-        }
+        if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_CHANNELS)) return message.reply("Sorry, you don't have access to that command.");
+
         if (args.length == 2) {
             let user = message.guild.member(message.mentions.users.first());
             const amount = parseInt(args[1]) + 1;

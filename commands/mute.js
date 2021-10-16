@@ -2,6 +2,9 @@ const Discord = require("discord.js")
 const botconfig = require("../botconfig.json");
 const colours = require("../colours.json");
 const ms = require("ms");
+const {
+    Permissions
+} = require('discord.js');
 
 module.exports = {
     name: "mute",
@@ -9,17 +12,19 @@ module.exports = {
     usage: "?mute [@user] [time (optional)]",
     async execute(bot, message, args) {
 
-        if (!message.member.hasPermission(["ADMINISTRATOR"])) return message.reply("You don't have that permission");
+        if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_CHANNELS)) return message.reply("Sorry, you don't have access to that command.");
         message.delete()
         let user = message.guild.member(message.mentions.users.first());
         if (!user) {
             return message.reply("No member found with that name");
         }
 
-        if (user.hasPermission(["MANAGE_MESSAGES"])) return message.reply("Can't mute this person! They are above the law.");
+        if (message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return message.reply("Can't mute this person! They are above the law.");
 
-        let role = message.guild.roles.cache.get('720893708429688935');
-        let member = message.guild.roles.cache.get('720919936607715382');
+        // The idea is that we take away the member role (general permissions)
+        // and add the mute role in order to prevent chatting / indicate user is muted
+        let role = message.guild.roles.cache.get('720893708429688935'); // id of your mute role
+        let member = message.guild.roles.cache.get('720919936607715382'); // if you have a general member perm
         if (!role) return console.log("mute role does not exist");
 
         let time = args[1]

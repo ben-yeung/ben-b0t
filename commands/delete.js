@@ -1,6 +1,9 @@
 const Discord = require("discord.js")
 const botconfig = require("../botconfig.json");
 const colours = require("../colours.json");
+const {
+    Permissions
+} = require('discord.js');
 
 module.exports = {
     name: "delete",
@@ -8,7 +11,7 @@ module.exports = {
     usage: "?delete [slash command id] [optional: delete global command? Leave blank if false]",
     async execute(bot, message, args) {
 
-        if (!message.member.hasPermission(["ADMINISTRATOR"])) return message.reply("You don't have that permission");
+        if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_CHANNELS)) return message.reply("Sorry, you don't have access to that command.");
         if (!args[0]) return message.reply("No id given for slash command.")
         let id = args[0]
         try {

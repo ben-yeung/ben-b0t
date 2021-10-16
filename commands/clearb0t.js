@@ -1,6 +1,9 @@
 const Discord = require("discord.js")
 const botconfig = require("../botconfig.json");
 const colours = require("../colours.json");
+const {
+    Permissions
+} = require('discord.js');
 
 module.exports = {
     name: "clearb0t",
@@ -12,9 +15,8 @@ module.exports = {
         if (amount > 100) return message.reply('You can\'t delete more than 100 messages at once!'); // Checks if the `amount` integer is bigger than 100
         if (amount < 1) return message.reply('You have to delete at least 1 message!'); // Checks if the `amount` integer is smaller than 1
 
-        if (!message.member.hasPermission(["MANAGE_MESSAGES", "ADMINISTRATOR"])) {
-            return message.reply("Sorry you don't have that permission.");
-        }
+        if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_CHANNELS)) return message.reply("Sorry, you don't have access to that command.");
+
         await message.channel.messages.fetch({
             limit: 100
         }).then(messages => { // Fetches the messages
