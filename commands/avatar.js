@@ -8,14 +8,11 @@ module.exports = {
     usage: "?avatar [@user]",
     execute(bot, message, args) {
 
-        const user = message.mentions.users.first()
-        var avatarURL;
-        if (!user) {
-            user = message.author;
-            avatarURL = message.author.displayAvatarURL();
-        } else {
-            avatarURL = user.displayAvatarURL();
-        }
+        const user = message.mentions.users.first() || message.author;
+        const avatarURL = user.avatarURL({
+            dynamic: true,
+            size: 256
+        });
 
         let embed = new Discord.MessageEmbed()
             .setTitle(`Profile Picture`)
@@ -23,7 +20,9 @@ module.exports = {
             .setColor(colours.green_light)
             .setTimestamp()
 
-        message.channel.send(embed);
+        message.channel.send({
+            embeds: [embed]
+        });
 
     }
 }
