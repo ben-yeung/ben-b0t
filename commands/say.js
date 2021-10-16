@@ -1,4 +1,7 @@
 const Discord = require("discord.js")
+const {
+    Permissions
+} = require('discord.js');
 
 module.exports = {
     name: "say",
@@ -6,7 +9,7 @@ module.exports = {
     usage: "?say [#channel] [msg]",
     execute(bot, message, args) {
 
-        if (!message.member.hasPermission(["MANAGE_MESSAGES", "ADMINISTRATOR"])) return message.channel.send("You can not use this command!")
+        if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_CHANNELS)) return message.reply("Sorry, you don't have access to that command.");
         if (!args[0]) return message.reply("Specify a channel id to send message to.");
         if (!args[1]) return message.reply("Please specify a message to send.");
 

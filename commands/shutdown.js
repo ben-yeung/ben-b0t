@@ -1,5 +1,8 @@
 const Discord = require("discord.js")
 const botconfig = require("../botconfig.json");
+const {
+    Permissions
+} = require('discord.js');
 
 module.exports = {
     name: "sd",
@@ -7,7 +10,7 @@ module.exports = {
     usage: "?shutdown",
     async execute(bot, message, args) {
 
-        if (message.author.id != "229326615384031233") return message.channel.send("You're not the boss of me!")
+        if (!message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return message.reply("You don't have the permission to kill me.");
 
         try {
             await message.channel.send("good-bye world :'(")
