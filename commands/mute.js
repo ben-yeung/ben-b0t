@@ -12,14 +12,14 @@ module.exports = {
     usage: "?mute [@user] [time (optional)]",
     async execute(bot, message, args) {
 
-        if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_CHANNELS)) return message.reply("Sorry, you don't have access to that command.");
+        if (!message.member.permissions.has(Permissions.FLAGS.MUTE_MEMBERS)) return message.reply("Sorry, you don't have access to that command.");
         message.delete()
-        let user = message.guild.member(message.mentions.users.first());
+        let user = message.guild.members.cache.get(message.mentions.users.first().id);
         if (!user) {
             return message.reply("No member found with that name");
         }
 
-        if (message.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return message.reply("Can't mute this person! They are above the law.");
+        if (user.permissions.has(Permissions.FLAGS.MUTE_MEMBERS)) return message.reply("Can't mute this person! They are above the law.");
 
         // The idea is that we take away the member role (general permissions)
         // and add the mute role in order to prevent chatting / indicate user is muted

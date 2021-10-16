@@ -1,6 +1,9 @@
 const Discord = require("discord.js")
 const botconfig = require("../botconfig.json");
 const colours = require("../colours.json");
+const {
+    Permissions
+} = require('discord.js');
 
 module.exports = {
     name: "unmute",
@@ -8,12 +11,11 @@ module.exports = {
     usage: "?unmute [@user]",
     async execute(bot, message, args) {
 
-        if (!message.member.hasPermission("MANAGE_MESSAGES") || !message.member.hasPermission("MUTE_MEMBERS") || !message.member.hasPermission("ADMINISTRATOR")) {
-            return message.channel.send("You don't have the perms to do that m8.");
-        }
+        if (!message.member.permissions.has(Permissions.FLAGS.MUTE_MEMBERS)) return message.reply("Sorry, you don't have access to that command.");
+
         message.delete()
 
-        let user = message.guild.member(message.mentions.users.first());
+        let user = message.guild.members.cache.get(message.mentions.users.first().id);
         if (!user) return message.channel.send("You need to mention the user.");
 
         let role = message.guild.roles.cache.get('720893708429688935');
