@@ -6,7 +6,7 @@ module.exports = {
     name: "userinfo",
     description: "Gets userinfo",
     usage: "?userinfo [@user]",
-    async execute(bot, message, args) {
+    async execute(client, message, args) {
 
         var member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
         if (!member) {
