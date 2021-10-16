@@ -6,7 +6,7 @@ module.exports = {
     name: "avatar",
     description: "Sends profile picture of @'d user",
     usage: "?avatar [@user]",
-    execute(bot, message, args) {
+    execute(client, message, args) {
 
         const user = message.mentions.users.first() || message.author;
         const avatarURL = user.avatarURL({
@@ -15,7 +15,7 @@ module.exports = {
         });
 
         let embed = new Discord.MessageEmbed()
-            .setTitle(`Profile Picture`)
+            .setTitle(`${user.username}'s Profile Picture`)
             .setImage(avatarURL)
             .setColor(colours.green_light)
             .setTimestamp()
