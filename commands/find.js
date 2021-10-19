@@ -80,7 +80,7 @@ module.exports = {
 
             prevBtn.disabled = true
             const row = new MessageActionRow().addComponents(
-                nextBtn, prevBtn, sourceBtn, closeBtn
+                prevBtn, nextBtn, sourceBtn, closeBtn
             )
 
             message.edit(' ­') //invisible char to make embed edit cleaner

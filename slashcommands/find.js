@@ -84,7 +84,7 @@ module.exports = {
 
         prevBtn.disabled = true
         const row = new MessageActionRow().addComponents(
-            nextBtn, prevBtn, sourceBtn, closeBtn
+            prevBtn, nextBtn, sourceBtn, closeBtn
         )
 
         const message = await client.api.webhooks(client.user.id, interaction.token).messages('@original').patch({
