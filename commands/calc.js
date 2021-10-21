@@ -27,7 +27,9 @@ module.exports = {
             .addField('**Input**', `\`\`\`\n${args.join(' ')}\`\`\``)
             .addField('**Output**', `\`\`\`\n${resp}\`\`\``)
 
-        message.channel.send(embed);
+        message.channel.send({
+            embeds: [embed]
+        });
 
     }
 }
