@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const {
     Client,
     Intents
-} = require('discord.js')
+} = require('discord.js');
 const {
     MessageAttachment
 } = require('discord.js');
@@ -13,15 +13,32 @@ const client = new Client({
     intents: [allIntents]
 });
 const WOKCommands = require('wokcommands') // Used to implement slash command handler
-require("./util/eventHandler")(client)
+require("./util/eventHandler")(client);
+const distube = require('distube');
+const fs = require('fs');
+const {
+    google
+} = require("googleapis");
+const {
+    testing
+} = require('googleapis/build/src/apis/testing');
 
-const distube = require('distube')
+const {
+    OAuth2
+} = google.auth;
+
+const oAuth2Client = new OAuth2(botconfig.G_CALENDAR_CLIENT_ID, botconfig.G_CALENDAR_CLIENT_SECRET)
+oAuth2Client.setCredentials({
+    refresh_token: botconfig.G_REFRESH_TOKEN
+})
+
+const calendar = google.calendar({
+    version: 'v3',
+    auth: oAuth2Client
+})
+
 
 let guildID = botconfig.GUILD_ID
-
-const fs = require('fs');
-const cardFolder = './media/cards/'
-
 // Various objects initialized in index.js and used in commands
 client.commands = new Discord.Collection(); // Command Handler
 client.reminders = new Map(); // commands/remind.js command
@@ -49,6 +66,110 @@ for (const file of commandFiles) {
 //     client.commands.get("twitchclipsauto").execute(client, "", []);
 // });
 // scheduleClipCheck.start()
+
+async function getTodaysEvents(startDate, endDate) {
+    const res = await calendar.events.list({
+        calendarId: botconfig.CALENDAR_ID,
+        timeMin: startDate,
+        timeMax: endDate
+    })
+    // console.log(res.data)
+    return res.data.items;
+}
+
+async function testingEventCheck() {
+    console.log("Checking for events to announce today")
+
+    const currDay = new Date();
+    const currDayMS = currDay.getTime();
+    const timezoneOffset = currDay.getTimezoneOffset() * 60 * 1000; // Get offset in ms
+    const isDaylight = timezoneOffset == '420'
+
+    const startDate = new Date(currDayMS - timezoneOffset); // Get current day in local time
+    const startDateFormatted = startDate.toISOString().substring(0, startDate.toISOString().length - 5) + ((isDaylight) ? '-07:00' : '-08:00') // Format friendly for Google Calendar API
+    const endDate = new Date(currDayMS - timezoneOffset + (24 * 60 * 60 * 1000));
+    endDate.setHours(24, 0, 0, 0)
+    const endDateFormatted = endDate.toISOString().substring(0, endDate.toISOString().length - 5) + ((isDaylight) ? '-07:00' : '-08:00')
+
+
+    let events = await getTodaysEvents(startDateFormatted, endDateFormatted);
+
+    if (!events.length) return; // No events today, skip announcements
+
+    const targetChannel = client.channels.cache.get("902068387692281947") // Channel for announcements (Where to send embeds for events)
+
+    for (var i = 0; i < events.length; i++) {
+        // console.log(events[i])
+        let title = events[i].summary;
+        let startTime = (events[i].start.dateTime) ? new Date(events[i].start.dateTime).toLocaleTimeString() : '';
+        let endTime = (events[i].end.dateTime) ? new Date(events[i].end.dateTime).toLocaleTimeString() : '';
+
+        if (startTime != '') {
+            startTime = startTime.substring(0, startTime.length - 6) + ' ' + startTime.substring(startTime.length - 2, startTime.length + 1) + ' - '
+            endTime = endTime.substring(0, endTime.length - 6) + ' ' + endTime.substring(endTime.length - 2, endTime.length + 1)
+        }
+
+        let desc = (events[i].description) ? events[i].description : '';
+        let embed = new Discord.MessageEmbed()
+            .setTitle(title)
+            .setDescription(`${startTime}${endTime} \n ${desc}`)
+            .setColor('BLUE')
+            .setFooter('Google Calendar')
+            .setTimestamp()
+        targetChannel.send({
+            embeds: [embed]
+        })
+    }
+}
+
+testingEventCheck()
+
+let eventCheck = new cron.CronJob('00 00 00 * * *', async () => {
+    console.log("Checking for events to announce today")
+
+    const currDay = new Date();
+    const currDayMS = currDay.getTime();
+    const timezoneOffset = currDay.getTimezoneOffset() * 60 * 1000; // Get offset in ms
+    const isDaylight = timezoneOffset == '420'
+
+    const startDate = new Date(currDayMS - timezoneOffset); // Get current day in local time
+    const startDateFormatted = startDate.toISOString().substring(0, startDate.toISOString().length - 5) + ((isDaylight) ? '-07:00' : '-08:00') // Format friendly for Google Calendar API
+    const endDate = new Date(currDayMS - timezoneOffset + (24 * 60 * 60 * 1000));
+    endDate.setHours(24, 0, 0, 0)
+    const endDateFormatted = endDate.toISOString().substring(0, endDate.toISOString().length - 5) + ((isDaylight) ? '-07:00' : '-08:00')
+
+
+    let events = await getTodaysEvents(startDateFormatted, endDateFormatted);
+
+    if (!events.length) return; // No events today, skip announcements
+
+    const targetChannel = client.channels.cache.get("902068387692281947") // Channel for announcements (Where to send embeds for events)
+
+    for (var i = 0; i < events.length; i++) {
+        // console.log(events[i])
+        let title = events[i].summary;
+        let startTime = (events[i].start.dateTime) ? new Date(events[i].start.dateTime).toLocaleTimeString() : '';
+        let endTime = (events[i].end.dateTime) ? new Date(events[i].end.dateTime).toLocaleTimeString() : '';
+
+        if (startTime != '') {
+            startTime = startTime.substring(0, startTime.length - 6) + ' ' + startTime.substring(startTime.length - 2, startTime.length + 1) + ' - '
+            endTime = endTime.substring(0, endTime.length - 6) + ' ' + endTime.substring(endTime.length - 2, endTime.length + 1)
+        }
+
+        let desc = (events[i].description) ? events[i].description : '';
+        let embed = new Discord.MessageEmbed()
+            .setTitle(title)
+            .setDescription(`${startTime}${endTime} \n ${desc}`)
+            .setColor('BLUE')
+            .setFooter('Google Calendar')
+            .setTimestamp()
+        targetChannel.send({
+            embeds: [embed]
+        })
+    }
+
+})
+eventCheck.start();
 
 // See example & docs here: https://distube.js.org/guide/example-bot.html 
 client.distube = new distube(client, {
