@@ -52,14 +52,18 @@ module.exports = {
                 }
             }
             console.log(choices)
-            let percs = new Array(choices.length);
-            for (i = 0; i < choices.length; i++) {
-                percs[i] = Math.floor(Math.random() * 100);
-            }
-            let maxes = indexOfMax(percs);
-            let maxNum = maxes[1];
-            let maxInd = maxes[0];
-            message.channel.send("I think you should " + choices[maxInd]);
+            // let percs = new Array(choices.length);
+            // for (i = 0; i < choices.length; i++) {
+            //     percs[i] = Math.floor(Math.random() * 100);
+            // }
+            // let maxes = indexOfMax(percs);
+            // let maxNum = maxes[1];
+            // let maxInd = maxes[0];
+            let choice = choices[Math.floor(Math.random() * choices.length)]
+
+            let phrases = ['I asked my mom and she said you should', 'My guy feeling says', 'Local expert recommended you should', 'Siri said', 'If I were you I would', 'This is a good choice:', 'I would definitely choose', 'Survey says:', 'My gut says you should', 'The obvious choice is', 'If I were you I would']
+            let phraseChoice = phrases[Math.floor(Math.random() * phrases.length)]
+            message.channel.send(`${phraseChoice} ${choice}`);
         } else {
             return message.reply("You must enter two choices separated by 'or' EX: '?decide do homework or play basketball")
         }

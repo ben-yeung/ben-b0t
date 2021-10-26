@@ -122,7 +122,7 @@ async function testingEventCheck() {
     }
 }
 
-testingEventCheck()
+// testingEventCheck()
 
 let eventCheck = new cron.CronJob('00 00 00 * * *', async () => {
     console.log("Checking for events to announce today")
