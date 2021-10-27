@@ -36,7 +36,9 @@ module.exports = {
             .addField("Views", video.views.toLocaleString(), true)
             .addField("Duration", video.duration, true)
 
-        message.channel.send(embed).then(message => {
+        message.channel.send({
+            embeds: [embed]
+        }).then(message => {
             if (currInd >= results.length) return
             message.react('➡️')
 

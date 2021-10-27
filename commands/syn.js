@@ -28,7 +28,9 @@ module.exports = {
             .setColor("ORANGE")
             .addField("Synonyms", synon)
 
-        return message.channel.send(embed)
+        return message.channel.send({
+            embeds: [embed]
+        });
 
     }
 }

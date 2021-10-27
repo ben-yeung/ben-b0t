@@ -35,7 +35,9 @@ module.exports = {
             `)
                 .setColor(colours.gold)
 
-            return message.channel.send(embed);
+            return message.channel.send({
+                embeds: [embed]
+            });
         } catch (err) {
             return message.reply(`Oh no, an error occurred: \`${err.message}\`.`);
         }

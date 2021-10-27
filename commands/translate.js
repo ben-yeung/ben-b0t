@@ -122,7 +122,9 @@ module.exports = {
             .addField("Original Message:", text)
             .addField("Translation:", res.text)
             .setColor(colours.blue_light)
-        return message.channel.send(embed)
+        return message.channel.send({
+            embeds: [embed]
+        });
 
     }
 }

@@ -26,7 +26,9 @@ module.exports = {
                 .addField("Yesterday\'s Confirmed Cases: ", corona.todayCases, true)
                 .addField("Yesterday\'s Deaths: ", corona.todayDeaths, true)
 
-            message.channel.send(embed);
+            message.channel.send({
+                embeds: [embed]
+            });;
         } else {
             let corona = await api.yesterday.countries({
                 country: args.join(" ")
@@ -48,7 +50,9 @@ module.exports = {
                     .addField("Yesterday\'s Confirmed Cases: ", corona2.todayCases)
                     .addField("Yesterday\'s Deaths: ", corona2.todayDeaths, true)
 
-                message.channel.send(embed);
+                message.channel.send({
+                    embeds: [embed]
+                });;
             } else {
                 const embed = new Discord.MessageEmbed()
                     .setColor(colours.red_light)
@@ -60,7 +64,9 @@ module.exports = {
                     .addField("Yesterday\'s Confirmed Cases: ", corona.todayCases, true)
                     .addField("Yesterday\'s Deaths: ", corona.todayDeaths, true)
 
-                message.channel.send(embed);
+                message.channel.send({
+                    embeds: [embed]
+                });;
             }
 
 

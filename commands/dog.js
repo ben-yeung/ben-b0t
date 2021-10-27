@@ -17,7 +17,9 @@ module.exports = {
                 .setColor(colours.blue_light)
                 .setImage(imgUrl)
 
-            message.channel.send(embed);
+            message.channel.send({
+                embeds: [embed]
+            });;
         } catch (e) {
             console.log(e);
         }

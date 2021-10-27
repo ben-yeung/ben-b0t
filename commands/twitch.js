@@ -77,7 +77,9 @@ module.exports = {
                     .setColor(colours.purple_medium)
                     .setTimestamp()
 
-                message.channel.send(embed);
+                message.channel.send({
+                    embeds: [embed]
+                });
 
             })
 

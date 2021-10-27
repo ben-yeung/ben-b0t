@@ -18,7 +18,9 @@ module.exports = {
 
         message.delete()
 
-        message.channel.send(embed).then(message => {
+        message.channel.send({
+            embeds: [embed]
+        }).then(message => {
             if (embedList.length == 1) return
             message.react('➡️')
 
