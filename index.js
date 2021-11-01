@@ -87,16 +87,18 @@ async function testingEventCheck() {
 
     const startDate = new Date(currDayMS - timezoneOffset); // Get current day in local time
     const startDateFormatted = startDate.toISOString().substring(0, startDate.toISOString().length - 5) + ((isDaylight) ? '-07:00' : '-08:00') // Format friendly for Google Calendar API
-    const endDate = new Date(currDayMS - timezoneOffset + (24 * 60 * 60 * 1000));
-    endDate.setHours(24, 0, 0, 0)
+    const endDate = new Date(currDayMS - timezoneOffset);
+    endDate.setUTCHours(22, 59, 59)
     const endDateFormatted = endDate.toISOString().substring(0, endDate.toISOString().length - 5) + ((isDaylight) ? '-07:00' : '-08:00')
-
 
     let events = await getTodaysEvents(startDateFormatted, endDateFormatted);
 
     if (!events.length) return; // No events today, skip announcements
 
-    const targetChannel = client.channels.cache.get("902068387692281947") // Channel for announcements (Where to send embeds for events)
+    const targetChannel = client.channels.cache.get("701976025357090816") // Channel for announcements (Where to send embeds for events)
+
+    // targetChannel.send(startDateFormatted)
+    // targetChannel.send(endDateFormatted)
 
     for (var i = 0; i < events.length; i++) {
         // console.log(events[i])
@@ -122,6 +124,7 @@ async function testingEventCheck() {
     }
 }
 
+// setTimeout(testingEventCheck, 3000)
 // testingEventCheck()
 
 let eventCheck = new cron.CronJob('00 00 00 * * *', async () => {
@@ -134,16 +137,18 @@ let eventCheck = new cron.CronJob('00 00 00 * * *', async () => {
 
     const startDate = new Date(currDayMS - timezoneOffset); // Get current day in local time
     const startDateFormatted = startDate.toISOString().substring(0, startDate.toISOString().length - 5) + ((isDaylight) ? '-07:00' : '-08:00') // Format friendly for Google Calendar API
-    const endDate = new Date(currDayMS - timezoneOffset + (24 * 60 * 60 * 1000));
-    endDate.setHours(24, 0, 0, 0)
+    const endDate = new Date(currDayMS - timezoneOffset);
+    endDate.setUTCHours(22, 59, 59)
     const endDateFormatted = endDate.toISOString().substring(0, endDate.toISOString().length - 5) + ((isDaylight) ? '-07:00' : '-08:00')
-
 
     let events = await getTodaysEvents(startDateFormatted, endDateFormatted);
 
     if (!events.length) return; // No events today, skip announcements
 
-    const targetChannel = client.channels.cache.get("902068387692281947") // Channel for announcements (Where to send embeds for events)
+    const targetChannel = client.channels.cache.get("701976025357090816") // Channel for announcements (Where to send embeds for events)
+
+    // targetChannel.send(startDateFormatted)
+    // targetChannel.send(endDateFormatted)
 
     for (var i = 0; i < events.length; i++) {
         // console.log(events[i])
