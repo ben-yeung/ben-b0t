@@ -28,9 +28,9 @@ module.exports = {
             console.log(data);
             if (data.ok == true) {
                 let title = data.movie.name;
-                let score = data.movie.meterScore;
+                let score = `${data.movie.meterScore}`;
                 let scoreClass = data.movie.meterClass == 'certified_fresh' ? "Certified Fresh" : "Rotten";
-                let year = data.movie.year;
+                let year = `${data.movie.year}`;
                 let url = data.movie.url;
                 let consensus = data.movie.consensus;
                 let actors = data.movie.actors.join(", ");
@@ -60,7 +60,7 @@ module.exports = {
                     .setStyle('LINK')
 
                 const row = new MessageActionRow().addComponents(
-                    nextBtn, prevBtn, sourceBtn, closeBtn
+                    sourceBtn
                 )
 
                 message.edit(' ­') //invisible char to make embed edit cleaner
