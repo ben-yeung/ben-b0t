@@ -52,7 +52,9 @@ module.exports = {
         for (i = 0; i < choices.length; i++) {
             pollEmbed.addField('\u200B', `${emojis[i]} ${choices[i]}`)
         }
-        let msgEmbed = await message.channel.send(pollEmbed);
+        let msgEmbed = await message.channel.send({
+            embeds: [pollEmbed]
+        });
         for (i = 0; i < choices.length; i++) {
             await msgEmbed.react(emojis[i])
         }

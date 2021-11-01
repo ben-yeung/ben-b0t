@@ -22,7 +22,9 @@ module.exports = {
                 .setColor(colours.green_light)
                 .setTimestamp()
 
-            m.channel.send(embed)
+            m.channel.send({
+                embeds: [embed]
+            })
         })
 
     }

@@ -18,7 +18,6 @@ module.exports = {
         if (!mChannel) return message.reply("Channel id given cannot be found.")
 
         mChannel.send(argsresult);
-        mChannel.stopTyping(true);
 
     }
 }
