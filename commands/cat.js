@@ -16,7 +16,9 @@ module.exports = {
                     .setColor("#00ff00")
                     .setTitle("Random Cat Gif Generator")
 
-                return message.channel.send(emb)
+                return message.channel.send({
+                    embeds: [embed]
+                })
             }
         });
 

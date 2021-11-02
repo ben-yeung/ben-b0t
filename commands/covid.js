@@ -12,6 +12,8 @@ module.exports = {
     usage: "?covid [global/country/state]",
     async execute(bot, message, args) {
 
+        // CURRENTLY DEPRECATED
+
         if (!args[0]) return message.channel.send("No arguments given. Please enter a country.");
 
         let possible = ["world", "global", "all", "total"];
