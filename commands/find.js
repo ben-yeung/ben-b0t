@@ -22,7 +22,7 @@ var google = new Scraper({
 
 function pruneQueries(author) {
     let queries = db.get(`${author.id}.findquery`)
-    if (!queries.length || queries.length == 0) return
+    if (!queries) return
 
     for (const [key, val] of Object.entries(queries)) {
         if (Date.now() - val[2] >= 120000) {
