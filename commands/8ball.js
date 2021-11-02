@@ -18,7 +18,7 @@ module.exports = {
             .addField('Question: ', question)
             .addField('Answer: ', replies[num])
 
-        message.reply({
+        message.channel.send({
             embeds: [embed]
         });
 

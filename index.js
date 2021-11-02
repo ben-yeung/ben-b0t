@@ -22,6 +22,9 @@ const {
 const {
     testing
 } = require('googleapis/build/src/apis/testing');
+const {
+    oauth2
+} = require('googleapis/build/src/apis/oauth2');
 
 const {
     OAuth2
@@ -79,6 +82,9 @@ async function getTodaysEvents(startDate, endDate) {
 
 async function testingEventCheck() {
     console.log("Checking for events to announce today")
+
+    // let tok = await oAuth2Client.getAccessToken()
+    // console.log(tok)
 
     const currDay = new Date();
     const currDayMS = currDay.getTime();
@@ -145,10 +151,7 @@ let eventCheck = new cron.CronJob('00 00 00 * * *', async () => {
 
     if (!events.length) return; // No events today, skip announcements
 
-    const targetChannel = client.channels.cache.get("701976025357090816") // Channel for announcements (Where to send embeds for events)
-
-    // targetChannel.send(startDateFormatted)
-    // targetChannel.send(endDateFormatted)
+    const targetChannel = client.channels.cache.get("902068387692281947") // Channel for announcements (Where to send embeds for events)
 
     for (var i = 0; i < events.length; i++) {
         // console.log(events[i])
