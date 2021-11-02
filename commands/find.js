@@ -20,6 +20,19 @@ var google = new Scraper({
     safe: true
 })
 
+function pruneQueries(author) {
+    let queries = db.get(`${author.id}.findquery`)
+    if (!queries.length || queries.length == 0) return
+
+    for (const [key, val] of Object.entries(queries)) {
+        if (Date.now() - val[2] >= 120000) {
+            delete queries[key]
+            console.log("PRUNED A QUERY")
+        }
+
+    }
+    db.set(`${author.id}.findquery`, queries)
+}
 
 module.exports = {
     name: "find",
@@ -36,6 +49,7 @@ module.exports = {
             return message.reply(`Please close your most recent find command or wait ${ms(10000 - (Date.now()- db.get(`${author.id}.findstarted`)))} before starting another query!`)
         } else {
             db.set(`${author.id}.findstarted`, Date.now())
+            pruneQueries(author)
         }
 
         const intros = ['Searching the web for', 'Scouring the web for', 'Researching scholarly articles for', 'Surfing the web for', 'Checking a picture book for', 'Feeling lucky? Looking for', 'Hey Alexa, what is a', 'Hey Siri, what is a', 'Asking a professor for']
@@ -79,8 +93,10 @@ module.exports = {
                 .setStyle('LINK')
 
             prevBtn.disabled = true
-            const row = new MessageActionRow().addComponents(
+            const row = img_res.length > 1 ? new MessageActionRow().addComponents(
                 prevBtn, nextBtn, sourceBtn, closeBtn
+            ) : new MessageActionRow().addComponents(
+                sourceBtn, closeBtn
             )
 
             message.edit(' ­') //invisible char to make embed edit cleaner
@@ -88,10 +104,18 @@ module.exports = {
                 components: [row],
                 embeds: [embed]
             }).then(async (message) => {
-                if (currInd >= img_res.length) return
+
+                if (img_res.length <= 1) return
+
+                let currQueries = db.get(`${author.id}.findquery`)
+                currQueries[message.id] = [img_res, currInd, Date.now()]
+
+                db.set(`${author.id}.findquery`, currQueries);
+
+                // console.log(db.get(`${author.id}.findquery`))
 
                 const filter = (btn) => {
-                    return author.id === btn.user.id
+                    return author.id === btn.user.id && btn.message.id == message.id
                 }
 
                 const collector = message.channel.createMessageComponentCollector({
@@ -103,9 +127,16 @@ module.exports = {
                     //console.log(ButtonInteraction.customId)
                     const id = ButtonInteraction.customId
 
+                    let queries = db.get(`${author.id}.findquery`)
+                    // console.log(queries)
+                    let img_res = queries[ButtonInteraction.message.id][0]
+                    var currInd = queries[ButtonInteraction.message.id][1]
+
                     if (id === 'find_next') {
                         prevBtn.disabled = false
                         currInd++
+                        queries[ButtonInteraction.message.id][1] = currInd;
+                        db.set(`${author.id}.findquery`, queries)
                         let chosenOne = img_res[currInd].url
                         let chosenOneSRC = img_res[currInd].source
                         let embed = new Discord.MessageEmbed()
@@ -134,6 +165,8 @@ module.exports = {
                     } else if (id === 'find_prev') {
                         nextBtn.disabled = false
                         currInd--
+                        queries[ButtonInteraction.message.id][1] = currInd;
+                        db.set(`${author.id}.findquery`, queries)
                         let chosenOne = img_res[currInd].url
                         let chosenOneSRC = img_res[currInd].source
                         let embed = new Discord.MessageEmbed()
@@ -161,6 +194,8 @@ module.exports = {
                         ButtonInteraction.message.delete() // Delete bot embed
                         await message.channel.messages.fetch(authorMessageID).then(message => message.delete()).catch(console.error) // Delete user command call
                         db.delete(`${author.id}.findstarted`)
+                        delete queries[ButtonInteraction.message.id]
+                        db.set(`${author.id}.findquery`, queries)
                         return
                     }
 
