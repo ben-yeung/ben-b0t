@@ -18,7 +18,9 @@ module.exports = {
             .addField('Question: ', question)
             .addField('Answer: ', replies[num])
 
-        message.reply(embed);
+        message.reply({
+            embeds: [embed]
+        });
 
     }
 }
