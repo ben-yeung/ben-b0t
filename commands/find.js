@@ -105,7 +105,7 @@ module.exports = {
                 embeds: [embed]
             }).then(async (message) => {
 
-                if (img_res.length <= 1) return
+                if (img_res.length == 1) return
 
                 let currQueries = db.get(`${author.id}.findquery`)
                 currQueries[message.id] = [img_res, currInd, Date.now()]
