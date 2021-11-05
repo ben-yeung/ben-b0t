@@ -25,6 +25,8 @@ const {
 const {
     oauth2
 } = require('googleapis/build/src/apis/oauth2');
+const db = require("quick.db")
+const ms = require("ms")
 
 const {
     OAuth2
@@ -244,6 +246,23 @@ client.on('message', async message => {
     let prefix = botconfig.prefix;
     let messageArray = message.content.split(' ');
     let hasPrefix = messageArray[0][0] === prefix;
+
+
+    // When F phrases are detected bot will auto send "F" in response (Cooldown of 30s)
+    let f_arr = ["f in the chat", "f in chat"]
+    if (message.content.toLowerCase() == "f" || f_arr.some(f => message.content.toLowerCase().includes(f))) {
+        if (db.get("F_cooldown") && Date.now() - db.get("F_cooldown") < 30000) return message.channel.send("Cooldown")
+        db.set("F_cooldown", Date.now())
+        message.channel.send("F")
+    }
+
+    // When GG phrases are detected bot will auto send "GG" in response (Cooldown of 30s)
+    let gg_arr = ["gg in the chat", "gg in chat"]
+    if (message.content.toLowerCase() == "gg" || gg_arr.some(gg => message.content.toLowerCase().includes(gg))) {
+        if (db.get("gg_cooldown") && Date.now() - db.get("gg_cooldown") < 30000) return message.channel.send("Cooldown")
+        db.set("gg_cooldown", Date.now())
+        message.channel.send("GG")
+    }
 
     // Logic for channel message streaks
     // If a specific message in a certain channel is repeated at least 3 times it becomes a streak
