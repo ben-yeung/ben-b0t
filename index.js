@@ -248,20 +248,20 @@ client.on('message', async message => {
     let hasPrefix = messageArray[0][0] === prefix;
 
 
-    // When F phrases are detected bot will auto send "F" in response (Cooldown of 30s)
+    // When F phrases are detected bot will auto send "F" in response (Cooldown of 15s)
     let f_arr = ["f in the chat", "f in chat"]
     if (message.content.toLowerCase() == "f" || f_arr.some(f => message.content.toLowerCase().includes(f))) {
-        if (db.get("F_cooldown") && Date.now() - db.get("F_cooldown") < 30000) return message.channel.send("Cooldown")
+        if (db.get("F_cooldown") && Date.now() - db.get("F_cooldown") < 15000) return
         db.set("F_cooldown", Date.now())
         message.channel.send("F")
     }
 
-    // When GG phrases are detected bot will auto send "GG" in response (Cooldown of 30s)
+    // When GG phrases are detected bot will auto send "GG" in response (Cooldown of 15s)
     let gg_arr = ["gg in the chat", "gg in chat"]
     if (message.content.toLowerCase() == "gg" || gg_arr.some(gg => message.content.toLowerCase().includes(gg))) {
-        if (db.get("gg_cooldown") && Date.now() - db.get("gg_cooldown") < 30000) return message.channel.send("Cooldown")
+        if (db.get("gg_cooldown") && Date.now() - db.get("gg_cooldown") < 15000) return
         db.set("gg_cooldown", Date.now())
-        message.channel.send("GG")
+        message.channel.send("gg")
     }
 
     // Logic for channel message streaks
