@@ -55,7 +55,12 @@ module.exports = {
         try {
             let image = await canvacord.Canvas.spank(avatar2, avatar1);
             let attachment = new Discord.MessageAttachment(image, "concord.png");
-            message.channel.send(attachment);
+            let embed = new Discord.MessageEmbed()
+                .setTitle("😳")
+                .setImage(attachment)
+            message.channel.send({
+                files: [attachment]
+            });
             message.delete();
         } catch (err) {
             console.log(err);
