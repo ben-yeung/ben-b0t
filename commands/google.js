@@ -67,7 +67,7 @@ module.exports = {
             prevBtn.disabled = true
 
             const row = new MessageActionRow().addComponents(
-                nextBtn, prevBtn, sourceBtn, closeBtn
+                prevBtn, nextBtn, sourceBtn, closeBtn
             )
 
             message.channel.send({
@@ -137,7 +137,7 @@ module.exports = {
                         sourceBtn.setURL(chosenOneSRC)
 
                         const row = new MessageActionRow().setComponents(
-                            nextBtn, prevBtn, sourceBtn, closeBtn
+                            prevBtn, nextBtn, sourceBtn, closeBtn
                         )
 
                         await ButtonInteraction.message.edit({
