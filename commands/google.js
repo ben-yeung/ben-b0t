@@ -110,7 +110,7 @@ module.exports = {
                         sourceBtn.setURL(chosenOneSRC)
 
                         const row = new MessageActionRow().setComponents(
-                            nextBtn, prevBtn, sourceBtn, closeBtn
+                            prevBtn, nextBtn, sourceBtn, closeBtn
                         )
 
                         await ButtonInteraction.message.edit({
