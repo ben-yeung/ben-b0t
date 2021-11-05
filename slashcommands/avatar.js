@@ -20,10 +20,13 @@ module.exports = {
 
         try {
             let user = await client.users.fetch(userid)
+            const avatarURL = user.avatarURL({
+                dynamic: true,
+                size: 256
+            });
 
-            avatarURL = user.displayAvatarURL();
             let embed = new Discord.MessageEmbed()
-                .setTitle(`Profile Picture`)
+                .setTitle(`${user.username}'s Profile Picture`)
                 .setImage(avatarURL)
                 .setColor(colours.green_light)
                 .setTimestamp()

@@ -85,7 +85,9 @@ module.exports = {
             })
             let messageObj = new Discord.Message(client, message, client.channels.cache.get(message.channel_id))
             messageObj.edit("\u200B")
-            messageObj.channel.send(attachment)
+            messageObj.channel.send({
+                files: [attachment]
+            })
         } catch (err) {
             console.log(err);
             return `Error occurred. Command works best with smaller images. PNGs preferred!`
