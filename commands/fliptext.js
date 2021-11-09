@@ -3,9 +3,9 @@ const botconfig = require("../botconfig.json");
 const colours = require("../colours.json");
 
 module.exports = {
-    name: "flip",
+    name: "fliptext",
     description: "Flips given text",
-    usage: "?flip [msg]",
+    usage: "?fliptext [msg]",
     execute(bot, message, args) {
 
         if (args.length < 1) return message.reply("You must provide me text to flip!");
