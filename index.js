@@ -72,6 +72,14 @@ for (const file of commandFiles) {
 // });
 // scheduleClipCheck.start()
 
+
+// The following is a daily event check that pulls events from a given Google Calendar
+// The config file should have a Google Calendar API ID, Secret, and Refresh Token (I use OAuth 2.0 Playground)
+// Also need to have the Google Calendar ID itself to indicate which calendar to pull from
+// More details on OAuth 2.0 Playground found here: https://stackoverflow.com/questions/19766912/how-do-i-authorise-an-app-web-or-installed-without-user-intervention/19766913#19766913
+// For details on GoogleAPI Calendar see https://www.npmjs.com/package/googleapis
+// In the Google API Project Console make sure that the project is published (does not need verification) to prevent Refresh Tokens from expiring after 1 week. (Testing)
+
 async function getTodaysEvents(startDate, endDate) {
     const res = await calendar.events.list({
         calendarId: botconfig.CALENDAR_ID,
@@ -84,9 +92,6 @@ async function getTodaysEvents(startDate, endDate) {
 
 async function testingEventCheck() {
     console.log("Checking for events to announce today")
-
-    // let tok = await oAuth2Client.getAccessToken()
-    // console.log(tok)
 
     const currDay = new Date();
     const currDayMS = currDay.getTime();
@@ -329,6 +334,18 @@ client.on('message', async message => {
 
         case 'stop':
             cmd = 'leave'
+            break;
+
+        case 'coin':
+            cmd = 'flip'
+            break;
+
+        case 'coinflip':
+            cmd = 'flip'
+            break;
+
+        case 'flipcoin':
+            cmd = 'flip'
             break;
 
         default:
