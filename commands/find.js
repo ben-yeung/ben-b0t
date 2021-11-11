@@ -107,10 +107,15 @@ module.exports = {
 
                 if (img_res.length == 1) return
 
-                let currQueries = db.get(`${author.id}.findquery`)
-                currQueries[message.id] = [img_res, currInd, Date.now()]
-
-                db.set(`${author.id}.findquery`, currQueries);
+                if (!db.get(`${author.id}.findquery`)) {
+                    let currQueries = {}
+                    currQueries[message.id] = [img_res, currInd, Date.now()]
+                    db.set(`${author.id}.findquery`, currQueries)
+                } else {
+                    let currQueries = db.get(`${author.id}.findquery`)
+                    currQueries[message.id] = [img_res, currInd, Date.now()]
+                    db.set(`${author.id}.findquery`, currQueries);
+                }
 
                 // console.log(db.get(`${author.id}.findquery`))
 
