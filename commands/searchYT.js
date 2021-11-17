@@ -20,6 +20,7 @@ module.exports = {
             return message.reply("Must provide a search query!")
         }
         const author = message.author;
+        const authorMessageID = message.id;
 
         if (db.get(`${author.id}.ytstarted`) && Date.now() - db.get(`${author.id}.ytstarted`) <= 35000) {
             return message.reply(`Please close your most recent yt command or wait ${ms(35000 - (Date.now()- db.get(`${author.id}.ytstarted`)))} before starting another query!`)
