@@ -348,6 +348,10 @@ client.on('message', async message => {
             cmd = 'flip'
             break;
 
+        case 'pfp':
+            cmd = 'avatar'
+            break;
+
         default:
             break;
     }
