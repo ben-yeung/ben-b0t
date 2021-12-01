@@ -69,7 +69,7 @@ module.exports = {
                 .setDescription(`Asker: <@${author.id}> \n`)
                 .setColor(colours.green_light)
                 .setImage(chosenOne)
-                .setFooter("Buttons will stop working after 2 minutes.")
+                .setFooter("Buttons expire after 2 minutes")
                 .setTimestamp()
 
             const nextBtn = new MessageButton()
@@ -149,7 +149,7 @@ module.exports = {
                             .setDescription(`Asker: <@${author.id}> \n`)
                             .setColor(colours.green_light)
                             .setImage(chosenOne)
-                            .setFooter("Buttons will stop working after 2 minutes.")
+                            .setFooter("Buttons expire after 2 minutes")
                             .setTimestamp()
 
                         if (currInd == 9 || currInd == img_res.length) {
@@ -179,7 +179,7 @@ module.exports = {
                             .setDescription(`Asker: <@${author.id}> \n`)
                             .setColor(colours.green_light)
                             .setImage(chosenOne)
-                            .setFooter("Buttons will stop working after 2 minutes.")
+                            .setFooter("Buttons expire after 2 minutes")
                             .setTimestamp()
 
                         if (currInd === 0) {
