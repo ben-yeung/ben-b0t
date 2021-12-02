@@ -15,13 +15,24 @@ module.exports = {
         if (amount > 100) return message.reply('You can\'t delete more than 100 messages at once!'); // Checks if the `amount` integer is bigger than 100
         if (amount < 1) return message.reply('You have to delete at least 1 message!'); // Checks if the `amount` integer is smaller than 1
 
-        await message.channel.messages.fetch({
-            limit: 100
-        }).then(messages => { // Fetches the messages
-            const filterBy = message.author.id;
-            messages = messages.filter(m => m.author.id === filterBy).array().slice(0, amount);
-            message.channel.bulkDelete(messages, true);
-        });
+        try {
+            const toDelete = []
+            var count = 0;
+            await message.channel.messages.fetch({
+                limit: 100
+            }).then(async (messages) => {
+                messages.filter((msg) => {
+                    if (count < amount && msg.author.id == message.author.id) {
+                        toDelete.push(msg);
+                        count += 1
+                    }
+                })
+            })
+
+            message.channel.bulkDelete(toDelete, true);
+        } catch (e) {
+            console.log(e)
+        }
 
     }
 }
