@@ -7,7 +7,6 @@ const EBAY = require('ebay-node-api');
 let ebay = new EBAY({
     clientID: botconfig.EBAY_CLIENT_ID,
     clientSecret: botconfig.EBAY_CLIENT_SECRET,
-    env: 'SANDBOX', // optional default = 'PRODUCTION'
     headers: { // optional
         'X-EBAY-C-MARKETPLACE-ID': 'EBAY_US'
     }
@@ -24,13 +23,11 @@ module.exports = {
 
         const query = args.join(" ")
 
-        ebay.findCompletedItems({
-            keywords: query,
-            SoldItemsOnly: true,
-            entriesPerPage: 10
+        ebay.findItemsByKeywords({
+            keywords: 'Garmin nuvi 1300 Automotive GPS Receiver',
+            limit: 10
         }).then((data) => {
             console.log(data);
-            console.log(data[0].searchResult[0].item)
         }, (error) => {
             console.log(error);
         });
