@@ -38,14 +38,12 @@ module.exports = {
                 a.json().then(async resp => {
                     console.log(resp)
 
-                    var gamerThumb = 'https://pbs.twimg.com/media/E3lBOh5XIAIpz1p.jpg'
-
                     await gamerThumbResponse.then(b => {
                         // console.log(b)
                         if (b.status == 200) {
                             b.json().then(bResp => {
                                 // console.log(bResp)
-                                gamerThumb = bResp.data.emblem_url
+                                const gamerThumb = bResp.data.emblem_url
 
                                 let embed = new Discord.MessageEmbed()
                                     .setTitle(`${resp.additional.gamertag}'s Halo Infinite Stats`)
