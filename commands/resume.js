@@ -12,7 +12,7 @@ module.exports = {
         if (!message.member.voice.channel) return message.reply("You must be in a voice channel to use this command.")
 
         client.distube.resume(message)
-        message.reply("has resumed the current song.")
+        message.reply(`<@${message.author.id}> resumed the groovy train.`)
 
     }
 }

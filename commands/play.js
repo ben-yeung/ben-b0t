@@ -10,14 +10,24 @@ module.exports = {
     async execute(client, message, args) {
 
         if (!message.member.voice.channel) return message.reply("You must be in a voice channel to use this command.")
-        if (!args.length) return message.reply("You must include a youtube link or search query")
-        const VC = message.member.voice.channel
-        const query = args.join(" ")
 
-        client.distube.playVoiceChannel(VC, query, {
-            textChannel: message.channel,
-            member: message.author
-        })
+
+        const queue = client.distube.getQueue(message)
+        if (!args[0] && !queue) return message.reply("You must include a youtube link or search query")
+
+        if (!args[0]) {
+            client.distube.resume(message)
+        } else {
+            const VC = message.member.voice.channel
+            const query = args.join(" ")
+
+            client.distube.playVoiceChannel(VC, query, {
+                textChannel: message.channel,
+                member: message.author
+            })
+        }
+
+
 
         // const queue = client.distube.getQueue(message)
         // if (!queue && !args[0]) {

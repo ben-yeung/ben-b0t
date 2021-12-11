@@ -11,8 +11,11 @@ module.exports = {
 
         if (!message.member.voice.channel) return message.reply("You must be in a voice channel to use this command.")
 
+        const choices = [`<@${message.author.id}> has halted the groovy train.`, `<@${message.author.id}> cut the beat.`, `<@${message.author.id}> pressed pause.`, `<@${message.author.id}> stopped the music.`]
+        let choice = choices[Math.floor(Math.random() * choices.length)]
+
         client.distube.pause(message)
-        message.reply("has paused the current song.")
+        return message.channel.send(choice)
 
     }
 }
