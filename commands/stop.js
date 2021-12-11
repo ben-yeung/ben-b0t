@@ -13,8 +13,13 @@ module.exports = {
 
         const choices = [`<@${message.author.id}> has halted the groovy train.`, `<@${message.author.id}> cut the beat.`, `<@${message.author.id}> pressed pause.`, `<@${message.author.id}> stopped the music.`]
         let choice = choices[Math.floor(Math.random() * choices.length)]
-        await client.distube.stop(message)
-        await message.channel.send(choice)
+
+        try {
+            await client.distube.stop(message)
+            await message.channel.send(choice)
+        } catch (e) {
+            message.reply("No queue present")
+        }
 
     }
 }

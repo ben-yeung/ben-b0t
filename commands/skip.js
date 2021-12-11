@@ -11,8 +11,12 @@ module.exports = {
 
         if (!message.member.voice.channel) return message.reply("You must be in a voice channel to use this command.")
 
-        await client.distube.skip(message)
-        await message.reply("Skipping current song")
+        try {
+            await client.distube.skip(message)
+            await message.reply("Skipping current song")
+        } catch (e) {
+            message.reply("No song queued next.")
+        }
 
     }
 }

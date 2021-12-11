@@ -20,12 +20,14 @@ module.exports = {
         let ops = {
             'image': avatar,
             'message': msg,
-            'username': message.guild.member(user).displayName //special characters breaks this when sent to canvacord. Use user.username
+            'username': user.username //special characters breaks this when sent to canvacord. Use user.username
         }
         let image = await canvacord.Canvas.quote(ops);
 
         let attachment = new Discord.MessageAttachment(image, "concord.png");
-        message.channel.send(attachment);
+        message.channel.send({
+            files: [attachment]
+        });
         message.delete();
 
     }

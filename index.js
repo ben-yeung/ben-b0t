@@ -1,5 +1,9 @@
 const Discord = require('discord.js');
 const {
+    MessageButton,
+    MessageActionRow
+} = require('discord.js');
+const {
     Client,
     Intents
 } = require('discord.js');
@@ -14,7 +18,14 @@ const client = new Client({
 });
 const WOKCommands = require('wokcommands') // Used to implement slash command handler
 require("./util/eventHandler")(client);
-const distube = require('distube');
+
+const {
+    DisTube
+} = require("distube")
+const {
+    SpotifyPlugin
+} = require("@distube/spotify")
+
 const fs = require('fs');
 const {
     google
@@ -187,23 +198,63 @@ let eventCheck = new cron.CronJob('00 00 00 * * *', async () => {
 eventCheck.start();
 
 // See example & docs here: https://distube.js.org/guide/example-bot.html 
-client.distube = new distube(client, {
-    searchSongs: false,
+client.distube = new DisTube(client, {
     emitNewSongOnly: true,
-    leaveOnFinish: true,
-    leaveOnEmpty: true
+    emitAddSongWhenCreatingQueue: false,
+    plugins: [new SpotifyPlugin()]
 })
 client.distube
-    .on('playSong', (queue, song) =>
-        queue.channel.send(
-            `Playing \`${song.songs[0].name}\` - \`${
-				song.songs[0].formattedDuration
-			}\`\nRequested by: ${song.songs[0].user}\n`,
-        ))
-    .on('addSong', (queue, song) =>
-        queue.channel.send(
-            `${song.songs[song.songs.length - 1].user} added \`${song.songs[song.songs.length - 1].name}\` - \`${song.songs[song.songs.length - 1].formattedDuration}\` to the queue.`,
-        ))
+    .on('playSong', (queue, song) => {
+        // console.log(song)
+
+        const sourceBtn = new MessageButton()
+            .setLabel('Source')
+            .setURL(song.url)
+            .setStyle('LINK')
+
+        const row = new MessageActionRow().addComponents(
+            sourceBtn
+        )
+
+        let embed = new Discord.MessageEmbed()
+            .setTitle(`Now Playing \`${song.name}\``)
+            .setDescription(`Duration: \`${song.formattedDuration}\` \n Requested by: <@${song.member.id}>`)
+            .setImage(song.thumbnail)
+            .setThumbnail("https://www.designbust.com/download/1005/png/transparent_background_youtube_logo_png256.png")
+            .setColor("RED")
+            .setTimestamp()
+
+        queue.textChannel.send({
+            components: [row],
+            embeds: [embed]
+        })
+    })
+
+    .on('addSong', (queue, song) => {
+
+        const sourceBtn = new MessageButton()
+            .setLabel('Source')
+            .setURL(song.url)
+            .setStyle('LINK')
+
+        const row = new MessageActionRow().addComponents(
+            sourceBtn
+        )
+
+        let embed = new Discord.MessageEmbed()
+            .setTitle(`Added \`${song.name}\` to the queue`)
+            .setDescription(`Duration: \`${song.formattedDuration}\` \n Requested by: <@${song.member.id}>`)
+            .setImage(song.thumbnail)
+            .setThumbnail("https://www.designbust.com/download/1005/png/transparent_background_youtube_logo_png256.png")
+            .setColor("RED")
+            .setTimestamp()
+
+        queue.textChannel.send({
+            components: [row],
+            embeds: [embed]
+        })
+    })
+
     .on('error', (queue, e) => {
         console.error(e)
     })

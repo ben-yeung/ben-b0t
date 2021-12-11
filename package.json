@@ -6,6 +6,8 @@
   "dependencies": {
     "@discordjs/opus": "^0.6.0",
     "@discordjs/rest": "^0.1.0-canary.0",
+    "@discordjs/voice": "^0.7.5",
+    "@distube/spotify": "^1.0.0",
     "@k3rn31p4nic/google-translate-api": "^1.1.1",
     "canvacord": "^5.1.0",
     "canvas": "^2.8.0",
@@ -13,7 +15,7 @@
     "cron": "^1.8.2",
     "discord-api-types": "^0.23.1",
     "discord.js": "^13.2.0",
-    "distube": "^2.8.18",
+    "distube": "^3.0.3",
     "dotenv": "^10.0.0",
     "ebay-node-api": "^2.9.0",
     "ffmpeg-static": "^4.4.0",

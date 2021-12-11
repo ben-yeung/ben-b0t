@@ -13,17 +13,25 @@ module.exports = {
         if (!queue) {
             message.channel.send('Nothing playing right now!')
         } else {
-            message.channel.send(
-                `${queue.songs
-					.map(
-						(song, id) =>
-							`**${id ? id : 'Playing'}**. ${song.name} - \`${
-								song.formattedDuration
-							}\``,
-					)
-					.slice(0, 10)
-					.join('\n')}`,
-            )
+            const list = `${queue.songs
+                .map(
+                    (song, id) =>
+                        `**${id ? id : 'Playing'}**: ${song.name} - \`${
+                            song.formattedDuration
+                        }\``,
+                )
+                .slice(0, 10)
+                .join('\n')}`
+
+            let embed = new Discord.MessageEmbed()
+                .setTitle("Current Queue")
+                .setDescription(list)
+                .setThumbnail("https://assets.stickpng.com/thumbs/580b57fcd9996e24bc43c545.png")
+                .setColor("RED")
+                .setTimestamp()
+            message.channel.send({
+                embeds: [embed]
+            })
         }
     }
 }
