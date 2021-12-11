@@ -403,6 +403,14 @@ client.on('message', async message => {
             cmd = 'avatar'
             break;
 
+        case 'team':
+            cmd = 'teams'
+            break;
+
+        case 'matchmake':
+            cmd = 'teams'
+            break;
+
         default:
             break;
     }
