@@ -2,10 +2,14 @@ const Discord = require("discord.js")
 const botconfig = require("../botconfig.json");
 const colours = require("../colours.json");
 const weather = require("weather-js");
+const db = require('quick.db')
 const {
     MessageButton,
     MessageActionRow
 } = require('discord.js');
+const {
+    all
+} = require("node-superfetch");
 
 function tConvert(time) {
     // Check correct time format and split into components
@@ -144,6 +148,7 @@ module.exports = {
             }
 
             const author = message.author;
+            const authorMessageID = message.id
             var currInd = 0;
 
             const embed = new Discord.MessageEmbed()
@@ -172,16 +177,32 @@ module.exports = {
                 .setCustomId('weather_back')
                 .setStyle('PRIMARY')
 
+            const closeBtn = new MessageButton()
+                .setLabel('Close')
+                .setCustomId('weather_close')
+                .setStyle('DANGER')
+
             const row = new MessageActionRow().addComponents(
-                nextBtn
+                nextBtn, closeBtn
             )
 
             message.channel.send({
                 components: [row],
                 embeds: [embed]
             }).then(message => {
+
+                if (!db.get('weather_queries')) {
+                    queries = {}
+                    queries[message.id] = [authorMessageID, [current, location, forecast], Date.now()]
+                    db.set('weather_queries', queries)
+                } else {
+                    queries = db.get('weather_queries')
+                    queries[message.id] = [authorMessageID, [current, location, forecast], Date.now()]
+                    db.set('weather_queries', queries)
+                }
+
                 const filter = (btn) => {
-                    return author.id === btn.user.id
+                    return author.id === btn.user.id && btn.message.id == message.id
                 }
 
                 const collector = message.channel.createMessageComponentCollector({
@@ -192,6 +213,12 @@ module.exports = {
                 collector.on('collect', async (ButtonInteraction) => {
                     //console.log(ButtonInteraction.customId)
                     const id = ButtonInteraction.customId
+                    let allQueries = db.get('weather_queries')
+                    let queries = allQueries[ButtonInteraction.message.id]
+                    let current = queries[1][0]
+                    let location = queries[1][1]
+                    let forecast = queries[1][2]
+                    // console.log(allQueries)
 
                     if (id === 'weather_next') {
                         let embed = new Discord.MessageEmbed()
@@ -204,7 +231,7 @@ module.exports = {
                             .addField(`${forecast[4].day}  (${dConvert(forecast[4].date)})`, `> ${forecast[4].skytextday} \u200B ${skycodes[4]} \n High: **${forecast[4].high}°F**  |  Low: **${forecast[4].low}°F**  |  Precip: **${getPrecip(forecast[4])}**\n`)
 
                         const row = new MessageActionRow().addComponents(
-                            backBtn
+                            backBtn, closeBtn
                         )
                         await ButtonInteraction.message.edit({
                             components: [row],
@@ -228,12 +255,16 @@ module.exports = {
                             .addField("\u200B", '\u200B', true)
 
                         const row = new MessageActionRow().addComponents(
-                            nextBtn
+                            nextBtn, closeBtn
                         )
                         await ButtonInteraction.message.edit({
                             components: [row],
                             embeds: [embed]
                         })
+                    } else if (id == 'weather_close') {
+                        // console.log(queries[0])
+                        await ButtonInteraction.message.channel.messages.fetch(queries[0]).then(message => message.delete()).catch(console.error) // Delete user command call
+                        ButtonInteraction.message.delete() // Delete bot embed
                     }
 
                     ButtonInteraction.deferUpdate()
