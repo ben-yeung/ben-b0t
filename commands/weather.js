@@ -165,7 +165,8 @@ module.exports = {
                 .addField("Observed", `${tConvert(current.observationtime)}`, true)
                 .addField("Timezone", `GMT ${location.timezone}`, true)
                 .addField("\u200B", '\u200B', true)
-                .setFooter(`Use reacts to see upcoming forecast`)
+                .setFooter(`Buttons expire in 2 minutes`)
+                .setTimestamp()
 
             const nextBtn = new MessageButton()
                 .setLabel('Show Forecast')
@@ -229,6 +230,8 @@ module.exports = {
                             .addField(`${forecast[2].day}  (${dConvert(forecast[2].date)})`, `> ${forecast[2].skytextday} \u200B ${skycodes[2]} \n High: **${forecast[2].high}°F**  |  Low: **${forecast[2].low}°F**  |  Precip: **${getPrecip(forecast[2])}**\n`)
                             .addField(`${forecast[3].day}  (${dConvert(forecast[3].date)})`, `> ${forecast[3].skytextday} \u200B ${skycodes[3]} \n High: **${forecast[3].high}°F**  |  Low: **${forecast[3].low}°F**  |  Precip: **${getPrecip(forecast[3])}**\n`)
                             .addField(`${forecast[4].day}  (${dConvert(forecast[4].date)})`, `> ${forecast[4].skytextday} \u200B ${skycodes[4]} \n High: **${forecast[4].high}°F**  |  Low: **${forecast[4].low}°F**  |  Precip: **${getPrecip(forecast[4])}**\n`)
+                            .setFooter(`Buttons expire in 2 minutes`)
+                            .setTimestamp()
 
                         const row = new MessageActionRow().addComponents(
                             backBtn, closeBtn
@@ -253,6 +256,8 @@ module.exports = {
                             .addField("Observed", `${tConvert(current.observationtime)}`, true)
                             .addField("Timezone", `GMT ${location.timezone}`, true)
                             .addField("\u200B", '\u200B', true)
+                            .setFooter(`Buttons expire in 2 minutes`)
+                            .setTimestamp()
 
                         const row = new MessageActionRow().addComponents(
                             nextBtn, closeBtn

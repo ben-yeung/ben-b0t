@@ -117,7 +117,7 @@ async function testingEventCheck() {
 
     let events = await getTodaysEvents(startDateFormatted, endDateFormatted);
 
-    if (!events.length) return; // No events today, skip announcements
+    if (!events.length) return console.log("No events found :("); // No events today, skip announcements
 
     const targetChannel = client.channels.cache.get("701976025357090816") // Channel for announcements (Where to send embeds for events)
 
