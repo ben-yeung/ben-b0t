@@ -33,7 +33,7 @@ module.exports = {
             if (user.roles.cache.has(role.id)) return message.channel.send("The mentioned user is still muted.");
             await (user.roles.add(role.id).catch(err => message.channel.send(`Something went wrong adding ban role: ${err}`)))
             await (user.roles.remove(member.id).catch(err => message.channel.send(`Something went wrong removing member role: ${err}`)))
-            return message.channel.send(`${user.displayName} is now muted.`);
+            return message.channel.send(`<@${user.id}> is now muted.`);
         } else {
             if (user.roles.cache.has(role.id)) return message.channel.send("The mentioned user is still muted.");
             await (user.roles.add(role.id).catch(err => message.channel.send(`Something went wrong adding ban role: ${err}`)))
@@ -42,11 +42,11 @@ module.exports = {
             let timer = setTimeout(function () {
                 user.roles.remove(role.id).catch(err => message.channel.send(`Something went wrong: ${err}`));
                 user.roles.add(member.id).catch(err => message.channel.send(`Something went wrong adding ban role: ${err}`));
-                message.channel.send(`${user.displayName} is now unmuted.`);
+                message.channel.send(`<@${user.id}> is now unmuted.`);
             }, ms(time))
 
             bot.mute.set(user.user.id, timer);
-            message.channel.send(`${user.displayName} is now muted for **${ms(ms(time))}**`);
+            message.channel.send(`<@${user.id}> is now muted for **${ms(ms(time))}**`);
         }
 
     }

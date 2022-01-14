@@ -167,9 +167,12 @@ let eventCheck = new cron.CronJob('00 00 00 * * *', async () => {
 
     let events = await getTodaysEvents(startDateFormatted, endDateFormatted);
 
-    if (!events.length) return; // No events today, skip announcements
+    if (!events.length) return console.log("No events found :("); // No events today, skip announcements
 
     const targetChannel = client.channels.cache.get("902068387692281947") // Channel for announcements (Where to send embeds for events)
+    if (targetChannel == undefined) {
+        return console.log("Channel for announcements not found")
+    }
 
     for (var i = 0; i < events.length; i++) {
         // console.log(events[i])

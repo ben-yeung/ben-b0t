@@ -39,15 +39,17 @@ module.exports = {
                         message.edit("Could not find results on StockX for that search.")
                         return
                     }
-                    console.log(productFound)
+                    // console.log(productFound)
                     var currInd = 0;
                     var productDetail = await stockx.fetchProductDetails(productFound[currInd].uuid)
                     console.log(`${search} length ${productDetail.length}`)
 
+                    console.log(productDetail)
+
                     let name = productDetail.name;
                     let thumbnail = productDetail.image;
                     let styleID = productDetail.pid || "N/A";
-                    let retail = (productDetail.details.retail) ? `$${productDetail.details.retail}` : "N/A";
+                    let retail = (productDetail.details.retail != undefined) ? `$${productDetail.details.retail}` : "N/A";
                     let releaseDate = productDetail.details.releaseDate || "N/A";
                     let colorway = productDetail.details.colorway || "N/A";
                     let lowestAsk = (productDetail.market.lowestAsk) ? `$${productDetail.market.lowestAsk}` : "N/A";
@@ -61,7 +63,7 @@ module.exports = {
 
                     let embed = new Discord.MessageEmbed()
                         .setTitle(`**${name}**`)
-                        .setDescription(`**Released:** ${releaseDate} \n **Colorway:** ${colorway} \n **Retail:** ${retail}`)
+                        .setDescription(`**Released:** ${releaseDate} \n`)
                         .setColor(colours.stockx)
                         .setImage(thumbnail)
                         .addField("Lowest Ask", `${lowestAsk}`, true)
@@ -144,7 +146,7 @@ module.exports = {
 
                                 let embed = new Discord.MessageEmbed()
                                     .setTitle(`**${name}**`)
-                                    .setDescription(`**Released:** ${releaseDate} \n **Colorway:** ${colorway} \n **Retail:** ${retail}`)
+                                    .setDescription(`**Released:** ${releaseDate} \n`)
                                     .setColor(colours.stockx)
                                     .setImage(thumbnail)
                                     .addField("Lowest Ask", `${lowestAsk}`, true)
@@ -198,7 +200,7 @@ module.exports = {
 
                                 let embed = new Discord.MessageEmbed()
                                     .setTitle(`**${name}**`)
-                                    .setDescription(`**Released:** ${releaseDate} \n **Colorway:** ${colorway} \n **Retail:** ${retail}`)
+                                    .setDescription(`**Released:** ${releaseDate} \n`)
                                     .setColor(colours.stockx)
                                     .setImage(thumbnail)
                                     .addField("Lowest Ask", `${lowestAsk}`, true)

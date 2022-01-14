@@ -28,7 +28,7 @@ module.exports = {
         await (user.roles.add(member.id).catch(err => message.channel.send(`Something went wrong adding member role: ${err}`)))
         await clearTimeout(bot.mute.get(user.user.id));
         await bot.mute.delete(user.user.id);
-        await message.channel.send(`${user.displayName} is now unmuted.`);
+        await message.channel.send(`<@${user.id}> is now unmuted.`);
 
     }
 }
