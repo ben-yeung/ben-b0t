@@ -23,6 +23,7 @@ Originally a single file full of if statements, this repo publication is a clean
 * 👽 Have fun trolling friends with image manipulation using Canvacord API.
 * 📚 Quickly find images, definitions, translations, YouTube videos, and more with ease!
 * ⚖️ Create polls, generate random numbers, flip a coin, ask an 8ball for guidance, find random cat gifs.
+* 🎵 Queue and play videos from YouTube to jam out with friends.
 
 ## 🆕 Discord Button Integration
 *  [discord-buttons](https://www.npmjs.com/package/discord-buttons) is now deprecated along with Discord.js v12
@@ -47,6 +48,12 @@ Originally a single file full of if statements, this repo publication is a clean
 * Options to setup a CronJob to automatically send Twitch clips of a given streamer to a Discord channel.
   * Do note that this command is used and tested on a smaller channel.
   * There is no spam prevention and thus any clips within the past day are sent automatically to a given channel.
+
+## 📅 Google Calendar API Integration
+* Scheduled Cron jobs to check events from a Google Calendar.
+* Posts an embed containing event title, description, and any links.
+* Supports all-day events as well as scheduled events.
+* Cron job can be configured to check more frequently.
 
 ## 🧰 Debugging / Notes
 * Note that some commands may use the `quick.db` package.
