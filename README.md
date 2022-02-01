@@ -1,11 +1,11 @@
 # ben-b0t
-[![Discord.js](https://img.shields.io/badge/discord.js-v12-blue?style=for-the-badge&logo=discord)](https://www.npmjs.com/package/discord.js)
+[![Discord.js](https://img.shields.io/badge/discord.js-v13-blue?style=for-the-badge&logo=discord)](https://www.npmjs.com/package/discord.js)
    [![npm](https://img.shields.io/badge/npm-v6.14.13-red?style=for-the-badge&logo=npm)](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
    [![Node.js](https://img.shields.io/badge/Node.js-v14.17.3-brightgreen?style=for-the-badge&logo=nodejs)](https://dev.twitch.tv/docs/)
    [![Twitch API](https://img.shields.io/badge/Twitch%20API-Doc-blueviolet?style=for-the-badge&logo=twitch)](https://dev.twitch.tv/docs/)
 
 
-## Discord Bot written in JavaScript using discord.js
+## Discord Bot written in JavaScript using discord.js v13
 This project began Fall 2020 and was published to a public repo on 04/24/21
 
 
@@ -24,23 +24,6 @@ Originally a single file full of if statements, this repo publication is a clean
 * 📚 Quickly find images, definitions, translations, YouTube videos, and more with ease!
 * ⚖️ Create polls, generate random numbers, flip a coin, ask an 8ball for guidance, find random cat gifs.
 * 🎵 Queue and play videos from YouTube to jam out with friends.
-
-## 🆕 Discord Button Integration
-*  [discord-buttons](https://www.npmjs.com/package/discord-buttons) is now deprecated along with Discord.js v12
-*  With Discord.js v13 buttons are now fully operational and implemented here!
-*  Instead of waiting for the bot to add reactions (embed pagination for example), these buttons can be instantly accessed and edited across several message edits!
-
-## 🆕 Slash Command Integration (WIP to merge to Discord v13)
-* The usage of slash commands and its integration over prefix commands stems from the ease of access for both the developer and the user.
-* This is especially noticeable for longer commands with multiple arguments where it is easy to mess up the order of inputs.
-* On the developer side, slash commands neatly organize and store arguments in a given order so developers do not have to parse raw input and decipher which inputs belong to a given argument.
-* As custom slash commands are still in beta, [WOKCommands](https://docs.wornoffkeys.com/commands/slash-commands) provides an awesome slash command handler to do the heavy lifting.
-
-### Items below are no longer an issue due to the v12 to v13 Discord.js update but patch-package is still very helpful
-* Do note that in order to get discord-buttons integration working smoothly I had to edit WOKCommands Slash Command handler source with this PR:
-  * https://github.com/AlexzanderFlores/WOKCommands/pull/108/files
-  * This essentially made the WOKCommands handler only parse interactions of type 2 to prevent crashing when using other types of interactions (i.e. `interaction.type == 2`)
-  * A very helpful package I found online was [patch-package](https://www.npmjs.com/package/patch-package) which allows you to edit these npm packages and when pushing to a host such as Heroku patch-package can modify these personal fixes when installing node_modules.
 
 ## 📺 Twitch API Integration
 * Client Credentials OAuth Flow
