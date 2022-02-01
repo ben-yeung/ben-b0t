@@ -12,7 +12,7 @@ This project began Fall 2020 and was published to a public repo on 04/24/21
 ## 🤖 A simple, personalized Discord Bot to interact and moderate a Discord server. 
 
 Overall a very interactive project that allowed me to learn more about Data Structures, string manipulation, OAuth Flows, and parsing I/O.
-Originally an single file full of if statements, this repo publication is a cleaner and more organized version with a command handler.
+Originally a single file full of if statements, this repo publication is a cleaner and more organized version with a command handler. What started as a small summer project has turned into a full-fledged discord bot that I've grown to love, using it everyday in servers with friends.
 
 ## 👾 Over 30+ Commands ranging from moderation, information, and fun.
 * 🚨 **Moderation**: `ban`, `kick`, `mute`, `modclear`, `clearb0t`, `shutdown`, and more
