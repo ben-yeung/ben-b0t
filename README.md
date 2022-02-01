@@ -53,7 +53,6 @@ Originally a single file full of if statements, this repo publication is a clean
   * [WOKCommands Slash Commands Docs](https://docs.wornoffkeys.com/commands/slash-commands)
 * [patch-package](https://www.npmjs.com/package/patch-package) edits:
   * stockx-api/index.js require path fix to point to './src/classes/stockx.js'
-  * wokcommands/dist/SlashCommands.js (see PR linked above)
 
 ## 🛠 Dependencies Include:
 * [canvacord](https://canvacord.js.org/#/)
