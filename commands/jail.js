@@ -16,7 +16,9 @@ module.exports = {
         });
         const image = await canvacord.Canvas.jail(avatar);
         let attachment = new Discord.MessageAttachment(image, "concord.png");
-        message.channel.send(attachment);
+        message.channel.send({
+            files: [attachment]
+        });
 
     }
 }

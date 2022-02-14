@@ -406,6 +406,10 @@ client.on('message', async message => {
             cmd = 'avatar'
             break;
 
+        case 'av':
+            cmd = 'avatar'
+            break;
+
         case 'team':
             cmd = 'teams'
             break;

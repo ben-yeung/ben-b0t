@@ -61,7 +61,7 @@ module.exports = {
             // let maxInd = maxes[0];
             let choice = choices[Math.floor(Math.random() * choices.length)]
 
-            let phrases = ['I asked my mom and she said you should', 'My guy feeling says', 'Local expert recommended you should', 'Siri said', 'If I were you I would', 'This is a good choice:', 'I would definitely choose', 'Survey says:', 'My gut says you should', 'The obvious choice is', 'If I were you I would']
+            let phrases = ['I asked my mom and she said you should', 'My gut feeling says', 'Local expert recommended you should', 'Siri said', 'If I were you I would', 'This is a good choice:', 'I would definitely choose', 'Survey says:', 'My gut says you should', 'The obvious choice is', 'If I were you I would']
             let phraseChoice = phrases[Math.floor(Math.random() * phrases.length)]
             message.channel.send(`${phraseChoice} ${choice}`);
         } else {

@@ -17,6 +17,7 @@ module.exports = {
             .setTitle('Magic :8ball: Oracle')
             .addField('Question: ', question)
             .addField('Answer: ', replies[num])
+            .setDescription(`Asked by <@${message.author.id}>`)
 
         message.channel.send({
             embeds: [embed]
