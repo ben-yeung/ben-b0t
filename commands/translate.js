@@ -1,7 +1,6 @@
 const Discord = require("discord.js")
 const botconfig = require("../botconfig.json");
 const colours = require("../colours.json");
-// const translate = require("@k3rn31p4nic/google-translate-api");
 
 var codes = {
     "az": "Azerbaijan",
@@ -102,31 +101,49 @@ var codes = {
 module.exports = {
     name: "translate",
     description: "Translate message to given lang code.",
-    usage: "?translate [lang code] [text]",
+    usage: "?translate [lang code] [text] or ?translate [text] -> defaults to english translation",
     async execute(bot, message, args) {
 
-        // return message.reply("Module currently down.")
-
-        let lang = args[0].toLowerCase()
-        let text = args.slice(1, args.length).join(" ").trim()
-        if (!lang) return message.reply("You must specify which language to translate to. Do ?trhelp for language codes.")
-        if (!text) return message.reply("You have to give me text to translate.")
-        if (lang.length !== 2) return message.reply("You must use a two letter indicator for the language to translate to. Do ?trhelp to see more.")
+        return message.reply("Module currently down.")
 
         let validLangs = Object.keys(codes)
-        if (!validLangs.includes(lang)) return message.reply("You must include a valid two-letter langauge code. Do ?trhelp for more details.")
-        console.log(text)
-        const res = await translate(text, {
-            to: lang
-        })
-        let embed = new Discord.MessageEmbed()
-            .setTitle(`Translate to ${codes[lang]}`)
-            .addField("Original Message:", text)
-            .addField("Translation:", res.text)
-            .setColor(colours.blue_light)
-        return message.channel.send({
-            embeds: [embed]
-        });
+        let lang = args[0].toLowerCase()
+        let text = args.slice(1, args.length).join(" ").trim()
+        if (!lang) return message.reply("Format is ?tr [lang code] [text] or ?tr [text] -> defaults to english translation. Use ?trhelp for the list of language codes")
+        if (!text && validLangs.includes(lang)) return message.reply("You have to give me text to translate.")
+        // if (lang.length !== 2) return message.reply("You must use a two letter indicator for the language to translate to. Do ?trhelp to see more.")
+
+        if (!validLangs.includes(lang)) { // Try to translate given text to English
+            translate(text, {to: 'en'}).then(res => {
+                console.log(res)
+                // let embed = new Discord.MessageEmbed()
+                //     .setTitle(`Translate to ${codes[lang]}`)
+                //     .addField("Original Message:", text)
+                //     .addField("Translation:", res.text)
+                //     .setColor(colours.blue_light)
+                // return message.channel.send({
+                //     embeds: [embed]
+                // });
+            }).catch(err => {
+                console.error(err)
+            })
+            
+        } else { // Translate text to given language code
+            translate(text, {from: lang, to: 'en'}).then(res => {
+                console.log(res)
+                // let embed = new Discord.MessageEmbed()
+                //     .setTitle(`Translate to ${codes[lang]}`)
+                //     .addField("Original Message:", text)
+                //     .addField("Translation:", res.text)
+                //     .setColor(colours.blue_light)
+                // return message.channel.send({
+                //     embeds: [embed]
+                // });
+            }).catch(err => {
+                console.error(err)
+            })
+        }
+        
 
     }
 }
