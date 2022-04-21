@@ -16,7 +16,6 @@ const allIntents = new Discord.Intents(32767);
 const client = new Client({
     intents: [allIntents]
 });
-const WOKCommands = require('wokcommands') // Used to implement slash command handler
 require("./util/eventHandler")(client);
 
 const {
@@ -264,40 +263,12 @@ client.distube
 
 client.on('ready', async () => {
     console.log(`${client.user.username} is online`)
-
-    new WOKCommands(client, { //WOKCommands to implement slash commands. See https://docs.wornoffkeys.com/commands/slash-commands 
-        commandsDir: 'slashcommands',
-        testServers: [guildID], // guildID allows for quicker slash command testing as global slash commands take about an hour to update
-        showWarns: false,
-    })
-    const commandsGuild = await client.api.applications(client.user.id).guilds(botconfig.GUILD_ID).commands.get();
-    console.log(commandsGuild)
-    const commands = await client.api.applications(client.user.id).commands.get();
-    // console.log(commands)
-    var cmdList = []
-    for (const command of commands) {
-        cmdList.push(`/${command.name}`)
-    }
-    client.slashcommands = cmdList.join(' \n')
-
-    console.log('We good to go!')
-
-    // Also note that in order for slash commands to work client must be given applications.commands scope
-    // See https://discord.com/developers/docs/interactions/slash-commands for more info
 })
 
 client.on('threadCreate', async thread => {
     console.log(thread)
     thread.join()
 })
-
-// client.on('interactionCreate', async (interaction) => {
-//     if (interaction.isButton()) {
-//         interaction.reply({
-//             content: `${interaction.user.tag} clicked button`
-//         })
-//     }
-// })
 
 client.on('message', async message => {
     if (message.author.bot || message.channel.type === 'dm') return; //ignore DMs and bot messages
@@ -461,43 +432,43 @@ client.on('messageUpdate', (oldMessage, newMessage) => {
 
 })
 
-// Helpers for manual Interaction processing and posting
-// Used for slash commands when WOKCommand flow isn't suitable
-// Basic usage: client.reply(interaction, content) where content is a string, embed, etc
-// Credit: https://github.com/AlexzanderFlores/Worn-Off-Keys-Discord-Js/blob/master/82-Slash-Commands/index.js
-client.reply = async (interaction, response) => {
-    let data = {
-        content: response,
-    }
+// // Helpers for manual Interaction processing and posting
+// // Used for slash commands when WOKCommand flow isn't suitable
+// // Basic usage: client.reply(interaction, content) where content is a string, embed, etc
+// // Credit: https://github.com/AlexzanderFlores/Worn-Off-Keys-Discord-Js/blob/master/82-Slash-Commands/index.js
+// client.reply = async (interaction, response) => {
+//     let data = {
+//         content: response,
+//     }
 
-    // Check for embeds
-    if (typeof response === 'object') {
-        data = await client.createAPIMessage(interaction, response)
-    }
+//     // Check for embeds
+//     if (typeof response === 'object') {
+//         data = await client.createAPIMessage(interaction, response)
+//     }
 
-    client.api.interactions(interaction.id, interaction.token).callback.post({
-        data: {
-            type: 4,
-            data,
-        },
-    })
-}
+//     client.api.interactions(interaction.id, interaction.token).callback.post({
+//         data: {
+//             type: 4,
+//             data,
+//         },
+//     })
+// }
 
-client.createAPIMessage = async (interaction, content) => {
-    const {
-        data,
-        files
-    } = await Discord.APIMessage.create(
-            client.channels.resolve(interaction.channel_id),
-            content
-        )
-        .resolveData()
-        .resolveFiles()
+// client.createAPIMessage = async (interaction, content) => {
+//     const {
+//         data,
+//         files
+//     } = await Discord.APIMessage.create(
+//             client.channels.resolve(interaction.channel_id),
+//             content
+//         )
+//         .resolveData()
+//         .resolveFiles()
 
-    return {
-        ...data,
-        files
-    }
-}
+//     return {
+//         ...data,
+//         files
+//     }
+// }
 
 client.login(botconfig.token);

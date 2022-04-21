@@ -102,9 +102,9 @@ module.exports = {
     name: "trhelp",
     description: "Sends user embed of language codes for ?translate",
     usage: "?trhelp",
-    execute(bot, message, args) {
+    async execute(bot, message, args) {
 
-        let bigText = "Find the language code below and use it with ?translate [language code] [text] \n\n"
+        let bigText = "Find the language code below and use it with ?translate [language code] [text] \n Translate [text] to given [language code] \n\n"
         for (let [key, value] of Object.entries(codes)) {
             bigText += `${key} : ${value} \n`
         }
@@ -114,8 +114,12 @@ module.exports = {
             .setDescription(bigText)
             .setColor(colours.blue_light)
 
-        message.react('❤️');
-        message.author.send(embed);
+        try {
+            await message.author.send({embeds:[embed]});
+            message.react('❤️');
+        } catch (err) {
+            message.reply("You have DMs turned off! For server specific DMs: Right click server icon > Privacy Settings > Toggle Allow DMs ❤️ ")
+        }
 
     }
 }

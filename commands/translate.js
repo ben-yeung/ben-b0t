@@ -1,7 +1,7 @@
 const Discord = require("discord.js")
 const botconfig = require("../botconfig.json");
 const colours = require("../colours.json");
-const translate = require("@k3rn31p4nic/google-translate-api");
+// const translate = require("@k3rn31p4nic/google-translate-api");
 
 var codes = {
     "az": "Azerbaijan",
@@ -104,6 +104,8 @@ module.exports = {
     description: "Translate message to given lang code.",
     usage: "?translate [lang code] [text]",
     async execute(bot, message, args) {
+
+        // return message.reply("Module currently down.")
 
         let lang = args[0].toLowerCase()
         let text = args.slice(1, args.length).join(" ").trim()

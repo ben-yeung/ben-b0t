@@ -39,12 +39,8 @@ module.exports = {
                         message.edit("Could not find results on StockX for that search.")
                         return
                     }
-                    // console.log(productFound)
                     var currInd = 0;
                     var productDetail = await stockx.fetchProductDetails(productFound[currInd].uuid)
-                    console.log(`${search} length ${productDetail.length}`)
-
-                    console.log(productDetail)
 
                     let name = productDetail.name;
                     let thumbnail = productDetail.image;

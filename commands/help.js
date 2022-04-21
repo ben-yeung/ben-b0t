@@ -10,7 +10,7 @@ module.exports = {
     name: "help",
     description: "Sends DM to user for list of active commands",
     usage: "?help",
-    execute(bot, message, args) {
+    async execute(bot, message, args) {
 
         bot.help.delete("banuser"); //delete moderator commands from help list
         bot.help.delete("kickuser");
@@ -67,70 +67,77 @@ module.exports = {
             .setCustomId('help_prev')
             .setStyle('PRIMARY')
 
+        prevBtn.disabled = true
+
         const row = new MessageActionRow().addComponents(
-            nextBtn, prevBtn
+            prevBtn, nextBtn
         )
 
         var currInd = 0;
         const author = message.author;
-
-        message.react('❤️');
-        message.author.send({
-            components: [row],
-            embeds: [embeds[0]]
-        }).then(async (message) => {
-            if (currInd >= embeds.length) return
-
-            const filter = (btn) => {
-                return author.id === btn.user.id
-            }
-
-            const collector = message.channel.createMessageComponentCollector({
-                filter,
-                time: 120000
-            })
-
-            collector.on('collect', async (ButtonInteraction) => {
-                //console.log(ButtonInteraction.customId)
-                const id = ButtonInteraction.customId
-                if (id === 'help_next') {
-                    prevBtn.disabled = false
-                    currInd++
-                    let embed = embeds[currInd]
-
-                    if (currInd + 1 == embeds.length) {
-                        nextBtn.disabled = true
-                    } else {
-                        nextBtn.disabled = false
-                    }
-                    const row = new MessageActionRow().setComponents(
-                        nextBtn, prevBtn
-                    )
-                    await ButtonInteraction.message.edit({
-                        components: [row],
-                        embeds: [embed]
-                    })
-
-                } else if (id === 'help_prev') {
-                    nextBtn.disabled = false
-                    currInd--
-                    let embed = embeds[currInd]
-
-                    if (currInd === 0) {
-                        prevBtn.disabled = true
-                    }
-                    const row = new MessageActionRow().setComponents(
-                        nextBtn, prevBtn
-                    )
-                    await ButtonInteraction.message.edit({
-                        components: [row],
-                        embeds: [embed]
-                    })
-
+        const ogMessage = message;
+        try {
+            await message.author.send({
+                components: [row],
+                embeds: [embeds[0]]
+            }).then(async (message) => {
+                ogMessage.react('❤️');
+                if (currInd >= embeds.length) return
+    
+                const filter = (btn) => {
+                    return author.id === btn.user.id
                 }
-
-                ButtonInteraction.deferUpdate()
+    
+                const collector = message.channel.createMessageComponentCollector({
+                    filter,
+                    time: 120000
+                })
+    
+                collector.on('collect', async (ButtonInteraction) => {
+                    //console.log(ButtonInteraction.customId)
+                    const id = ButtonInteraction.customId
+                    if (id === 'help_next') {
+                        prevBtn.disabled = false
+                        currInd++
+                        let embed = embeds[currInd]
+    
+                        if (currInd + 1 == embeds.length) {
+                            nextBtn.disabled = true
+                        } else {
+                            nextBtn.disabled = false
+                        }
+                        const row = new MessageActionRow().addComponents(
+                            prevBtn, nextBtn
+                        )
+                        await ButtonInteraction.message.edit({
+                            components: [row],
+                            embeds: [embed]
+                        })
+    
+                    } else if (id === 'help_prev') {
+                        nextBtn.disabled = false
+                        currInd--
+                        let embed = embeds[currInd]
+    
+                        if (currInd === 0) {
+                            prevBtn.disabled = true
+                        }
+                        const row = new MessageActionRow().addComponents(
+                            prevBtn, nextBtn
+                        )
+                        await ButtonInteraction.message.edit({
+                            components: [row],
+                            embeds: [embed]
+                        })
+    
+                    }
+    
+                    ButtonInteraction.deferUpdate()
+                })
             })
-        })
+        } catch (err) {
+            message.reply("You have DMs turned off! For server specific DMs: Right click server icon > Privacy Settings > Toggle Allow DMs ❤️ ")
+        }
+        
     }
 }
