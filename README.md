@@ -8,12 +8,14 @@
 ## Discord Bot written in JavaScript using discord.js v14
 
 This project began Fall 2020 and was published to a public repo on 04/24/21
+
 2022 Rewrite to focus on Slash Commands and Discord.js v13
+
 2024 Rewrite to focus on complying with Discord.js v14
 
 ## 🤖 A simple, personalized Discord Bot to interact and moderate a Discord server.
 
-Overall a very interactive project that allowed me to learn more about Data Structures, string manipulation, OAuth Flows, and REST APIs.
+Overall a very interactive project that allowed me to learn more about Data Structures, String manipulation, OAuth Flows, and REST APIs.
 
 ## 👾 Over 20+ Commands ranging from moderation, information, and fun.
 
@@ -21,14 +23,14 @@ Overall a very interactive project that allowed me to learn more about Data Stru
 - 🔎 **Information**: `define`, `syn`, `find [Google Image Search]`, `weather`, `summarize (GPT-4 Enabled)`and more
 - 🎊 **Fun**: `8ball`, `decide`, `play`, and more
 - 💬 Log chat message streaks and those who willingly or accidentally break them!
-- 📚 Quickly find images, definitions, translations, YouTube videos, and more with ease!
+- 📚 Quickly find images, definitions, YouTube videos, and more with ease!
 - 🎵 Queue and play videos from YouTube to create music sessions with friends.
 
 # ✨ GPT-4 Integration
 
 - `/summarize` utilizes OpenAI's GPT-4 API to review and summarize messages in a given Discord channel.
 - The command also supports follow up questions via replying to the interaction message.
-- The bot will then track the current conversation, relevant messages, and previous responses to help clarify summaries and answer questions.
+- The bot will then track the current conversation to help clarify summaries and answer follow-up questions.
 - Message logging is done via quick.db meaning it is all stored locally and is never uploaded anywhere.
   - For more a more persistent solution consider utilizing a MongoDB cluster
 
