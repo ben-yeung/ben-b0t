@@ -204,9 +204,11 @@ client.on("messageCreate", async (message) => {
       }, 5000);
 
       var conversation = db.get(refId);
+      let author = message.author;
 
       conversation.push({
-        role: "assistant",
+        role: "user",
+        name: author.globalName ? author.globalName : author.username,
         content: message.content,
       });
 

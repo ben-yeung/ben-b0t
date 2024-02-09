@@ -6,7 +6,7 @@ const db = require("quick.db");
 const ms = require("ms");
 
 async function parseMessages(msgObj) {
-  res = "";
+  res = [];
 
   msgObj
     .filter((msg) => msg.author && !msg.author.bot && msg.content)
@@ -14,10 +14,14 @@ async function parseMessages(msgObj) {
       let author = msg.author;
       let content = msg.content;
       let user = author.globalName ? author.globalName : author.username;
-      res = `${user}: ${content}\n` + res;
+      res.push({
+        role: "user",
+        name: user,
+        content: content,
+      });
     });
 
-  return res;
+  return res.reverse();
 }
 
 module.exports = {
@@ -37,7 +41,7 @@ module.exports = {
       db.set(`${channel_id}.summarizeStarted`, Date.now());
     }
 
-    let responses = ["Checking the logs...", "Pulling info from FBI...", "Reading...", "Running logs through sanity checker...", "Passing logs to outsourced worker..."];
+    let responses = ["Checking the logs ...", "Pulling info from the NSA ...", "Reading the README.md ...", "Running logs through sanity checker ...", "Reading the terms of service ...", "Inspecting the fine print ..."];
     let choice = responses[Math.floor(Math.random() * responses.length)];
     let question = interaction.options.getString("question");
     await interaction.reply(`${choice} <a:working:821570743329882172>`);
@@ -51,9 +55,12 @@ module.exports = {
         if (!parsed || parsed.length == 0) {
           return interaction.editReply("Something went wrong...");
         }
-        let prompt = `Summarize the following messages under 2000 characters in the order they appear into a concise summary with topic headers and bullet point details mentioning what they conversed about.
-                      Surround ideas you believe are important with bold markdown. Do not mention "User" and instead use their name. 
-                      Headers are only for topics and the number of topics should be as minimized as possible for conciseness.`;
+        let prompt = `Summarize the following messages under 2000 characters in the order they appear into a concise summary.
+                      The summary should have topic headers relevant to the message and bullet points for context details of the conversation.
+                      Surround important or impactful statements with bold markdown. 
+                      Do not mention "User" and instead always use their user name. 
+                      Headers are only for topics and should not include "Topic:"
+                      The number of topics should be as minimized as possible for clarity.`;
         if (question) {
           prompt += "with an answer to the following question in the format of Question: Answer " + question;
         }
@@ -66,10 +73,7 @@ module.exports = {
                 role: "system",
                 content: prompt,
               },
-              {
-                role: "user",
-                content: parsed,
-              },
+              ...parsed,
             ],
           })
           .catch((err) => {
@@ -87,8 +91,9 @@ module.exports = {
             role: "system",
             content: `You just summarized the messages formatted as Username:Message below and any assistant roled messages are follow up questions/comments that you must answer in a concise message.
                       Respond to questions, specifying usernames if necessary to give context for messages, and keep the response under 2000 characters.
-                      ${parsed}`,
+                      `,
           },
+          ...parsed,
         ]);
 
         return;
