@@ -1,0 +1,13 @@
+diff --git a/node_modules/@discordjs/voice/dist/index.js b/node_modules/@discordjs/voice/dist/index.js
+index 7ddadee..97f793b 100644
+--- a/node_modules/@discordjs/voice/dist/index.js
++++ b/node_modules/@discordjs/voice/dist/index.js
+@@ -277,7 +277,7 @@ var VoiceUDPSocket = class extends import_node_events.EventEmitter {
+     this.remote = remote;
+     this.keepAlives = [];
+     this.keepAliveBuffer = import_node_buffer2.Buffer.alloc(8);
+-    this.keepAliveInterval = setInterval(() => this.keepAlive(), KEEP_ALIVE_INTERVAL);
++    // this.keepAliveInterval = setInterval(() => this.keepAlive(), KEEP_ALIVE_INTERVAL);
+     setImmediate(() => this.keepAlive());
+     this.debug = debug ? (message) => this.emit("debug", message) : null;
+   }

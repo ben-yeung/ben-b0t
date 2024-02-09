@@ -1,0 +1,16 @@
+{
+  "PREFIX": "",
+  "TOKEN": "",
+  "CLIENT_ID": "",
+  "GUILD_ID": "",
+  "COLOR_SCHEME": 32768,
+
+  "G_CALENDAR_CLIENT_ID": "",
+  "G_CALENDAR_CLIENT_SECRET": "",
+  "G_REFRESH_TOKEN": "",
+  "CALENDAR_ID": "",
+
+  "WEBSTER_KEY": "",
+
+  "OPENAI_KEY": ""
+}
