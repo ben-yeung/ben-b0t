@@ -195,7 +195,6 @@ client.on("messageCreate", async (message) => {
   if (message.channel.type === "dm") return message.reply("Sorry I don't do direct messages. Too personal for me.");
 
   // Logic for handling follow questions to the /summarize interaction
-  console.log(message);
   if (message.type == 19) {
     let refId = message.reference.messageId;
     if (refId && db.get(refId)) {
