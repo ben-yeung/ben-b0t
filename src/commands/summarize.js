@@ -55,11 +55,12 @@ module.exports = {
         if (!parsed || parsed.length == 0) {
           return interaction.editReply("Something went wrong...");
         }
-        let prompt = `Summarize the following messages under 2000 characters in the order they appear into a concise summary.
+        let prompt = `Create a concise summary of the following messages in the order they appear.
+                      Keep the summary under 2000 characters keeping it relevant and concise where possible.
                       The summary should have topic headers relevant to the message and bullet points for context details of the conversation.
                       Surround important or impactful statements with bold markdown. 
-                      Do not mention "User" and instead always use their user name. 
-                      Headers are only for topics and should not include "Topic:"
+                      Do not mention "User" and instead always use their name. 
+                      Headers are only for message topics and should not include "Topic:"
                       The number of topics should be as minimized as possible for clarity.`;
         if (question) {
           prompt += "with an answer to the following question in the format of Question: Answer " + question;
