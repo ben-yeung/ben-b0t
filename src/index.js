@@ -207,7 +207,7 @@ client.on("messageCreate", async (message) => {
 
       conversation.push({
         role: "user",
-        name: author.globalName ? author.globalName : author.username,
+        name: author.globalName.replaceAll(" ", "_") ? author.globalName.replaceAll(" ", "_") : author.username,
         content: message.content,
       });
 
@@ -226,7 +226,7 @@ client.on("messageCreate", async (message) => {
         return;
       }
 
-      let botReply = await message.reply({ content: gptResponse.choices[0].message.content, fetchReply: true });
+      let botReply = await message.reply({ content: gptResponse.choices[0].message.content.replaceAll("_", " "), fetchReply: true });
 
       conversation.push({
         role: "system",

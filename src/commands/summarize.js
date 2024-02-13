@@ -16,7 +16,7 @@ async function parseMessages(msgObj) {
       let user = author.globalName ? author.globalName : author.username;
       res.push({
         role: "user",
-        name: user,
+        name: user.replaceAll(" ", "_"),
         content: content,
       });
     });
@@ -85,7 +85,7 @@ module.exports = {
         if (!response || !response.choices) {
           return interaction.editReply("Something went wrong or was rate limited...");
         }
-        let replyMessage = await interaction.editReply({ content: `${response.choices[0].message.content}`, fetchReply: true });
+        let replyMessage = await interaction.editReply({ content: `${response.choices[0].message.content.replaceAll("_", " ")}`, fetchReply: true });
 
         db.set(`${replyMessage.id}`, [
           {
