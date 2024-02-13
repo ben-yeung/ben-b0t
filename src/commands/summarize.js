@@ -9,7 +9,7 @@ async function parseMessages(msgObj) {
   res = [];
 
   msgObj
-    .filter((msg) => msg.author && !msg.author.bot && msg.content)
+    .filter((msg) => msg.author && !msg.author.bot && msg.content && Date.now() - msg.createdTimestamp <= 8.64e7)
     .map((msg) => {
       let author = msg.author;
       let content = msg.content;
